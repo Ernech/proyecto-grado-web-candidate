@@ -14,35 +14,37 @@
                     <form @submit.prevent="handleSubmit">
                         <div class="form-input-container">
                             <label for="name" class="form-label">Nombres</label>
-                            <input class="form-input" type="text" placeholder="Ingrese sus nombres" id="name">
+                            <input class="form-input" type="text" placeholder="Ingrese sus nombres" id="name"
+                                v-model.trim="names">
                         </div>
                         <div class="form-input-container">
                             <label for="first_last_name" class="form-label">Apellido Paterno</label>
                             <input class="form-input" type="text" placeholder="Ingrese su apellido paterno"
-                                id="first_last_name">
+                                id="first_last_name" v-model.trim="firstLastName">
                         </div>
                         <div class="form-input-container">
                             <label for="second_last_name" class="form-label">Apellido Materno</label>
                             <input class="form-input" type="text" placeholder="Ingrese su capellido materno"
-                                id="second_last_name">
+                                id="second_last_name" v-model.trim="secondLastName">
                         </div>
                         <div class="form-input-container">
                             <label for="email" class="form-label">Correo</label>
                             <input class="form-input" type="email" placeholder="Ingrese su correo electrónico"
-                                id="email">
+                                id="email" v-model.trim="email">
                         </div>
                         <div class="form-input-container">
                             <label for="password" class="form-label">Contraseña</label>
-                            <input class="form-input" type="password" placeholder="Ingrese una contraseña"
-                                id="password">
+                            <input class="form-input" type="password" placeholder="Ingrese una contraseña" id="password"
+                                v-model.trim="password">
                         </div>
                         <div class="form-input-container">
                             <label for="repeat-password" class="form-label">Repetir Contraseña</label>
                             <input class="form-input" type="password" placeholder="Repita su contraseña"
-                                id="repeat-password">
+                                id="repeat-password" v-model.trim="repeatPassword">
                         </div>
                         <div class="form-input-container">
-                            <button type="submit" class="login-button">Registrarme</button>
+                            <button type="submit" class="register-button" :disabled="isDisabled"
+                                :class="{disabled:isDisabled}">Registrarme</button>
                         </div>
                     </form>
 
@@ -57,23 +59,27 @@
 
 </template>
 <script setup>
-// import { ref,computed } from 'vue'
-// import { useUserStore } from '../../store/user'
-// const userStore = useUserStore();
-// const email = ref('')
-// const password = ref('')
+import { ref, computed } from 'vue'
+import { useUserStore } from '../store/user'
+const userStore = useUserStore();
+const names = ref('')
+const firstLastName = ref('')
+const secondLastName = ref('')
+const email = ref('')
+const password = ref('')
+const repeatPassword = ref('')
 
-// const handleSubmit = async () => {
-//     await userStore.loginUser(email.value, password.value)
-// }
+const handleSubmit = async () => {
+    await userStore.registerUser(names.value, `${firstLastName.value} ${secondLastName.value}`, email.value, password.value)
+}
 
-// const isDisabled = computed(()=>{
-//     const pattern=  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-//     if(pattern.test(email.value) && password.value.length >= 8){
-//         return false
-//     }
-//     return true
-// })
+const isDisabled = computed(() => {
+    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    if (names.value !== '' && firstLastName.value !== '' && secondLastName.value !== '' && pattern.test(email.value) && password.value.length >= 8 && repeatPassword.value === password.value) {
+        return false
+    }
+    return true
+})
 
 </script>
 <style lang="css" scoped>
@@ -187,7 +193,7 @@
     padding-bottom: 3px;
 }
 
-.login-button {
+.register-button {
     background-color: #0094FF;
     border-radius: 8px;
     color: #FFFFFF;
@@ -199,7 +205,7 @@
 
 }
 
-.login-button.disabled {
+.register-button.disabled {
     background-color: #b7b8b9;
     border-color: #b7b8b9;
 }

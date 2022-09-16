@@ -11,4 +11,4 @@ import router from './routes/router'
 library.add(fas,fab)
 
 
-createApp(App).use(createPinia).use(router).component('fa',FontAwesomeIcon).mount('#app')
+createApp(App).use(createPinia()).use(router).component('fa',FontAwesomeIcon).mount('#app')

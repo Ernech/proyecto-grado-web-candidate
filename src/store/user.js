@@ -1,0 +1,35 @@
+import { defineStore } from 'pinia'
+import router from '../routes/router'
+export const useUserStore = defineStore('user', {
+    state: () => ({
+        registerUserData: {},
+        isLoading: false,
+        accessToken: null
+    }),
+    actions: {
+        async registerUser(name, lastName, email, password) {
+            this.isLoading = true;
+            this.registerUserData = { name, lastName, email, password }
+            try {
+                const resp = await fetch('http://localhost:3000/user/candidate', {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(this.registerUserData)
+                })
+                const { token } = await resp.json()
+                this.accessToken = token;
+                localStorage.setItem('token', `bearer ${token}`)
+                console.log(resp.status);
+                router.push('/')
+            } catch (error) {
+                console.log(error);
+            } finally {
+                this.registerUserData = null;
+                this.isLoading = false;
+            }
+        }
+
+
+    }
+
+})
