@@ -7,6 +7,26 @@ export const useUserStore = defineStore('user', {
         accessToken: null
     }),
     actions: {
+        async loginUser(email,password){
+            this.isLoading=true;
+            this.loginData={email,password}
+            try {
+                const resp = await fetch('http://localhost:3000/user/candidate/token',{
+                    method:'POST',
+                    headers: { "Content-Type": "application/json"},
+                    body: JSON.stringify(this.loginData)
+                })
+                const {token} =await resp.json()
+                this.accessToken=token;
+                localStorage.setItem('token',`bearer ${token}`)  
+               router.push('/')
+            } catch (error) {
+               console.log(error);
+            }finally{
+                this.loginData=null;
+                this.isLoading=false;
+            }
+        },
         async registerUser(name, lastName, email, password) {
             this.isLoading = true;
             this.registerUserData = { name, lastName, email, password }
