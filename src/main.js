@@ -7,8 +7,9 @@ import {fab} from '@fortawesome/free-brands-svg-icons'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import router from './routes/router'
+import VueGoodWizard from 'vue-good-wizard';
 
 library.add(fas,fab)
 
 
-createApp(App).use(createPinia()).use(router).component('fa',FontAwesomeIcon).mount('#app')
+createApp(App).use(createPinia()).use(router).use(VueGoodWizard).component('fa',FontAwesomeIcon).mount('#app')
