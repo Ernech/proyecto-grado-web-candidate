@@ -1,0 +1,28 @@
+table {
+    width: 100%;
+}
+
+table,
+th,
+td {
+    border: 1px solid #B9B9B9;
+    border-collapse: collapse;
+    font-family: 'Inter';
+    font-size: 13px;
+    padding: 5px 3px;
+}
+
+thead {
+
+    background-color: #0B0273;
+    color: #FFFFFF;
+}
+
+.actions-column {
+    margin: auto;
+    width: 10%;
+}
+
+.actions-cell {
+    text-align: center;
+}

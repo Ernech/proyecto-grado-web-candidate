@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <Navbar/>
-        <router-view></router-view>
+       
         <Footer/>
     </div>
        
@@ -13,7 +13,7 @@ export default {
     components:{Navbar,Footer}
 }
 </script>
-<style>
+<style scoped>
     .main {
     top: 0;
     right: 0;

@@ -1,44 +1,45 @@
 <template>
-    <div class="main">
+    <div class="main-cv-container">
+            <div class="stepper-container">
 
-        <div class="stepper">
-            <div class="stepper-progress">
-                <div class="stepper-progress-bar" :style="'width:'+stepperProgress">
+            <div class="stepper">
+                <div class="stepper-progress">
+                    <div class="stepper-progress-bar" :style="'width:'+stepperProgress">
 
+                    </div>
+                </div>
+                <div class="stepper-item" v-for="item in 13" :key="item"
+                    :class="{'current':step===item }, {'success': step>item}">
+                    <div class="stepper-item-counter">
+
+                    </div>
                 </div>
             </div>
-            <div class="stepper-item" v-for="item in 13" :key="item"
-                :class="{'current':step===item }, {'success': step>item}">
-                <div class="stepper-item-counter">
 
-                </div>
+            <div class="form-container">
+                <PersonalData v-if="step===1" />
+                <AcademicTraining v-if="step===2" />
+                <Languages v-if="step===3" />
+                <CurrentProfessionalData v-if="step===4" />
+                <JobExperience v-if="step===5" />
+                <TeachingExperience v-if="step===6" />
+                <CoursesAndSeminars v-if="step===7" />
+                <Publications v-if="step===8" />
+                <ConsultingsAndResearchs v-if="step===9" />
+                <Awards v-if="step===10" />
+                <Affiliations v-if="step===11" />
+                <Affiliations v-if="step===12" />
+                <FamilyReferences v-if="step===13" />
             </div>
-        </div>
+            <div class="controls">
+                <button class="back-button" @click="decrement" :disabled="step===1"
+                    :class="{'disabled':step===1}">Anterior</button>
+                <button class="next-button" @click="increment" :disabled="step>=13"
+                    :class="{'disabled':step>=13}">Siguiente</button>
+            </div>
 
-        <div class="form-container">
-            <PersonalData v-if="step===1"/>
-            <AcademicTraining v-if="step===2"/>
-            <Languages v-if="step===3"/>
-            <CurrentProfessionalData v-if="step===4"/>
-            <JobExperience v-if="step===5"/>
-            <TeachingExperience v-if="step===6"/>
-            <CoursesAndSeminars v-if="step===7"/>
-            <Publications v-if="step===8"/>
-            <ConsultingsAndResearchs v-if="step===9"/>
-            <Awards v-if="step===10"/>
-            <Affiliations v-if="step===11"/>
-            <Affiliations v-if="step===12"/>
-            <FamilyReferences v-if="step===13"/>
         </div>
-        <div class="controls">
-            <button class="back-button" @click="decrement" :disabled="step===1"
-                :class="{'disabled':step===1}">Anterior</button>
-            <button class="next-button" @click="increment" :disabled="step>=13"
-                :class="{'disabled':step>=13}">Siguiente</button>
-        </div>
-
     </div>
-
 </template>
 <script setup>
 import { ref, computed } from 'vue'
@@ -75,6 +76,6 @@ const isSuccess = (item) => {
 }
 
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../styles/stepper.scss"
 </style>
