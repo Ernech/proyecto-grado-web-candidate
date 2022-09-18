@@ -28,7 +28,7 @@
                 <ConsultingsAndResearchs v-if="step===9" />
                 <Awards v-if="step===10" />
                 <Affiliations v-if="step===11" />
-                <Affiliations v-if="step===12" />
+                <JobReferences v-if="step===12" />
                 <FamilyReferences v-if="step===13" />
             </div>
             <div class="controls">
@@ -55,6 +55,7 @@ import ConsultingsAndResearchs from '../components/step-form-sections/Consulting
 import Awards from '../components/step-form-sections/Awards.vue'
 import Affiliations from '../components/step-form-sections/Affiliations.vue'
 import FamilyReferences from '../components/step-form-sections/FamilyReferences.vue'
+import JobReferences from '../components/step-form-sections/JobReferences.vue'
 const step = ref(1)
 const decrement = () => {
     step.value--
