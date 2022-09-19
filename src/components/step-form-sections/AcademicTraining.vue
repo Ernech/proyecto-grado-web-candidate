@@ -20,11 +20,11 @@
             </div>
             <div class="form-input-container">
                 <label for="tittle-file" class="form-label">Título profecional (PDF)</label>
-                <input class="form-input" type="text" id="tittle-file">
+                <input type="file" class="upload-input" id="tittle-file" ref="file" accept=".pdf">
             </div>
             <div class="form-input-container">
                 <label for="national-title-file" class="form-label">Título provición nacional (PDF)</label>
-                <input class="form-input" type="text" id="national-title-file">
+                <input type="file" class="upload-input" id="national-title-file" ref="file" accept=".pdf">
             </div>
         </div>
         <button class="add-button">Agregar</button>

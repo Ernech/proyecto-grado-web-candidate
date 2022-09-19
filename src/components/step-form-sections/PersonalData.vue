@@ -86,7 +86,7 @@
            
             <div class="form-input-container">
                 <label for="ci_file" class="form-label">Fotocopia cédula de identidad (PDF)</label>
-                <input class="form-input" type="text" id="ci_file">
+                <input type="file" class="upload-input" id="ci_file" ref="file" accept=".pdf">
             </div>
             <div class="form-input-container">
                 <label for="home-phone" class="form-label">Teléfono domicilio</label>

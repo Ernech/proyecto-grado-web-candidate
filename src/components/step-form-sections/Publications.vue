@@ -18,6 +18,9 @@
                 <select class="form-input">
                     <option disabled>Elija una opción...</option>
                     <option>Libro</option>
+                    <option>Artículo arbitrado</option>
+                    <option>Texto de materia</option>
+                    <option>Guía de materia</option>
                     <option>Artículo</option>
                 </select>
             </div>

@@ -27,9 +27,7 @@
     padding-bottom: 3px;
 }
 .form-input-container-year {
- 
     width: 100%;
-
 }
 .form-input-year {
     height: 20px;
@@ -40,4 +38,27 @@
 }
 .form-input-container select {
     height: 30px;
+}
+
+
+.upload-input {
+    font-size: 15px;
+    background-color: #fff;
+    border-radius: 10px;
+    width: 100%;
+    border: 2px solid #000;
+    height: 31px;
+    padding: 0px;
+}
+::-webkit-file-upload-button{
+    height: 100%;
+    border-radius: 5px ;
+    background: #53C61D;
+    color: #fff;
+    border: none;
+}
+::-webkit-file-upload-button:hover{
+    
+    background: #53d71D;
+
 }

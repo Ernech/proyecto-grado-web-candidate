@@ -3,21 +3,20 @@
         <h3 class="title">Premios y distinciones</h3>
         <div class="grid-container-1">
             <div class="form-input-container">
-                <label for="married_last_name" class="form-label">Tipo de insitutción</label>
+                <label for="married_last_name" class="form-label">Tipo de distinción</label>
                 <select class="form-input">
                     <option disabled>Elija una opción...</option>
-                    <option>Básico</option>
-                    <option>Intermedio</option>
-                    <option>Avanzado</option>
+                    <option>Institucional</option>
+                    <option>Nacional</option>
+                    <option>Internacional</option>
                 </select>
             </div>
             <div class="form-input-container">
-                <label for="married_last_name" class="form-label">Clase de insitutción</label>
+                <label for="married_last_name" class="form-label">Clase de distinción</label>
                 <select class="form-input">
                     <option disabled>Elija una opción...</option>
-                    <option>Básico</option>
-                    <option>Intermedio</option>
-                    <option>Avanzado</option>
+                    <option>Medalla</option>
+                    <option>Diploma</option>
                 </select>
             </div>
             <div class="form-input-container">
