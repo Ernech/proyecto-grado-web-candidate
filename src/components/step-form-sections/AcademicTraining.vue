@@ -4,19 +4,19 @@
         <div class="grid-container">
             <div class="form-input-container">
                 <label for="academic_title" class="form-label">Título</label>
-                <input class="form-input" type="text" id="academic_title">
+                <input class="form-input" type="text" id="academic_title" v-model.trim="title">
             </div>
             <div class="form-input-container">
                 <label for="institution" class="form-label">Universidad/Centro/Instituto</label>
-                <input class="form-input" type="text" id="institution">
+                <input class="form-input" type="text" id="institution" v-model.trim="institution">
             </div>
             <div class="form-input-container">
                 <label for="academic-degree" class="form-label">Grado</label>
-                <input class="form-input" type="text" id="academic-degree">
+                <input class="form-input" type="text" id="academic-degree" v-model.trim="degree">
             </div>
             <div class="form-input-container">
                 <label for="degree-date" class="form-label">Fecha de titulación</label>
-                <input class="form-input" type="text" id="degree-date">
+                <input class="form-input" type="month" id="degree-date" v-model.trim="degreeDate">
             </div>
             <div class="form-input-container">
                 <label for="tittle-file" class="form-label">Título profecional (PDF)</label>
@@ -28,9 +28,9 @@
             </div>
         </div>
         <div class="add-button-container">
-            <button class="add-button">Agregar</button>
+            <button class="add-button" @click="addCVData">Agregar</button>
         </div>
-       
+
         <table>
             <thead>
                 <tr>
@@ -45,12 +45,12 @@
 
             </thead>
             <tbody>
-                <tr>
+                <tr v-for="(item, index) in cvStore.getAcademicTrainings" :key="index">
 
-                    <td>Ingeniería de sistemas</td>
-                    <td>Universidad católica boliviana San Pablo</td>
-                    <td>Pregrado</td>
-                    <td>12/03/2023</td>
+                    <td>{{item.title}}</td>
+                    <td>{{item.institution}}</td>
+                    <td>{{item.degree}}</td>
+                    <td>{{item.degreeDate}}</td>
                     <td class="actions-cell">
                         <fa class="edit-icon" icon="fa-solid fa-pen" />
                         <fa class="delete-icon" icon="fa-solid fa-trash" />
@@ -62,10 +62,35 @@
         </table>
     </div>
 </template>
-<script>
-export default {
+<script setup>
+import { ref } from 'vue';
+import { useCVStore } from '../../store/cv';
+const cvStore = useCVStore()
+const dataType = ref('ACADEMIC_TRAINING')
+const title = ref('')
+const institution = ref('')
+const degree = ref('')
+const degreeDate = ref('')
+const professionalTitleFile = ref('Título.pdf')
+const professionalNTitleFile = ref('Título provición nacional.pdf.pdf')
 
+const addCVData = () => {
+    const newCVData = {
+        dataType:dataType.value,
+        title: title.value,
+        institution: institution.value,
+        degree: degree.value, 
+        degreeDate: degreeDate.value,
+        professionalTitleFile: professionalTitleFile.value,
+        professionalNTitleFile: professionalNTitleFile.value
+    }
+    cvStore.cvDataArray.push(newCVData)
+    title.value = ''
+    institution.value = ''
+    degree.value = ''
+    degreeDate.value = ''
 }
+
 </script>
 <style lang="scss" scoped>
 @import "../../styles/labels.scss";
@@ -85,11 +110,11 @@ export default {
 }
 
 .grid-container {
-  margin-top: 15px;
+    margin-top: 15px;
     display: grid;
     grid-template-columns: repeat(2, 40%);
     grid-template-rows: repeat(3, 1fr);
-   width: 85%;
+    width: 85%;
     column-gap: 30px;
     row-gap: 20px;
     align-items: center;

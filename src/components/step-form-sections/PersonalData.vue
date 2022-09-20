@@ -4,47 +4,47 @@
         <div class="grid-container-1">
             <div class="form-input-container">
                 <label for="first_last_name" class="form-label">Apellido Paterno</label>
-                <input class="form-input" type="text" id="first_last_name">
+                <input class="form-input" type="text" id="first_last_name" v-model.trim="cvStore.personalData.firstLastName">
             </div>
             <div class="form-input-container">
                 <label for="second_last_name" class="form-label">Apellido Materno</label>
-                <input class="form-input" type="text" id="second_last_name">
+                <input class="form-input" type="text" id="second_last_name" v-model.trim="cvStore.personalData.secondLastName">
             </div>
             <div class="form-input-container">
                 <label for="married_last_name" class="form-label">Apellido de casada</label>
-                <input class="form-input" type="text" id="married_last_name">
+                <input class="form-input" type="text" id="married_last_name" v-model.trim="cvStore.personalData.marriedLastName">
             </div>
             <div class="form-input-container">
                 <label for="name" class="form-label">Nombres</label>
-                <input class="form-input" type="text" id="name">
+                <input class="form-input" type="text" id="name"  v-model.trim="cvStore.personalData.name">
             </div>
             <div class="form-input-container">
                 <label for="ci" class="form-label">Número de cédula de identidad</label>
-                <input class="form-input" type="text" id="ci">
+                <input class="form-input" type="text" id="ci"  v-model.trim="cvStore.personalData.personalIdNumber">
             </div>
             <div class="form-input-container">
                 <label for="ci_city" class="form-label">Expedido en</label>
-                <input class="form-input" type="text" id="ci_city">
+                <input class="form-input" type="text" id="ci_city"  v-model.trim="cvStore.personalData.issued">
             </div>
         </div>
         <div class="radio-container">
             <div class="radio-container__options">
                 <span>Tipo de documento:</span>
-                <input type="radio" value="CI" id="ci_option">
-                <label for="ci_option" class="radio-option">CI</label>
-                <input type="radio" value="CI Extranjero" id="foreign_ci">
+                <input type="radio" value="CI" id="ci_option"  v-model.trim="cvStore.personalData.idType">
+                <label for="ci_option" class="radio-option" >CI</label>
+                <input type="radio" value="CI Extranjero" id="foreign_ci" v-model.trim="cvStore.personalData.idType">
                 <label for="foreign_ci" class="radio-option">CI Extranjero</label>
-                <input type="radio" value="RUN" id="run_option">
+                <input type="radio" value="RUN" id="run_option" v-model.trim="cvStore.personalData.idType">
                 <label for="run_option" class="radio-option">RUN</label>
-                <input type="radio" value="Pasaporte" id="passport_option">
+                <input type="radio" value="Pasaporte" id="passport_option" v-model.trim="cvStore.personalData.idType">
                 <label for="passport_option" class="radio-option">Pasaporte</label>
             </div>
 
             <div class="radio-container__options">
                 <span>Género:</span>
-                <input type="radio" value="CI" id="man_option">
+                <input type="radio" value="Masculino" id="man_option" v-model.trim="cvStore.personalData.gender" >
                 <label for="man_option" class="radio-option">Masculino</label>
-                <input type="radio" value="CI Extranjero" id="woman_option">
+                <input type="radio" value="Femenino" id="woman_option" v-model.trim="cvStore.personalData.gender">
                 <label for="woman_option" class="radio-option">Femenino</label>
             </div>
 
@@ -53,35 +53,35 @@
         <div class="grid-container-2">
             <div class="form-input-container">
                 <label for="birthday" class="form-label">Fecha de nacimiento</label>
-                <input class="form-input" type="text" id="birthday">
+                <input class="form-input" type="text" id="birthday" v-model.trim="cvStore.personalData.birthDate">
             </div>
             <div class="form-input-container">
                 <label for="place_of_birth" class="form-label">Lugar de nacimiento</label>
-                <input class="form-input" type="text" id="place_of_birth">
+                <input class="form-input" type="text" id="place_of_birth" v-model.trim="cvStore.personalData.placeOfBirth">
             </div>
             <div class="form-input-container">
                 <label for="nationality" class="form-label">Nacionalidad</label>
-                <input class="form-input" type="text" id="nationality">
+                <input class="form-input" type="text" id="nationality" v-model.trim="cvStore.personalData.nationality">
             </div>
         </div>
         <div class="grid-container-3">
             <div class="form-input-container">
                 <label for="address" class="form-label">Dirección domicilio</label>
-                <input class="form-input" type="text" id="address">
+                <input class="form-input" type="text" id="address" v-model.trim="cvStore.personalData.address">
             </div>
             <div class="form-input-container">
                 <label for="address-zone" class="form-label">Zona</label>
-                <input class="form-input" type="text" id="address-zone">
+                <input class="form-input" type="text" id="address-zone" v-model.trim="cvStore.personalData.zone">
             </div>
         </div>
         <div class="grid-container-1">
             <div class="form-input-container">
                 <label for="AFP" class="form-label">AFP</label>
-                <input class="form-input" type="text" id="AFP">
+                <input class="form-input" type="text" id="AFP" v-model.trim="cvStore.personalData.afp">
             </div>
             <div class="form-input-container">
                 <label for="cua" class="form-label">Número de registro CUA</label>
-                <input class="form-input" type="text" id="cua">
+                <input class="form-input" type="text" id="cua" v-model.trim="cvStore.personalData.cuaNumber">
             </div>
            
             <div class="form-input-container">
@@ -90,23 +90,23 @@
             </div>
             <div class="form-input-container">
                 <label for="home-phone" class="form-label">Teléfono domicilio</label>
-                <input class="form-input" type="text" id="home-phone">
+                <input class="form-input" type="text" id="home-phone" v-model.trim="cvStore.personalData.homePhone">
             </div>
             <div class="form-input-container">
                 <label for="cellphone" class="form-label">Teléfono celular</label>
-                <input class="form-input" type="text" id="cellphone">
+                <input class="form-input" type="text" id="cellphone" v-model.trim="cvStore.personalData.cellPhone">
             </div>
             <div class="form-input-container">
                 <label for="email" class="form-label">Correo electrónico</label>
-                <input class="form-input" type="text" id="email">
+                <input class="form-input" type="text" id="email" v-model.trim="cvStore.personalData.email">
             </div>
         </div>
     </div>
 </template>
-<script>
-export default {
+<script setup>
+import {useCVStore} from '../../store/cv'
+const cvStore = useCVStore()
 
-}
 </script>
 <style lang="scss" scoped>
 @import "../../styles/labels.scss";

@@ -15,27 +15,27 @@
         <div class="grid-container-1">
             <div class="form-input-container">
                 <label for="currrent_job_institution" class="form-label">Materia</label>
-                <input class="form-input" type="text" id="currrent_job_institution">
+                <input class="form-input" type="text" id="currrent_job_institution" v-model.trim="title">
             </div>
             <div class="form-input-container">
                 <label for="insitution" class="form-label">Universidad</label>
-                <input class="form-input" type="text" id="insitution">
+                <input class="form-input" type="text" id="insitution" v-model.trim="institution">
             </div>
         </div>
         <div class="grid-container-2">
             <div class="form-input-container">
                 <label for="start-date" class="form-label">Desde</label>
-                <input class="form-input" type="month" id="start-date">
+                <input class="form-input" type="month" id="start-date" v-model.trim="startDate">
             </div>
             <div class="form-input-container">
                 <label for="finish-date" class="form-label">Hasta</label>
-                <input class="form-input" type="month" id="finish-date">
+                <input class="form-input" type="month" id="finish-date" v-model.trim="finishDate">
             </div>
 
         </div>
-        <div class="grid-container-3">
+        <div class="add-button-container">
 
-            <button class="add-button">Agregar</button>
+            <button class="add-button" @click="addCVData">Agregar</button>
         </div>
 
         <table>
@@ -49,11 +49,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Programación I</td>
-                    <td>Universidad católica boliviana</td>
-                    <td>12/2021</td>
-                    <td>02/2022</td>
+                <tr v-for="(item, index) in cvStore.getTeachingExperiences" :key="index">
+                    <td>{{item.title}}</td>
+                    <td>{{item.institution}}</td>
+                    <td>{{item.startDate}}</td>
+                    <td>{{item.finishDate}}</td>
                     <td class="actions-cell">
                         <fa class="edit-icon" icon="fa-solid fa-pen" />
                         <fa class="delete-icon" icon="fa-solid fa-trash" />
@@ -65,7 +65,29 @@
 </template>
 <script setup>
 import { ref } from 'vue'
+import { useCVStore } from '../../store/cv';
 const currentYear = ref(new Date().getFullYear())
+const cvStore = useCVStore()
+const dataType = ref('TEACHING_EXPERIENCE')
+const title = ref('')
+const institution = ref('')
+const startDate = ref('')
+const finishDate = ref('')
+
+const addCVData = () => {
+    const newCVData = {
+        dataType: dataType.value,
+        title: title.value,
+        institution: institution.value,
+        startDate: startDate.value,
+        finishDate: finishDate.value,
+    }
+    cvStore.cvDataArray.push(newCVData)
+    institution.value = ''
+    title.value = ''
+    startDate.value = ''
+    finishDate.value = ''
+}
 </script>
 <style lang="scss" scoped>
 @import "../../styles/labels.scss";
@@ -96,7 +118,7 @@ const currentYear = ref(new Date().getFullYear())
 
 .grid-container-1 {
     display: grid;
-    grid-template-columns: 62.7% 30%;
+    grid-template-columns: 40% 55%;
     grid-template-rows: 1fr;
     width: 85%;
     column-gap: 30px;
@@ -111,12 +133,5 @@ const currentYear = ref(new Date().getFullYear())
     column-gap: 30px;
     row-gap: 20px;
 }
-.grid-container-3 {
-    display: grid;
-    grid-template-columns: 40%;
-    grid-template-rows: 1fr;
-    width: 85%;
-    column-gap: 30px;
-    row-gap: 20px;
-}
+
 </style>

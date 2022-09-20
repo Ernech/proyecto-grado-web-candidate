@@ -4,11 +4,11 @@
         <div class="grid-container">
             <div class="form-input-container">
                 <label for="first_last_name" class="form-label">Idioma</label>
-                <input class="form-input" type="text" id="first_last_name">
+                <input class="form-input" type="text" id="first_last_name" v-model.trim="language">
             </div>
             <div class="form-input-container">
                 <label class="form-label">Nivel de lectura</label>
-                <select class="form-input">
+                <select class="form-input" v-model.trim="reading">
                     <option disabled>Elija una opción...</option>
                     <option>Básico</option>
                     <option>Intermedio</option>
@@ -17,7 +17,7 @@
             </div>
             <div class="form-input-container">
                 <label for="married_last_name" class="form-label">Nivel de escritura</label>
-                <select class="form-input">
+                <select class="form-input" v-model.trim="writing">
                     <option disabled>Elija una opción...</option>
                     <option>Básico</option>
                     <option>Intermedio</option>
@@ -26,7 +26,7 @@
             </div>
             <div class="form-input-container">
                 <label for="name" class="form-label">Nivel de habla</label>
-                <select class="form-input">
+                <select class="form-input" v-model.trim="speacking">
                     <option disabled>Elija una opción...</option>
                     <option>Básico</option>
                     <option>Intermedio</option>
@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="add-button-container">
-            <button class="add-button">Agregar</button>
+            <button class="add-button" @click="addCVData">Agregar</button>
         </div>
         <table>
             <thead>
@@ -51,12 +51,12 @@
 
             </thead>
             <tbody>
-                <tr>
+                <tr v-for="(item, index) in cvStore.getLanguages" :key="index">
 
-                    <td>Ingléss</td>
-                    <td>Básico</td>
-                    <td>Medio</td>
-                    <td>Avanzado</td>
+                    <td>{{item.language}}</td>
+                    <td>{{item.writing}}</td>
+                    <td>{{item.reading}}}</td>
+                    <td>{{item.speacking}}</td>
                     <td class="actions-cell">
                         <fa class="edit-icon" icon="fa-solid fa-pen" />
                         <fa class="delete-icon" icon="fa-solid fa-trash" />
@@ -68,10 +68,31 @@
         </table>
     </div>
 </template>
-<script>
-export default {
+<script setup>
+ import { ref } from 'vue';
+import { useCVStore } from '../../store/cv';
+const cvStore = useCVStore()
+const dataType = ref('LANGUAGE')
+const language = ref('')
+const writing = ref('Elija una opción...')
+const reading = ref('Elija una opción...')
+const speacking = ref('Elija una opción...')
 
+const addCVData = () => {
+    const newCVData = {
+        dataType:dataType.value,
+        language: language.value,
+        writing: writing.value,
+        reading: reading.value, 
+        speacking: speacking.value,
+    }
+    cvStore.cvDataArray.push(newCVData)
+    language.value = ''
+    writing.value = 'Elija una opción...'
+    reading.value = 'Elija una opción...'
+    speacking.value = 'Elija una opción...'
 }
+
 </script>
 <style lang="scss" scoped>
 @import "../../styles/labels.scss";

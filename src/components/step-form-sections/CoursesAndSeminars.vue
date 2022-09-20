@@ -5,27 +5,27 @@
         <div class="grid-container-1">
             <div class="form-input-container">
                 <label for="title" class="form-label">Título del curso o seminario</label>
-                <input class="form-input" type="text" id="title">
+                <input class="form-input" type="text" id="title" v-model.trim="title">
             </div>
             <div class="form-input-container">
                 <label for="institution" class="form-label">Institución</label>
-                <input class="form-input" type="text" id="institution">
+                <input class="form-input" type="text" id="institution" v-model.trim="institution">
             </div>
         </div>
         <div class="grid-container-2">
             <div class="form-input-container">
                 <label for="country" class="form-label">Lugar/país</label>
-                <input class="form-input" type="text" id="country">
+                <input class="form-input" type="text" id="country" v-model.trim="location">
             </div>
             <div class="form-input-container">
                 <label for="date" class="form-label">Fecha</label>
-                <input class="form-input" type="date" id="date">
+                <input class="form-input" type="date" id="date" v-model.trim="dataDate">
             </div>
 
         </div>
-        <div class="grid-container-3">
+        <div class="add-button-container">
 
-            <button class="add-button">Agregar</button>
+            <button class="add-button" @click="addCVData">Agregar</button>
         </div>
 
         <table>
@@ -39,11 +39,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Assuresoft</td>
-                    <td>Desarrollador</td>
-                    <td>12/2021</td>
-                    <td>02/2022</td>
+                <tr v-for="(item, index) in cvStore.getCoursesAndSeminars" :key="index">
+                    <td>{{item.title}}</td>
+                    <td>{{item.institution}}</td>
+                    <td>{{item.location}}</td>
+                    <td>{{item.dataDate}}</td>
                     <td class="actions-cell">
                         <fa class="edit-icon" icon="fa-solid fa-pen" />
                         <fa class="delete-icon" icon="fa-solid fa-trash" />
@@ -54,7 +54,29 @@
     </div>
 </template>
 <script setup>
+import { ref } from 'vue';
+import { useCVStore } from '../../store/cv';
+const cvStore = useCVStore()
+const dataType = ref('COURSES_AND_SEMINARS')
+const title = ref('')
+const institution = ref('')
+const location = ref('')
+const dataDate = ref('')
 
+const addCVData = () => {
+    const newCVData = {
+        dataType: dataType.value,
+        title: title.value,
+        institution: institution.value,
+        location: location.value,
+        dataDate: dataDate.value,
+    }
+    cvStore.cvDataArray.push(newCVData)
+    title.value = ''
+    institution.value = ''
+    location.value = ''
+    dataDate.value = ''
+}
 </script>
 <style lang="scss" scoped>
 @import "../../styles/labels.scss";
@@ -84,7 +106,7 @@
 
 .grid-container-1 {
     display: grid;
-    grid-template-columns: 40% 40%;
+    grid-template-columns: 40% 50%;
     grid-template-rows: 1fr;
     width: 85%;
     column-gap: 30px;
@@ -93,17 +115,12 @@
 
 .grid-container-2 {
     display: grid;
-    grid-template-columns: repeat(2, 15%);
+    grid-template-columns: repeat(2, 20%);
     grid-template-rows: 2fr;
     width: 85%;
     column-gap: 30px;
     row-gap: 20px;
 }
 
-.grid-container-3 {
-    display: grid;
-    grid-template-columns: 10%;
-    grid-template-rows: 1fr;
-    width: 85%;
-}
+
 </style>
