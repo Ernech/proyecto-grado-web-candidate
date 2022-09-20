@@ -30,15 +30,18 @@
             </div>
 
         </div>
-        <button class="add-button">Agregar</button>
+        <div class="grid-container-3">
+
+            <button class="add-button">Agregar</button>
+        </div>
 
         <table>
             <thead>
                 <tr>
-                    <th>Título del libor o publicación</th>
+                    <th>Título del libro o publicación</th>
                     <th>Lugar de publicación</th>
-                    <th>Lugar/apís</th>
                     <th>Tipo</th>
+                    <th class="data_date">Fecha</th>
                     <th class="actions-column">Acciones</th>
                 </tr>
             </thead>
@@ -102,5 +105,11 @@
     width: 85%;
     column-gap: 30px;
     row-gap: 20px;
+}
+.grid-container-3 {
+    display: grid;
+    grid-template-columns: 10%;
+    grid-template-rows: 1fr;
+    width: 85%;
 }
 </style>

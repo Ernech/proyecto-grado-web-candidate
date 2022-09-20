@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-        <h3 class="title">Afiliación en instituciones o asociaciones</h3>    
+        <h3 class="title">Afiliación en instituciones o asociaciones</h3>
         <span>Llenar por orden de importancia y de os últimos 5 años</span>
         <div class="grid-container-1">
             <div class="form-input-container">
@@ -19,14 +19,17 @@
             </div>
 
         </div>
-        <button class="add-button">Agregar</button>
+        <div class="add-button-container">
+            <button class="add-button">Agregar</button>
+
+        </div>
 
         <table>
             <thead>
                 <tr>
                     <th>Institución</th>
                     <th>Condición</th>
-                    <th>Fecha</th>
+                    <th class="data_date">Fecha</th>
                     <th class="actions-column">Acciones</th>
                 </tr>
             </thead>
@@ -53,6 +56,7 @@
 @import "../../styles/stepper.scss";
 @import "../../styles/table.scss";
 @import "../../styles/icons.scss";
+
 .main {
     padding: 10px 30px;
     display: flex;

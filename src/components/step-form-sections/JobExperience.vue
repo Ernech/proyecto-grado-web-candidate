@@ -28,15 +28,17 @@
             </div>
 
         </div>
-        <button class="add-button">Agregar</button>
+        <div class="add-button-container">
+            <button class="add-button">Agregar</button>
+        </div>
 
         <table>
             <thead>
                 <tr>
                     <th>Lugar de trabajo</th>
                     <th>Cargo</th>
-                    <th>Desde</th>
-                    <th>Hasta</th>
+                    <th class="start-date-column">Desde</th>
+                    <th class="finish-date-column">Hasta</th>
                     <th class="actions-column">Acciones</th>
                 </tr>
             </thead>
@@ -106,4 +108,6 @@ const currentYear = ref(new Date().getFullYear())
     column-gap: 30px;
     row-gap: 20px;
 }
+
+
 </style>

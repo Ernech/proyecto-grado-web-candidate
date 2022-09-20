@@ -27,7 +27,9 @@
         <input class="form-input" type="mail" id="mail">
       </div>
     </div>
-    <button class="add-button">Agregar</button>
+    <div class="add-button-container">
+      <button class="add-button">Agregar</button>
+    </div>
         <table>
             <thead>
                 <tr>

@@ -34,15 +34,17 @@
                 </select>
             </div>
         </div>
-        <button class="add-button">Agregar</button>
+        <div class="add-button-container">
+            <button class="add-button">Agregar</button>
+        </div>
         <table>
             <thead>
                 <tr>
 
-                    <th>Idioma</th>
-                    <th>Escritura</th>
-                    <th>Lectura</th>
-                    <th>Habla</th>
+                    <th class="language-column">Idioma</th>
+                    <th class="writing-column">Escritura</th>
+                    <th class="reading-column">Lectura</th>
+                    <th class="listening-column">Habla</th>
                     
                     <th class="actions-column">Acciones</th>
                 </tr>
@@ -93,5 +95,7 @@ export default {
     width: 85%;
     column-gap: 30px;
     row-gap: 20px;
+    align-items: center;
+    justify-content: center;
 }
 </style>

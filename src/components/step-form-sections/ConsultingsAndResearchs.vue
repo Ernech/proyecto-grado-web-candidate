@@ -22,12 +22,15 @@
                 </select>
             </div>
             <div class="form-input-container">
-                <label for="date" class="form-label">Fecha de publicación</label>
+                <label for="date" class="form-label">Fecha</label>
                 <input class="form-input" type="date" id="date">
             </div>
 
         </div>
-        <button class="add-button">Agregar</button>
+        <div class="add-button-container">
+
+            <button class="add-button">Agregar</button>
+        </div>
 
         <table>
             <thead>

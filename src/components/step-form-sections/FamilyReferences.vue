@@ -27,13 +27,15 @@
                     id="start-job-year">
             </div>
         </div>
-        <button class="add-button">Agregar</button>
+        <div class="add-button-container">
+            <button class="add-button">Agregar</button>
+        </div>
         <table>
             <thead>
                 <tr>
                     <th>Nombre del pariente</th>
                     <th>Cargo administrativo o académico</th>
-                    <th>Año de ingreso a la ucb</th>
+                    <th class="data_date">Año de ingreso a la ucb</th>
                     <th class="actions-column">Acciones</th>
                 </tr>
             </thead>

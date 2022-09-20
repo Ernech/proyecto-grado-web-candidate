@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-        <h3 class="title">Teaching experience</h3>
+        <h3 class="title">Experiencia docente</h3>
         <div class="form-input-container-year">
             <label for="start-teaching-year" class="form-label">Año en el que empezó a dar clases(en general):</label>
             <input class="form-input-year" type="number" min="1900" max="2099" step="1" :value="currentYear"
@@ -33,15 +33,18 @@
             </div>
 
         </div>
-        <button class="add-button">Agregar</button>
+        <div class="grid-container-3">
+
+            <button class="add-button">Agregar</button>
+        </div>
 
         <table>
             <thead>
                 <tr>
                     <th>Materia</th>
                     <th>Universidad</th>
-                    <th>Desde</th>
-                    <th>Hasta</th>
+                    <th class="start-date-column">Desde</th>
+                    <th class="finish-date-column">Hasta</th>
                     <th class="actions-column">Acciones</th>
                 </tr>
             </thead>
@@ -104,6 +107,14 @@ const currentYear = ref(new Date().getFullYear())
     display: grid;
     grid-template-columns: repeat(2, 15%);
     grid-template-rows: 2fr;
+    width: 85%;
+    column-gap: 30px;
+    row-gap: 20px;
+}
+.grid-container-3 {
+    display: grid;
+    grid-template-columns: 40%;
+    grid-template-rows: 1fr;
     width: 85%;
     column-gap: 30px;
     row-gap: 20px;

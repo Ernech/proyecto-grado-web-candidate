@@ -27,7 +27,10 @@
                 <input type="file" class="upload-input" id="national-title-file" ref="file" accept=".pdf">
             </div>
         </div>
-        <button class="add-button">Agregar</button>
+        <div class="add-button-container">
+            <button class="add-button">Agregar</button>
+        </div>
+       
         <table>
             <thead>
                 <tr>
@@ -35,8 +38,8 @@
                     <th>Título</th>
                     <th>Universidad/centro/instituto</th>
                     <th>Grado</th>
-                    <th>Fecha de titulación</th>
-                    
+                    <th class="data_date">Fecha de titulación</th>
+
                     <th class="actions-column">Acciones</th>
                 </tr>
 
@@ -70,8 +73,9 @@ export default {
 @import "../../styles/stepper.scss";
 @import "../../styles/table.scss";
 @import "../../styles/icons.scss";
+
 .main {
-    padding: 10px 30px;
+
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -81,11 +85,14 @@ export default {
 }
 
 .grid-container {
+  margin-top: 15px;
     display: grid;
     grid-template-columns: repeat(2, 40%);
     grid-template-rows: repeat(3, 1fr);
-    width: 85%;
+   width: 85%;
     column-gap: 30px;
     row-gap: 20px;
+    align-items: center;
+    justify-content: center;
 }
 </style>

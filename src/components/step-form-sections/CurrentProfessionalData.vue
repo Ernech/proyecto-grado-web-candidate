@@ -43,6 +43,7 @@ export default {
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
+    height: 100%;
 
 }
 
@@ -53,6 +54,9 @@ export default {
     width: 85%;
     column-gap: 30px;
     row-gap: 20px;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
 }
 .grid-container-2 {
     display: grid;
@@ -61,5 +65,8 @@ export default {
     width: 85%;
     column-gap: 30px;
     row-gap: 20px;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
 }
 </style>

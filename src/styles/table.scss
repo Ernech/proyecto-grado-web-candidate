@@ -1,5 +1,5 @@
 table {
-    width: 100%;
+    width: 85%;
 }
 
 table,
@@ -10,6 +10,7 @@ td {
     font-family: 'Inter';
     font-size: 13px;
     padding: 5px 3px;
+    text-align: center;
 }
 
 thead {
@@ -25,4 +26,24 @@ thead {
 
 .actions-cell {
     text-align: center;
+}
+
+.data_date{
+    width: 10%;
+}
+.language-column{
+    width: 15%;
+}
+.writing-column{
+    width: 10%;
+}
+.reading-column{
+    width: 10%;
+}
+.listening-column{
+    width: 10%;
+}
+
+.start-date-column, .finish-date-column{
+    width: 8%;
 }
