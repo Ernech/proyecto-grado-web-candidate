@@ -2,7 +2,7 @@
     <div class="main">
         <Navbar />
         <router-view></router-view>
-        <Footer />
+        <!-- <Footer /> -->
     </div>
 
 </template>
@@ -26,9 +26,14 @@ export default {
     left: 0;
 
     width: 100vw;
-    height: 100vh;
-
+    min-height: 100vh;
+   
     padding: 0;
+    margin: 0;
+    /* display: flex;
+    flex-direction: column;
+    gap: 0; */
+    
 }
 
 

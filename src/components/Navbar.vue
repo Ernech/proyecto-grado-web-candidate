@@ -43,7 +43,7 @@ header {
 img {
     width: 70px;
     height: 70px;
-    margin: 0px 10px;
+    margin: 20px 10px;
 }
 
 h3 {
