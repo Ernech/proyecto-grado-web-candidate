@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { getUserId } from '../helpers/get-token-info'
-import { router } from '../routes/router'
+import  router  from '../routes/router'
 export const useCVStore = defineStore('cv', {
     state: () => ({
         personalData: {

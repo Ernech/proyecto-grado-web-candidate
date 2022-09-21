@@ -53,7 +53,7 @@
         <div class="grid-container-2">
             <div class="form-input-container">
                 <label for="birthday" class="form-label">Fecha de nacimiento</label>
-                <input class="form-input" type="text" id="birthday" v-model.trim="cvStore.personalData.birthDate">
+                <input class="form-input" type="date" id="birthday" v-model.trim="cvStore.personalData.birthDate">
             </div>
             <div class="form-input-container">
                 <label for="place_of_birth" class="form-label">Lugar de nacimiento</label>
