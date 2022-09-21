@@ -16,4 +16,4 @@ const getUserId=()=>{
 }
 
 
-export default{getUserId}
+export {getUserId}
