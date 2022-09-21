@@ -1,7 +1,10 @@
 <template>
     <header>
-        <img src="../assets/cropped-logo-UCB.png">
-        <h3>Convocatorias</h3>
+        <div class="header-info">
+            <img src="../assets/cropped-logo-UCB.png">
+            <h3>Convocatorias</h3>
+        </div>
+        
         <div class="buttons-container">
             <a href="/register">Registrarme</a>
             <a href="/login">Iniciar sesión</a>
@@ -18,6 +21,7 @@ export default {
 <style scoped>
 header {
     list-style-type: none;
+    width: 100vw;
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -25,16 +29,21 @@ header {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
 
+}
+.header-info{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 15px;
 }
 
 
-
 img {
-    width: 80px;
-    height: 80px;
-    margin: 5px 10px;
+    width: 70px;
+    height: 70px;
+    margin: 0px 10px;
 }
 
 h3 {
@@ -45,8 +54,8 @@ h3 {
     line-height: 59px;
     text-align: right;
     color: #fff;
-    margin-left: 0px;
     cursor: pointer;
+    margin: 15px 0px;
 }
 
 
@@ -55,8 +64,9 @@ h3 {
     display: flex;
     flex-direction: row;
     gap: 8px;
-    width: 100%;
-    margin-left: 65%;
+    margin-right: 50px;
+
+
 }
 
 
