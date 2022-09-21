@@ -25,7 +25,21 @@ export const useCVStore = defineStore('cv',{
             personalIdFile:'CI.pdf',
             professionalStartYear:new Date().getFullYear(),
         },
-            cvDataArray:[],       
+        currentProfessionalInfo:{
+            dataType:'CURRENT_PROFESSIONAL_INFO',
+            institution:'',
+            position:'',
+            phone:'',
+            address:'',
+            dataDate:'',
+        },
+        teachingYears:{
+            dataType:'TEACHING_YEARS',
+            techingStartYear:new Date().getFullYear(),
+            teachingUCBStartYear:new Date().getFullYear(),
+         
+        },
+        cvDataArray:[],       
     }),
     getters:{
         getAcademicTrainings(state){
@@ -48,6 +62,29 @@ export const useCVStore = defineStore('cv',{
         },
         getConsultingAndResearch(state){
             return state.cvDataArray.filter(obj=>obj.dataType==='CONSULTING_AND_RESEARCH');
+        },
+        getAwards(state){
+            return state.cvDataArray.filter(obj=>obj.dataType==='AWARDS');
+        },
+        getAffiliations(state){
+            return state.cvDataArray.filter(obj=>obj.dataType==='AFFILIATIONS');
+        },
+        getJobReferences(state){
+            return state.cvDataArray.filter(obj=>obj.dataType==='JOB_REFERENCES');
+        },
+        getFamilyReferences(state){
+            return state.cvDataArray.filter(obj=>obj.dataType==='FAMILY_REFERENCES');
+        }
+    },
+    actions:{
+        createCV(){
+            this.cvDataArray.push(this.currentProfessionalInfo)
+            this.cvDataArray.push(this.teachingYears)
+            const createCVBody={
+                personalData:this.personalData,
+                cvData:this.cvDataArray
+            }
+            console.log(createCVBody);
         }
     }
 })

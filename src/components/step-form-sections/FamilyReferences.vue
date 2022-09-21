@@ -4,31 +4,31 @@
         <span>¿Tiene usted parientes, hasta el segundo grado de consanguinidad o primero de afinidad, según el cómputo
             establecido por la ley civil, que trabaje actualmente en la U.C.B /Regional La Paz?</span>
         <div class="radio-container">
-            <input type="radio" value="Si" id="yes_option">
+            <input type="radio" value="Si" id="yes_option" v-model.trim="hasFamily">
             <label for="yes_option" class="radio-option">Si</label>
-            <input type="radio" value="No" id="no_option">
+            <input type="radio" value="No" id="no_option" v-model.trim="hasFamily">
             <label for="no_option" class="radio-option">No</label>
         </div>
         <span>Si respondió “Si” complete los siguientes datos </span>
         <div class="grid-container-1">
             <div class="form-input-container">
                 <label for="title" class="form-label">Nombre del pariente</label>
-                <input class="form-input" type="text" id="title">
+                <input class="form-input" type="text" id="title" v-model.trim="name">
             </div>
             <div class="form-input-container">
                 <label for="institution" class="form-label">Cargo administrativo o académico</label>
-                <input class="form-input" type="text" id="institution">
+                <input class="form-input" type="text" id="institution" v-model.trim="position">
             </div>
         </div>
         <div class="grid-container-2">
             <div class="form-input-container">
                 <label for="date" class="form-label">Año de ingreso a la ucb</label>
-                <input class="form-input-year" type="number" min="1900" max="2099" step="1" :value="currentYear"
-                    id="start-job-year">
+                <input class="form-input-year" type="number" min="1900" max="2099" step="1" :value="teachingUCBStartYear"
+                    id="start-job-year" >
             </div>
         </div>
         <div class="add-button-container">
-            <button class="add-button">Agregar</button>
+            <button class="add-button" @click="addCVData">Agregar</button>
         </div>
         <table>
             <thead>
@@ -40,10 +40,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Assuresoft</td>
-                    <td>Desarrollador</td>
-                    <td>12/02/2022</td>
+                <tr v-for="(item, index) in cvStore.getFamilyReferences" :key="index">
+                    <td>{{item.name}}</td>
+                    <td>{{item.position}}</td>
+                    <td>{{item.teachingUCBStartYear}}</td>
                     <td class="actions-cell">
                         <fa class="edit-icon" icon="fa-solid fa-pen" />
                         <fa class="delete-icon" icon="fa-solid fa-trash" />
@@ -55,10 +55,26 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-
-
+import { useCVStore } from '../../store/cv';
+const cvStore = useCVStore()
+const dataType=ref('FAMILY_REFERENCES')
+const hasFamily=ref('')
 const currentYear = ref(new Date().getFullYear())
-
+const name = ref('')
+const position = ref('')
+const teachingUCBStartYear = ref(currentYear)
+const addCVData = () => {
+  const newCVData = {
+    dataType: dataType.value,
+    name: name.value,
+    position: position.value,
+    teachingUCBStartYear:teachingUCBStartYear.value
+  }
+  cvStore.cvDataArray.push(newCVData)
+  name.value = ''
+  position.value = ''
+ teachingUCBStartYear.value=currentYear
+}
 
 </script>
 <style lang="scss" scoped>
@@ -104,7 +120,7 @@ const currentYear = ref(new Date().getFullYear())
 
 .grid-container-1 {
     display: grid;
-    grid-template-columns: 40% 40%;
+    grid-template-columns: 45% 45%;
     grid-template-rows: 1fr;
     width: 85%;
     column-gap: 30px;

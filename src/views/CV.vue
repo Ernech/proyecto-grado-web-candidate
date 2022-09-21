@@ -1,6 +1,6 @@
 <template>
     <div class="main-cv-container">
-            <div class="stepper-container">
+        <div class="stepper-container">
 
             <div class="stepper">
                 <div class="stepper-progress">
@@ -31,11 +31,17 @@
                 <JobReferences v-if="step===12" />
                 <FamilyReferences v-if="step===13" />
             </div>
-            <div class="controls">
+            <div v-if="step<13" class="controls">
                 <button class="back-button" @click="decrement" :disabled="step===1"
                     :class="{'disabled':step===1}">Anterior</button>
                 <button class="next-button" @click="increment" :disabled="step>=13"
-                    :class="{'disabled':step>=13}">Siguiente</button>
+                    :class="{'disabled':step>13}">Siguiente</button>
+            </div>
+            <div v-else class="controls">
+                <button class="back-button" @click="decrement" :disabled="step===1"
+                    :class="{'disabled':step===1}">Anterior</button>
+                <button class="next-button" @click="saveCV" 
+                    :class="{'disabled':step>13}">Guardar</button>
             </div>
 
         </div>
@@ -43,6 +49,7 @@
 </template>
 <script setup>
 import { ref, computed } from 'vue'
+import { useCVStore } from '../store/cv'
 import PersonalData from '../components/step-form-sections/PersonalData.vue'
 import AcademicTraining from '../components/step-form-sections/AcademicTraining.vue'
 import Languages from '../components/step-form-sections/Languages.vue'
@@ -57,11 +64,16 @@ import Affiliations from '../components/step-form-sections/Affiliations.vue'
 import FamilyReferences from '../components/step-form-sections/FamilyReferences.vue'
 import JobReferences from '../components/step-form-sections/JobReferences.vue'
 const step = ref(1)
+const cvStore = useCVStore()
 const decrement = () => {
     step.value--
 }
 const increment = () => {
     step.value++
+}
+const saveCV = () => {
+    console.log('savecv');
+    cvStore.createCV()
 }
 
 

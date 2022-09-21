@@ -4,7 +4,7 @@
         <div class="grid-container-1">
             <div class="form-input-container">
                 <label for="married_last_name" class="form-label">Tipo de distinción</label>
-                <select class="form-input">
+                <select class="form-input" v-model.trim="distinctionClass">
                     <option disabled>Elija una opción...</option>
                     <option>Institucional</option>
                     <option>Nacional</option>
@@ -13,7 +13,7 @@
             </div>
             <div class="form-input-container">
                 <label for="married_last_name" class="form-label">Clase de distinción</label>
-                <select class="form-input">
+                <select class="form-input" v-model.trim="dataClass">
                     <option disabled>Elija una opción...</option>
                     <option>Medalla</option>
                     <option>Diploma</option>
@@ -21,21 +21,21 @@
             </div>
             <div class="form-input-container">
                 <label for="institution" class="form-label">Institución que la otorgó</label>
-                <input class="form-input" type="text" id="institution">
+                <input class="form-input" type="text" id="institution" v-model.trim="institution">
             </div>
         </div>
         <div class="grid-container-2">
             <div class="form-input-container">
                 <label for="place" class="form-label">Lugar</label>
-                <input class="form-input" type="text" id="place">
+                <input class="form-input" type="text" id="place" v-model.trim="location">
             </div>
             <div class="form-input-container">
                 <label for="date" class="form-label">Fecha</label>
-                <input class="form-input" type="date" id="date">
+                <input class="form-input" type="date" id="date" v-model.trim="dataDate">
             </div>
         </div>
         <div class="add-button-container">
-            <button class="add-button">Agregar</button>
+            <button class="add-button" @click="addCVData">Agregar</button>
         </div>
 
         <table>
@@ -47,19 +47,19 @@
                     <th>Institución que la otorgó</th>
                     <th>Lugar</th>
                     <th>Fecha</th>
-                    
+
                     <th class="actions-column">Acciones</th>
                 </tr>
 
             </thead>
             <tbody>
-                <tr>
+                <tr v-for="(item, index) in cvStore.getAwards" :key="index">
 
-                    <td>Ingléss</td>
-                    <td>Básico</td>
-                    <td>Medio</td>
-                    <td>Avanzado</td>
-                    <td>12/12/2021</td>
+                    <td>{{item.distinctionClass}}</td>
+                    <td>{{item.dataClass}}</td>
+                    <td>{{item.institution}}</td>
+                    <td>{{item.location}}</td>
+                    <td>{{item.dataDate}}</td>
                     <td class="actions-cell">
                         <fa class="edit-icon" icon="fa-solid fa-pen" />
                         <fa class="delete-icon" icon="fa-solid fa-trash" />
@@ -71,11 +71,33 @@
         </table>
     </div>
 </template>
-<script>
-
-export default {
-
+<script setup>
+import { ref } from 'vue'
+import { useCVStore } from '../../store/cv';
+const cvStore = useCVStore()
+const dataType = ref('AWARDS')
+const distinctionClass = ref('Elija una opción...')
+const dataClass = ref('Elija una opción...')
+const institution = ref('')
+const location = ref('')
+const dataDate = ref('')
+const addCVData = () => {
+    const newCVData = {
+        dataType: dataType.value,
+        distinctionClass: distinctionClass.value,
+        dataClass: dataClass.value,
+        institution: institution.value,
+        location: location.value,
+        dataDate: dataDate.value
+    }
+    cvStore.cvDataArray.push(newCVData)
+    distinctionClass.value = 'Elija una opción...'
+    dataClass.value = 'Elija una opción...'
+    institution.value = ''
+    location.value = ''
+    dataDate.value = ''
 }
+
 </script>
 <style lang="scss">
 @import "../../styles/labels.scss";
@@ -93,6 +115,7 @@ export default {
     gap: 10px;
 
 }
+
 .grid-container-1 {
     display: grid;
     grid-template-columns: repeat(3, 30%);
@@ -101,6 +124,7 @@ export default {
     column-gap: 30px;
     row-gap: 20px;
 }
+
 .grid-container-2 {
     display: grid;
     grid-template-columns: repeat(2, 25%);
