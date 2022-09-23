@@ -50,19 +50,31 @@
 
             </div>
         </div>
-        <div class="job-call-info">
-            <h3>Convocatoria N° 06/2022</h3>
+        <div v-if="userStore.accessToken" class="job-call-info">
+            <h3>Convocatoria N° {{jobCallStore.selectedJobCall.jobCallNumber}}</h3>
             <div class="job-call-info-date">
                 <b>Fecha límite de presentación:</b>
                 <span>6 de abril de 2022</span>
             </div>
             <button @click="applyJobCall($route.params.id)" class="apply-button">Postularme ahora</button>
         </div>
+        <div v-else class="job-call-info">
+            <h3>Convocatoria N° {{jobCallStore.selectedJobCall.jobCallNumber}}</h3>
+            <div class="job-call-info-date">
+                <b>Fecha límite de presentación:</b>
+                <span>6 de abril de 2022</span>
+            </div>
+           <span>Debe iniciar sesión para postularse.</span>
+        </div>
+
+        
     </div>
 </template>
 <script setup>
 import { useJobCallStore } from '../store/job-call';
+import { useUserStore } from '../store/user';
 const jobCallStore =useJobCallStore()
+const userStore = useUserStore()
 const applyJobCall = async (jobCallId)=>{
      await jobCallStore.applyToJobCall(jobCallId)
 }

@@ -5,17 +5,28 @@
             <h3>Convocatorias</h3>
         </div>
         
-        <div class="buttons-container">
+        <div v-if="!userStore.accessToken" class="buttons-container">
             <a href="/register">Registrarme</a>
             <a href="/login">Iniciar sesión</a>
+        </div>
+        <div v-else class="icons-container">
+            <fa icon="fa-solid fa-user-large" class="header-icon" @click="toCV"/>
+            <fa icon="fa-solid fa-arrow-right-from-bracket" class="header-icon" @click="logout"/>
         </div>
 
     </header>
 
 </template>
-<script >
-export default {
+<script setup>
+import { useUserStore } from '../store/user';
+import router from '../routes/router';
+const userStore = useUserStore()
+const toCV=()=>{
+    router.push('/cv')
+}
 
+const logout=()=>{
+    userStore.logoutUser()
 }
 </script>
 <style scoped>
@@ -68,7 +79,19 @@ h3 {
 
 
 }
+.icons-container{
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    margin-right: 50px;
+}
 
+.header-icon{
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
 
 .buttons-container a {
     display: block;

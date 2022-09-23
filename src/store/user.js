@@ -4,7 +4,7 @@ export const useUserStore = defineStore('user', {
     state: () => ({
         registerUserData: {},
         isLoading: false,
-        accessToken: null
+        accessToken: localStorage.getItem('token')  
     }),
     actions: {
         async loginUser(email,password){
@@ -17,7 +17,6 @@ export const useUserStore = defineStore('user', {
                     body: JSON.stringify(this.loginData)
                 })
                 const {token} =await resp.json()
-                this.accessToken=token;
                 localStorage.setItem('token',`bearer ${token}`)  
                router.push('/opened-job-calls')
             } catch (error) {
@@ -37,15 +36,20 @@ export const useUserStore = defineStore('user', {
                     body: JSON.stringify(this.registerUserData)
                 })
                 const { token } = await resp.json()
-                this.accessToken = token;
                 localStorage.setItem('token', `bearer ${token}`)
-                console.log(resp.status);
                 router.push('/opened-job-calls')
             } catch (error) {
                 console.log(error);
             } finally {
                 this.registerUserData = null;
                 this.isLoading = false;
+            }
+        }, logoutUser(){
+            try {
+                localStorage.removeItem('token')
+                router.push('/opened-job-calls')
+            } catch (error) {
+                console.log(error);
             }
         }
 
