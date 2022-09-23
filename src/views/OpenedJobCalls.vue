@@ -3,30 +3,34 @@
         <h3 class="title">Convocatorias abiertas</h3>
         <div class="form-input-container">
             <label for="job-call-name" class="form-label">Buscar convocatoria</label>
-            <input class="form-input" type="text" id="job-call-name" maxlength="100" >
+            <input class="form-input" type="text" id="job-call-name" maxlength="100">
         </div>
     </div>
     <div class="job-calls-container">
-        <JobCallCard :jobCallName="'ASISTENTE TÉCNICO DE MARKETING Y COMUNICACIÓN'" :openingDate="'12-05-2022'"
-            :jobCallNumber="'06/2022'" @click="toJobCallInfo" />
-        <JobCallCard :jobCallName="'ASISTENTE TÉCNICO DE MARKETING Y COMUNICACIÓN'" :openingDate="'12-05-2022'"
-            :jobCallNumber="'06/2022'" />
-        <JobCallCard :jobCallName="'ASISTENTE TÉCNICO DE MARKETING Y COMUNICACIÓN'" :openingDate="'12-05-2022'"
-            :jobCallNumber="'06/2022'" />
-        <JobCallCard :jobCallName="'ASISTENTE TÉCNICO DE MARKETING Y COMUNICACIÓN'" :openingDate="'12-05-2022'"
-            :jobCallNumber="'06/2022'" />
+        <JobCallCard v-for="item in jobCalls" :key="item.id" :jobCallName="item.jobCallName" :openingDate="item.closingDate"
+            :jobCallNumber="item.jobCallNumber" @click="toJobCallInfo(item)" />
     </div>
 </template>
 <script>
 import JobCallCard from '../components/job-call/jobCallCard.vue';
 import router from '../routes/router'
+import { useJobCallStore } from '../store/job-call';
+import {ref,onBeforeMount} from 'vue'
 export default {
     components: { JobCallCard },
     setup(props) {
-        const toJobCallInfo = () => {
-            router.push('/job-call-info')
+        const jobCallStore = useJobCallStore()
+        const jobCalls = ref([])
+        onBeforeMount(async () => {
+            await jobCallStore.getOpenedJobCalls();
+            jobCalls.value = jobCallStore.jobCalls;
+
+        })
+        const toJobCallInfo = (item) => {
+            router.push({name:'job-call-info',params:{id:item.id}})
+            jobCallStore.selectedJobCall=item
         }
-        return { toJobCallInfo }
+        return { toJobCallInfo,jobCalls }
     }
 }
 </script>

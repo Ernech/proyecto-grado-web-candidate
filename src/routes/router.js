@@ -11,7 +11,7 @@ const routes = [
   {
     path: '/', component: Home, children: [
       { path: '/opened-job-calls', component: OpenedJobCalls },
-      { path: '/job-call-info', component: JobCallInfo }
+      { path: '/job-call-info/:id', component: JobCallInfo,name:'job-call-info' }
     ]
   },
   { path: '/cv', component: CV }

@@ -69,6 +69,7 @@ const isDisabled = computed(()=>{
     grid-template-columns: 40% 60%;
     grid-template-rows: 100%;
     padding: 0;
+    gap: 0px;
 }
 
 .grid-item-1 {
@@ -82,6 +83,8 @@ const isDisabled = computed(()=>{
     padding-top: 50px;
     padding-bottom: 50px;
     grid-row: 1;
+    width: 100%;
+    height: 100%;
 
 }
 
@@ -101,6 +104,8 @@ const isDisabled = computed(()=>{
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    height: 100%;
 }
 
 .card-container {

@@ -79,6 +79,7 @@ export const useCVStore = defineStore('cv', {
     },
     actions: {
         async createCV() {
+          
             this.cvDataArray.push(this.currentProfessionalInfo)
             this.cvDataArray.push(this.teachingYears)
             const createCVBody = {
@@ -89,11 +90,12 @@ export const useCVStore = defineStore('cv', {
                 const candidateId = getUserId()
                 const resp = await fetch(`http://localhost:3000/cv/${candidateId}/candidate`, {
                     method: 'POST',
-                    headers: { "Content-Type": "application/json" },
+                    headers: { "Content-Type": "application/json",
+                    'Authorization': localStorage.getItem('token') },
                     body: JSON.stringify(createCVBody)
                 });
                 console.log(resp.status);
-                router.push('/')
+                router.push('/opened-job-calls')
             } catch (error) {
                 console.log(error);
             }

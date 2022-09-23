@@ -2,16 +2,14 @@
     <div class="main">
         <div class="job-call-container">
             <div class="job-call-container__title">
-                <h3>ASISTENTE TÉCNICO DE MARKETING Y COMUNICACIÓN</h3>
+                <h3>{{jobCallStore.selectedJobCall.jobCallName}}</h3>
             </div>
             <div class="job-call-container__card">
                 <div class="job-call-container__card-header">
                     <h3>Objetivo del cargo</h3>
                 </div>
                 <div class="job-call-container__card-body">
-                    <p>Apoyar la gestión de marketing y atención al cliente a través de brindar información, reclutar y
-                        captar nuevos estudiantes para la Universidad Católica Boliviana “San Pablo” Sede La Paz de
-                        acuerdo a metas y acciones definidas en la Unidad de Marketing y Comunicación</p>
+                    <p>{{jobCallStore.selectedJobCall.jobCallObj}}</p>
                 </div>
             </div>
             <div class="job-call-container__card">
@@ -19,16 +17,8 @@
                     <h3>Principales funciones</h3>
                 </div>
                 <div class="job-call-container__card-body">
-                    <ul>
-                        <li>Coordinar actividades orientadas a la gestión de reclutamiento de estudiantes nuevos.</li>
-                        <li>Apoyar en el seguimiento de estudiantes interesados en la Universidad. </li>
-                        <li>Recabar y procesar diferentes tipos de información que permita sistematizar los procesos
-                            vinculados a las estrategias de la Unidad de Marketing. </li>
-                        <li>Mantener la base de datos e información actualizada.</li>
-                        <li>Atender consultas del público, sobre servicios de la Universidad, proceso de admisión, de
-                            manera presencial, telefónicamente, vía email o WhatsApp. </li>
-                        <li>Realizar la solicitud de pedidos de la Unidad, mediante el Sistema SAP.</li>
-                        <li>Cumplir otras funciones pertinentes al área que le sean encomendadas.</li>
+                    <ul v-for="item in jobCallStore.selectedJobCall.jobFunctions">
+                        <li>{{item.jobFunction}}</li>
 
                     </ul>
                 </div>
@@ -40,28 +30,21 @@
                 </div>
                 <div class="job-call-container__card-body">
                     <b>Formación</b>
-                    <ul>
-                        <li>Licenciatura en Administración de Empresas, Marketing, Ingeniería Comercial, Comunicación
-                            Social o ramas afines.</li>
+                    <ul v-for="item in jobCallStore.selectedJobCall.academicTrainings">
+                        <li>{{item.training}}</li>
                     </ul>
                     <b>Experiencia laboral</b>
-                    <ul>
-                        <li>Experiencia profesional general de al menos tres años.</li>
-                        <li>Experiencia profesional como asistente, apoyo logístico, administrativo y/o atención al
-                            público de al menos dos años.</li>
+                    <ul v-for="item in jobCallStore.selectedJobCall.experiences">
+                        <li>{{item.description}} de al menos {{item.yearsOfExperience}} años.</li>
+
                     </ul>
                     <b>Se valorarán</b>
-                    <ul>
-                        <li>Conocimientos en manejo de redes sociales empresariales/institucionales.</li>
-                        <li>Conocimientos básicos de Diseño Gráfico.</li>
-                        <li>Conocimiento del idioma inglés</li>
+                    <ul v-for="item in jobCallStore.selectedJobCall.requiredKnowledge">
+                        <li>{{item.description}}</li>
                     </ul>
-                    <b>Se valorarán</b>
-                    <ul>
-                        <li>Conocimientos en manejo de redes sociales empresariales/institucionales.</li>
-                        <li>Conocimientos básicos de Diseño Gráfico.</li>
-                        <li>Conocimiento del idioma inglés</li>
-                        <li>Organización</li>
+                    <b>Competencias de Gestión y Personales:</b>
+                    <ul v-for="item in jobCallStore.selectedJobCall.aptitudes">
+                        <li>{{item.aptitude}}</li>
                     </ul>
                 </div>
 
@@ -73,13 +56,15 @@
                 <b>Fecha límite de presentación:</b>
                 <span>6 de abril de 2022</span>
             </div>
-            <button class="apply-button">Postularme ahora</button>
+            <button @click="applyJobCall($route.params.id)" class="apply-button">Postularme ahora</button>
         </div>
     </div>
 </template>
-<script>
-export default {
-
+<script setup>
+import { useJobCallStore } from '../store/job-call';
+const jobCallStore =useJobCallStore()
+const applyJobCall = async (jobCallId)=>{
+     await jobCallStore.applyToJobCall(jobCallId)
 }
 </script>
 <style scoped lang="scss">
@@ -115,6 +100,9 @@ p {
     line-height: 17px;
     margin: 15px;
 }
+ul{
+    width: 100%;
+}
 
 ul li {
     font-family: 'Inter';
@@ -123,6 +111,7 @@ ul li {
     font-size: 13px;
     line-height: 17px;
     margin: 0px;
+    padding: 0;
 }
 
 .job-call-container {

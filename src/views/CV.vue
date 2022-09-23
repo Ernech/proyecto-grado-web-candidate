@@ -90,5 +90,5 @@ const isSuccess = (item) => {
 
 </script>
 <style lang="scss" scoped>
-@import "../styles/stepper.scss"
+@import "../styles/stepper.scss";
 </style>
