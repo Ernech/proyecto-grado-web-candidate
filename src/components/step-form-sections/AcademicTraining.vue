@@ -28,13 +28,13 @@
             </div>
         </div>
         <div class="add-button-container">
-            <button class="add-button" @click="addCVData">Agregar</button>
+            <button v-if="!editData" class="add-button" @click="addCVData">Agregar</button>
+            <button v-else class="add-button" @click="editCVData">Modificar</button>
         </div>
 
         <table>
             <thead>
                 <tr>
-
                     <th>Título</th>
                     <th>Universidad/centro/instituto</th>
                     <th>Grado</th>
@@ -52,8 +52,8 @@
                     <td>{{item.degree}}</td>
                     <td>{{item.degreeDate}}</td>
                     <td class="actions-cell">
-                        <fa class="edit-icon" icon="fa-solid fa-pen" />
-                        <fa class="delete-icon" icon="fa-solid fa-trash" />
+                        <fa class="edit-icon" icon="fa-solid fa-pen" @click="getCVData(item)" />
+                        <fa class="delete-icon" icon="fa-solid fa-trash" @click="deleteCVData(item)" />
                     </td>
                 </tr>
 
@@ -73,24 +73,56 @@ const degree = ref('')
 const degreeDate = ref('')
 const professionalTitleFile = ref('Título.pdf')
 const professionalNTitleFile = ref('Título provición nacional.pdf.pdf')
+const editCVDataIndex = ref(-1)
+const editData = ref(false)
 
 const addCVData = () => {
     const newCVData = {
-        dataType:dataType.value,
+        dataType: dataType.value,
         title: title.value,
         institution: institution.value,
-        degree: degree.value, 
+        degree: degree.value,
         degreeDate: degreeDate.value,
         professionalTitleFile: professionalTitleFile.value,
         professionalNTitleFile: professionalNTitleFile.value
     }
+
     cvStore.cvDataArray.push(newCVData)
+
+    resetValues()
+}
+const getCVData = (currentAcademicTraining) => {
+    editCVDataIndex.value = cvStore.cvDataArray.indexOf(currentAcademicTraining)
+    title.value = currentAcademicTraining.title
+    institution.value = currentAcademicTraining.institution
+    degree.value = currentAcademicTraining.degree
+    degreeDate.value = currentAcademicTraining.degreeDate
+    editData.value = true
+}
+
+const editCVData = () => {
+    if (editCVDataIndex.value > -1) {
+        cvStore.cvDataArray[editCVDataIndex.value].title = title.value
+        cvStore.cvDataArray[editCVDataIndex.value].institution = institution.value
+        cvStore.cvDataArray[editCVDataIndex.value].degree = degree.value
+        cvStore.cvDataArray[editCVDataIndex.value].degreeDate = degreeDate.value
+        editData.value = false;
+        resetValues()
+    }
+}
+const deleteCVData = (item) => {
+    cvStore.cvDataArray = cvStore.cvDataArray.filter(obj => obj !== item)
+    resetValues()
+
+}
+const resetValues = () => {
     title.value = ''
     institution.value = ''
     degree.value = ''
     degreeDate.value = ''
+    editData.value = false;
+    editCVDataIndex.value = -1
 }
-
 </script>
 <style lang="scss" scoped>
 @import "../../styles/labels.scss";

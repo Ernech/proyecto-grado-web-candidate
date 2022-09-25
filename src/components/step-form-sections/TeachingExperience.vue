@@ -34,8 +34,8 @@
 
         </div>
         <div class="add-button-container">
-
-            <button class="add-button" @click="addCVData">Agregar</button>
+            <button v-if="!editData" class="add-button" @click="addCVData">Agregar</button>
+            <button v-else class="add-button" @click="editCVData">Modificar</button>
         </div>
 
         <table>
@@ -55,8 +55,8 @@
                     <td>{{item.startDate}}</td>
                     <td>{{item.finishDate}}</td>
                     <td class="actions-cell">
-                        <fa class="edit-icon" icon="fa-solid fa-pen" />
-                        <fa class="delete-icon" icon="fa-solid fa-trash" />
+                        <fa class="edit-icon" icon="fa-solid fa-pen" @click="getCVData(item)" />
+                        <fa class="delete-icon" icon="fa-solid fa-trash" @click="deleteCVData(item)" />
                     </td>
                 </tr>
             </tbody>
@@ -73,7 +73,8 @@ const title = ref('')
 const institution = ref('')
 const startDate = ref('')
 const finishDate = ref('')
-
+const editData = ref(false)
+const editCVDataIndex = ref(-1)
 const addCVData = () => {
     const newCVData = {
         dataType: dataType.value,
@@ -83,10 +84,38 @@ const addCVData = () => {
         finishDate: finishDate.value,
     }
     cvStore.cvDataArray.push(newCVData)
+    resetValues()
+}
+
+const getCVData = (currentTeachingExperience) => {
+    editCVDataIndex.value = cvStore.cvDataArray.indexOf(currentTeachingExperience)
+    title.value = currentTeachingExperience.title
+    institution.value = currentTeachingExperience.institution
+    startDate.value = currentTeachingExperience.startDate
+    finishDate.value = currentTeachingExperience.finishDate
+    editData.value = true
+}
+
+const editCVData = () => {
+    if (editCVDataIndex.value > -1) {
+        cvStore.cvDataArray[editCVDataIndex.value].title = title.value
+        cvStore.cvDataArray[editCVDataIndex.value].institution = institution.value
+        cvStore.cvDataArray[editCVDataIndex.value].startDate = startDate.value
+        cvStore.cvDataArray[editCVDataIndex.value].finishDate = finishDate.value
+        resetValues()
+    }
+}
+const deleteCVData = (item) => {
+    cvStore.cvDataArray = cvStore.cvDataArray.filter(obj => obj !== item)
+    resetValues()
+
+}
+const resetValues = () => {
     institution.value = ''
     title.value = ''
     startDate.value = ''
     finishDate.value = ''
+    editData.value = false;
 }
 </script>
 <style lang="scss" scoped>
@@ -133,5 +162,4 @@ const addCVData = () => {
     column-gap: 30px;
     row-gap: 20px;
 }
-
 </style>

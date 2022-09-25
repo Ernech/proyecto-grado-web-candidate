@@ -100,6 +100,6 @@ export const useCVStore = defineStore('cv', {
                 console.log(error);
             }
 
-        }
+        },
     }
 })

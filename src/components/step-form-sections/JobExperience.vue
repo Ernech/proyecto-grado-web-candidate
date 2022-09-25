@@ -20,16 +20,17 @@
         <div class="grid-container-2">
             <div class="form-input-container">
                 <label for="start-date" class="form-label">Desde</label>
-                <input class="form-input" type="month" id="start-date"  v-model.trim="startDate">
+                <input class="form-input" type="month" id="start-date" v-model.trim="startDate">
             </div>
             <div class="form-input-container">
                 <label for="finish-date" class="form-label">Hasta</label>
-                <input class="form-input" type="month" id="finish-date"  v-model.trim="finishDate">
+                <input class="form-input" type="month" id="finish-date" v-model.trim="finishDate">
             </div>
 
         </div>
         <div class="add-button-container">
-            <button class="add-button" @click="addCVData">Agregar</button>
+            <button v-if="!editData" class="add-button" @click="addCVData">Agregar</button>
+            <button v-else class="add-button" @click="editCVData">Modificarr</button>
         </div>
 
         <table>
@@ -49,8 +50,8 @@
                     <td>{{item.startDate}}</td>
                     <td>{{item.finishDate}}</td>
                     <td class="actions-cell">
-                        <fa class="edit-icon" icon="fa-solid fa-pen" />
-                        <fa class="delete-icon" icon="fa-solid fa-trash" />
+                        <fa class="edit-icon" icon="fa-solid fa-pen" @click="getCVData(item)" />
+                        <fa class="delete-icon" icon="fa-solid fa-trash" @click="deleteCVData(item)" />
                     </td>
                 </tr>
             </tbody>
@@ -66,7 +67,8 @@ const institution = ref('')
 const position = ref('')
 const startDate = ref('')
 const finishDate = ref('')
-
+const editData = ref(false)
+const editCVDataIndex = ref(-1)
 const addCVData = () => {
     const newCVData = {
         dataType: dataType.value,
@@ -76,10 +78,40 @@ const addCVData = () => {
         finishDate: finishDate.value,
     }
     cvStore.cvDataArray.push(newCVData)
+    resetValues()
+}
+
+const getCVData = (currentJobExperience) => {
+    editCVDataIndex.value = cvStore.cvDataArray.indexOf(currentJobExperience)
+    institution.value = currentJobExperience.institution
+    position.value = currentJobExperience.position
+    startDate.value = currentJobExperience.startDate
+    finishDate.value = currentJobExperience.finishDate
+    editData.value = true
+}
+
+const editCVData = () => {
+    if (editCVDataIndex.value > -1) {
+        cvStore.cvDataArray[editCVDataIndex.value].institution = institution.value
+        cvStore.cvDataArray[editCVDataIndex.value].position = position.value
+        cvStore.cvDataArray[editCVDataIndex.value].startDate = startDate.value
+        cvStore.cvDataArray[editCVDataIndex.value].finishDate = finishDate.value
+        editData.value = false;
+        resetValues()
+    }
+}
+
+const resetValues = () => {
     institution.value = ''
     position.value = ''
     startDate.value = ''
     finishDate.value = ''
+    editData.value = false;
+}
+const deleteCVData = (item) => {
+    cvStore.cvDataArray = cvStore.cvDataArray.filter(obj => obj !== item)
+    resetValues()
+
 }
 </script>
 <style lang="scss" scoped>

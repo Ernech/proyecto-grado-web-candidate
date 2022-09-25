@@ -35,12 +35,12 @@
             </div>
         </div>
         <div class="add-button-container">
-            <button class="add-button" @click="addCVData">Agregar</button>
+            <button v-if="!editData" class="add-button" @click="addCVData">Agregar</button>
+            <button v-else class="add-button" @click="editCVData">Modificar</button>
         </div>
         <table>
             <thead>
                 <tr>
-
                     <th class="language-column">Idioma</th>
                     <th class="writing-column">Escritura</th>
                     <th class="reading-column">Lectura</th>
@@ -52,14 +52,13 @@
             </thead>
             <tbody>
                 <tr v-for="(item, index) in cvStore.getLanguages" :key="index">
-
                     <td>{{item.language}}</td>
                     <td>{{item.writing}}</td>
-                    <td>{{item.reading}}}</td>
+                    <td>{{item.reading}}</td>
                     <td>{{item.speacking}}</td>
                     <td class="actions-cell">
-                        <fa class="edit-icon" icon="fa-solid fa-pen" />
-                        <fa class="delete-icon" icon="fa-solid fa-trash" />
+                        <fa class="edit-icon" icon="fa-solid fa-pen" @click="getCVData(item)"/>
+                        <fa class="delete-icon" icon="fa-solid fa-trash" @click="deleteCVData(item)"/>
                     </td>
                 </tr>
 
@@ -77,7 +76,8 @@ const language = ref('')
 const writing = ref('Elija una opción...')
 const reading = ref('Elija una opción...')
 const speacking = ref('Elija una opción...')
-
+const editCVDataIndex = ref(-1)
+const editData = ref(false)
 const addCVData = () => {
     const newCVData = {
         dataType:dataType.value,
@@ -87,12 +87,40 @@ const addCVData = () => {
         speacking: speacking.value,
     }
     cvStore.cvDataArray.push(newCVData)
+    resetValues()
+  
+}
+const getCVData = (currentLanguage) => {
+    editCVDataIndex.value = cvStore.cvDataArray.indexOf(currentLanguage)
+    language.value = currentLanguage.language
+    writing.value = currentLanguage.writing
+    reading.value = currentLanguage.reading
+    speacking.value = currentLanguage.speacking
+    editData.value = true
+}
+const editCVData = () => {
+    if (editCVDataIndex.value > -1) {
+        cvStore.cvDataArray[editCVDataIndex.value].language = language.value
+        cvStore.cvDataArray[editCVDataIndex.value].writing = writing.value
+        cvStore.cvDataArray[editCVDataIndex.value].reading = reading.value
+        cvStore.cvDataArray[editCVDataIndex.value].speacking = speacking.value
+        editData.value = false;
+        resetValues()
+    }
+}
+const deleteCVData = (item) => {
+    cvStore.cvDataArray = cvStore.cvDataArray.filter(obj => obj !== item)
+    resetValues()
+
+}
+const resetValues = () => {
     language.value = ''
     writing.value = 'Elija una opción...'
     reading.value = 'Elija una opción...'
     speacking.value = 'Elija una opción...'
+    editData.value = false;
+    editCVDataIndex.value = -1
 }
-
 </script>
 <style lang="scss" scoped>
 @import "../../styles/labels.scss";
