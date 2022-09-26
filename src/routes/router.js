@@ -5,13 +5,35 @@ import Home from '../views/Home.vue'
 import JobCallInfo from '../views/JobCallInfo.vue';
 import OpenedJobCalls from '../views/OpenedJobCalls.vue';
 import CV from '../views/CV.vue'
+
+const requireAuth = (to, from, next) => {
+
+  if (authToken) {
+    next()
+  } else {
+    next('/login')
+  }
+
+}
+const notRequireAuth = (to, from, next) => {
+  const authToken = localStorage.getItem('token')
+    if (!authToken) {
+      next()
+    }
+    next('/opened-job-calls')
+  
+
+}
+const toOpenedJobCalls = (to, from, next)=>{
+  next('/opened-job-calls')
+}
 const routes = [
-  { path: '/login', component: Login },
-  { path: '/register', component: Register },
+  { path: '/login', component: Login ,beforeEnter:notRequireAuth},
+  { path: '/register', component: Register,beforeEnter:notRequireAuth },
   {
-    path: '/', component: Home, children: [
+   path:'/', component: Home,children: [
       { path: '/opened-job-calls', component: OpenedJobCalls },
-      { path: '/job-call-info/:id', component: JobCallInfo,name:'job-call-info' }
+      { path: '/job-call-info/:id', component: JobCallInfo, name: 'job-call-info' }
     ]
   },
   { path: '/cv', component: CV }

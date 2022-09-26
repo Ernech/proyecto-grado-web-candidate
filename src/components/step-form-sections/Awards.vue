@@ -35,7 +35,8 @@
             </div>
         </div>
         <div class="add-button-container">
-            <button class="add-button" @click="addCVData">Agregar</button>
+            <button v-if="!editData" class="add-button" @click="addCVData">Agregar</button>
+            <button v-else class="add-button" @click="editCVData">Modificar</button>
         </div>
 
         <table>
@@ -61,8 +62,8 @@
                     <td>{{item.location}}</td>
                     <td>{{item.dataDate}}</td>
                     <td class="actions-cell">
-                        <fa class="edit-icon" icon="fa-solid fa-pen" />
-                        <fa class="delete-icon" icon="fa-solid fa-trash" />
+                        <fa class="edit-icon" icon="fa-solid fa-pen" @click="getCVData(item)" />
+                        <fa class="delete-icon" icon="fa-solid fa-trash" @click="deleteCVData(item)" />
                     </td>
                 </tr>
 
@@ -81,6 +82,8 @@ const dataClass = ref('Elija una opción...')
 const institution = ref('')
 const location = ref('')
 const dataDate = ref('')
+const editData = ref(false)
+const editCVDataIndex = ref(-1)
 const addCVData = () => {
     const newCVData = {
         dataType: dataType.value,
@@ -91,11 +94,41 @@ const addCVData = () => {
         dataDate: dataDate.value
     }
     cvStore.cvDataArray.push(newCVData)
+   resetValues()
+}
+const getCVData = (currentAward) => {
+    editCVDataIndex.value = cvStore.cvDataArray.indexOf(currentAward)
+    distinctionClass.value = currentAward.distinctionClass
+    dataClass.value = currentAward.dataClass
+    institution.value = currentAward.institution
+    location.value = currentAward.location
+    dataDate.value = currentAward.dataDate
+    editData.value = true
+}
+const editCVData = () => {
+    if (editCVDataIndex.value > -1) {
+        cvStore.cvDataArray[editCVDataIndex.value].distinctionClass = distinctionClass.value
+        cvStore.cvDataArray[editCVDataIndex.value].dataClass = dataClass.value
+        cvStore.cvDataArray[editCVDataIndex.value].institution = institution.value
+        cvStore.cvDataArray[editCVDataIndex.value].location = location.value
+        cvStore.cvDataArray[editCVDataIndex.value].dataDate = dataDate.value
+        editData.value = false;
+        resetValues()
+    }
+}
+const deleteCVData = (item) => {
+    cvStore.cvDataArray = cvStore.cvDataArray.filter(obj => obj !== item)
+    resetValues()
+
+}
+const resetValues = ()=>{
     distinctionClass.value = 'Elija una opción...'
     dataClass.value = 'Elija una opción...'
     institution.value = ''
     location.value = ''
     dataDate.value = ''
+    editData.value=false
+    editCVDataIndex.value=-1
 }
 
 </script>

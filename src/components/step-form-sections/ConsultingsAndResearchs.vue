@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-        <h3 class="title">Actividades de consultoría o investigación</h3>    
+        <h3 class="title">Actividades de consultoría o investigación</h3>
         <span>Llenar por orden de importancia y de os últimos 5 años</span>
         <div class="grid-container-1">
             <div class="form-input-container">
@@ -29,7 +29,8 @@
         </div>
         <div class="add-button-container">
 
-            <button class="add-button" @click="addCVData">Agregar</button>
+            <button v-if="!editData" class="add-button" @click="addCVData">Agregar</button>
+            <button v-else class="add-button" @click="editCVData">Modificar</button>
         </div>
 
         <table>
@@ -49,8 +50,8 @@
                     <td>{{item.dataClass}}</td>
                     <td>{{item.dataDate}}</td>
                     <td class="actions-cell">
-                        <fa class="edit-icon" icon="fa-solid fa-pen" />
-                        <fa class="delete-icon" icon="fa-solid fa-trash" />
+                        <fa class="edit-icon" icon="fa-solid fa-pen" @click="getCVData(item)"/>
+                        <fa class="delete-icon" icon="fa-solid fa-trash" @click="deleteCVData(item)" />
                     </td>
                 </tr>
             </tbody>
@@ -66,7 +67,8 @@ const title = ref('')
 const institution = ref('')
 const dataClass = ref('Elija una opción...')
 const dataDate = ref('')
-
+const editData = ref(false)
+const editCVDataIndex = ref(-1)
 const addCVData = () => {
     const newCVData = {
         dataType: dataType.value,
@@ -76,10 +78,39 @@ const addCVData = () => {
         dataDate: dataDate.value,
     }
     cvStore.cvDataArray.push(newCVData)
+    resetValues()
+}
+const getCVData = (currentPublications) => {
+    editCVDataIndex.value = cvStore.cvDataArray.indexOf(currentPublications)
+    title.value = currentPublications.title
+    institution.value = currentPublications.institution
+    dataClass.value = currentPublications.dataClass
+    dataDate.value = currentPublications.dataDate
+    editData.value = true
+}
+
+const editCVData = () => {
+    if (editCVDataIndex.value > -1) {
+        cvStore.cvDataArray[editCVDataIndex.value].title = title.value
+        cvStore.cvDataArray[editCVDataIndex.value].institution = institution.value
+        cvStore.cvDataArray[editCVDataIndex.value].dataClass = dataClass.value
+        cvStore.cvDataArray[editCVDataIndex.value].dataDate = dataDate.value
+        editData.value = false;
+        resetValues()
+    }
+}
+const deleteCVData = (item) => {
+    cvStore.cvDataArray = cvStore.cvDataArray.filter(obj => obj !== item)
+    resetValues()
+
+}
+const resetValues = () => {
     title.value = ''
     institution.value = ''
     dataClass.value = 'Elija una opción...'
     dataDate.value = ''
+    editData.value = false
+    editCVDataIndex.value - 1
 }
 </script>
 <style lang="scss" scoped>
@@ -88,6 +119,7 @@ const addCVData = () => {
 @import "../../styles/stepper.scss";
 @import "../../styles/table.scss";
 @import "../../styles/icons.scss";
+
 .main {
     padding: 10px 30px;
     display: flex;

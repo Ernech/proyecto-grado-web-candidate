@@ -28,7 +28,8 @@
       </div>
     </div>
     <div class="add-button-container">
-      <button class="add-button" @click="addCVData">Agregar</button>
+      <button v-if="!editData" class="add-button" @click="addCVData">Agregar</button>
+      <button v-else class="add-button" @click="editCVData">Modificar</button>
     </div>
     <table>
       <thead>
@@ -55,8 +56,8 @@
           <td>{{item.phone}}</td>
           <td>{{item.email}}</td>
           <td class="actions-cell">
-            <fa class="edit-icon" icon="fa-solid fa-pen" />
-            <fa class="delete-icon" icon="fa-solid fa-trash" />
+            <fa class="edit-icon" icon="fa-solid fa-pen" @click="getCVData(item)"/>
+            <fa class="delete-icon" icon="fa-solid fa-trash" @click="deleteCVData(item)"/>
           </td>
         </tr>
 
@@ -76,6 +77,8 @@ const institution = ref('')
 const employmentRelationship = ref('')
 const phone = ref('')
 const email = ref('')
+const editData = ref(false)
+const editCVDataIndex = ref(-1)
 const addCVData = () => {
   const newCVData = {
     dataType: dataType.value,
@@ -87,12 +90,47 @@ const addCVData = () => {
     email: email.value
   }
   cvStore.cvDataArray.push(newCVData)
+  resetValues()
+}
+
+const getCVData = (currentJobReference) => {
+    editCVDataIndex.value = cvStore.cvDataArray.indexOf(currentJobReference)
+    name.value = currentJobReference.name
+    position.value = currentJobReference.position
+    institution.value = currentJobReference.institution
+    employmentRelationship.value = currentJobReference.employmentRelationship
+    phone.value = currentJobReference.phone
+    email.value = currentJobReference.email
+    editData.value = true
+}
+
+const editCVData = () => {
+    if (editCVDataIndex.value > -1) {
+        cvStore.cvDataArray[editCVDataIndex.value].name = name.value
+        cvStore.cvDataArray[editCVDataIndex.value].position = position.value
+        cvStore.cvDataArray[editCVDataIndex.value].institution = institution.value
+        cvStore.cvDataArray[editCVDataIndex.value].employmentRelationship = employmentRelationship.value
+        cvStore.cvDataArray[editCVDataIndex.value].phone = phone.value
+        cvStore.cvDataArray[editCVDataIndex.value].email = email.value
+        editData.value = false;
+        resetValues()
+    }
+}
+const deleteCVData = (item) => {
+    cvStore.cvDataArray = cvStore.cvDataArray.filter(obj => obj !== item)
+    resetValues()
+
+}
+
+const resetValues = ()=>{
   name.value = ''
   position.value = ''
   institution.value = ''
   employmentRelationship.value = ''
   phone.value = ''
   email.value = ''
+  editData.value=false
+  editCVDataIndex.value=-1
 }
 
 </script>

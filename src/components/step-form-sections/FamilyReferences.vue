@@ -28,14 +28,15 @@
             </div>
         </div>
         <div class="add-button-container">
-            <button class="add-button" @click="addCVData">Agregar</button>
+            <button v-if="!editData" class="add-button" @click="addCVData">Agregar</button>
+            <button v-else class="add-button" @click="editCVData">Modificar</button>
         </div>
         <table>
             <thead>
                 <tr>
                     <th>Nombre del pariente</th>
                     <th>Cargo administrativo o académico</th>
-                    <th class="data_date">Año de ingreso a la ucb</th>
+                    <th class="data_date">Año de ingreso a la UCB</th>
                     <th class="actions-column">Acciones</th>
                 </tr>
             </thead>
@@ -45,8 +46,8 @@
                     <td>{{item.position}}</td>
                     <td>{{item.teachingUCBStartYear}}</td>
                     <td class="actions-cell">
-                        <fa class="edit-icon" icon="fa-solid fa-pen" />
-                        <fa class="delete-icon" icon="fa-solid fa-trash" />
+                        <fa class="edit-icon" icon="fa-solid fa-pen" @click="getCVData(item)"/>
+                        <fa class="delete-icon" icon="fa-solid fa-trash" @click="deleteCVData(item)"/>
                     </td>
                 </tr>
             </tbody>
@@ -63,6 +64,8 @@ const currentYear = ref(new Date().getFullYear())
 const name = ref('')
 const position = ref('')
 const teachingUCBStartYear = ref(currentYear)
+const editData = ref(false)
+const editCVDataIndex = ref(-1)
 const addCVData = () => {
   const newCVData = {
     dataType: dataType.value,
@@ -71,11 +74,37 @@ const addCVData = () => {
     teachingUCBStartYear:teachingUCBStartYear.value
   }
   cvStore.cvDataArray.push(newCVData)
-  name.value = ''
-  position.value = ''
- teachingUCBStartYear.value=currentYear
+  resetValues()
+}
+const getCVData = (currentFamilyReference) => {
+    editCVDataIndex.value = cvStore.cvDataArray.indexOf(currentFamilyReference)
+    name.value = currentFamilyReference.name
+    position.value = currentFamilyReference.position
+    teachingUCBStartYear.value = currentFamilyReference.teachingUCBStartYear
+    editData.value = true
 }
 
+const editCVData = () => {
+    if (editCVDataIndex.value > -1) {
+        cvStore.cvDataArray[editCVDataIndex.value].name = name.value
+        cvStore.cvDataArray[editCVDataIndex.value].position = position.value
+        cvStore.cvDataArray[editCVDataIndex.value].teachingUCBStartYear = teachingUCBStartYear.value
+        editData.value = false;
+        resetValues()
+    }
+}
+const deleteCVData = (item) => {
+    cvStore.cvDataArray = cvStore.cvDataArray.filter(obj => obj !== item)
+    resetValues()
+
+}
+const resetValues = ()=>{
+    name.value = ''
+  position.value = ''
+ teachingUCBStartYear.value=currentYear
+ editData.value=false
+ editCVDataIndex.value=-1
+}
 </script>
 <style lang="scss" scoped>
 @import "../../styles/labels.scss";
