@@ -1,6 +1,6 @@
 <template>
     <div class="card-container">
-        <h3 class="card-container__job-call-name">{{jobCallName}}</h3>
+            <h3 class="card-container__job-call-name">{{jobCallName}}</h3>
         <div class="card-container__opening-date">
             <fa icon="fa-solid fa-calendar-days" class="opening-date__icon" />
             <span class="opening-date__text">
@@ -36,7 +36,6 @@ export default {
 }
 
 .card-container__job-call-name {
-
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;

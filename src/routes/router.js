@@ -5,7 +5,7 @@ import Home from '../views/Home.vue'
 import JobCallInfo from '../views/JobCallInfo.vue';
 import OpenedJobCalls from '../views/OpenedJobCalls.vue';
 import CV from '../views/CV.vue'
-
+import { useUserStore } from "../store/user";
 const requireAuth = (to, from, next) => {
 
   if (authToken) {
@@ -16,11 +16,14 @@ const requireAuth = (to, from, next) => {
 
 }
 const notRequireAuth = (to, from, next) => {
-  const authToken = localStorage.getItem('token')
+  const userStore = useUserStore()
+  const authToken = userStore.accessToken
     if (!authToken) {
       next()
+    }else{
+
+      next('/opened-job-calls')
     }
-    next('/opened-job-calls')
   
 
 }

@@ -127,6 +127,13 @@ $transition: all 500ms ease;
     margin: 10px 0px;
 }
 
+.add-button.disabled {
+    background-color: #b7b8b9;
+    border-color: #b7b8b9;
+}
+
+
+
 .back-button {
     border: 1px solid #BABABA;
     border-radius: 10px;

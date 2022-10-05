@@ -92,6 +92,12 @@ h3 {
     height: 30px;
     cursor: pointer;
 }
+.header-icon:hover{
+    color: #d4d4d4;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
 
 .buttons-container a {
     display: block;

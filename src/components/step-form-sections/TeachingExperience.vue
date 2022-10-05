@@ -34,8 +34,8 @@
 
         </div>
         <div class="add-button-container">
-            <button v-if="!editData" class="add-button" @click="addCVData">Agregar</button>
-            <button v-else class="add-button" @click="editCVData">Modificar</button>
+            <button v-if="!editData" class="add-button" @click="addCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Agregar</button>
+            <button v-else class="add-button" @click="editCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Modificar</button>
         </div>
 
         <table>
@@ -64,7 +64,7 @@
     </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useCVStore } from '../../store/cv';
 const currentYear = ref(new Date().getFullYear())
 const cvStore = useCVStore()
@@ -117,6 +117,14 @@ const resetValues = () => {
     finishDate.value = ''
     editData.value = false;
 }
+
+const isDisabled = computed(()=>{
+    if(!title.value || title.value==='' || !institution.value || institution.value===''  
+    || !startDate.value || startDate.value==='' || !finishDate.value || finishDate.value===''){
+            return true
+    }
+    return false
+})
 </script>
 <style lang="scss" scoped>
 @import "../../styles/labels.scss";

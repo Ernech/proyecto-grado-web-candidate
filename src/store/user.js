@@ -4,8 +4,13 @@ export const useUserStore = defineStore('user', {
     state: () => ({
         registerUserData: {},
         isLoading: false,
-        accessToken: localStorage.getItem('token')  
+        accessToken: localStorage.getItem('token')
     }),
+    getters:{
+        getAccessToken(state){
+            return state.accessToken
+        }
+    },
     actions: {
         async loginUser(email,password){
             this.isLoading=true;
@@ -17,6 +22,7 @@ export const useUserStore = defineStore('user', {
                     body: JSON.stringify(this.loginData)
                 })
                 const {token} =await resp.json()
+this.accessToken=token
                 localStorage.setItem('token',`bearer ${token}`)  
                router.push('/opened-job-calls')
             } catch (error) {
@@ -36,6 +42,7 @@ export const useUserStore = defineStore('user', {
                     body: JSON.stringify(this.registerUserData)
                 })
                 const { token } = await resp.json()
+                this.accessToken=token
                 localStorage.setItem('token', `bearer ${token}`)
                 router.push('/opened-job-calls')
             } catch (error) {
@@ -46,6 +53,7 @@ export const useUserStore = defineStore('user', {
             }
         }, logoutUser(){
             try {
+                this.accessToken=null
                 localStorage.removeItem('token')
                 router.push('/opened-job-calls')
             } catch (error) {
@@ -54,6 +62,6 @@ export const useUserStore = defineStore('user', {
         }
 
 
-    }
+    },
 
 })

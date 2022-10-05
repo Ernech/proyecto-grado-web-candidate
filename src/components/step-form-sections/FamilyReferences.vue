@@ -28,8 +28,8 @@
             </div>
         </div>
         <div class="add-button-container">
-            <button v-if="!editData" class="add-button" @click="addCVData">Agregar</button>
-            <button v-else class="add-button" @click="editCVData">Modificar</button>
+            <button v-if="!editData" class="add-button" @click="addCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Agregar</button>
+            <button v-else class="add-button" @click="editCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Modificar</button>
         </div>
         <table>
             <thead>
@@ -105,6 +105,16 @@ const resetValues = ()=>{
  editData.value=false
  editCVDataIndex.value=-1
 }
+
+const isDisabled = computed(()=>{
+    if(!name.value || name.value==='' || !position.value || position.value==='' || teachingUCBStartYear.value>new Date().getFullYear()){
+        return true
+    }
+    return false
+})
+
+
+
 </script>
 <style lang="scss" scoped>
 @import "../../styles/labels.scss";

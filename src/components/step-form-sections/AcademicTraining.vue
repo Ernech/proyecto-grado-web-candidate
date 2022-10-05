@@ -12,14 +12,22 @@
             </div>
             <div class="form-input-container">
                 <label for="academic-degree" class="form-label">Grado</label>
-                <input class="form-input" type="text" id="academic-degree" v-model.trim="degree">
+                <select class="form-input" v-model.trim="degree">
+                    <option disabled>Elija una opción...</option>
+                    <option>Licenciatura</option>
+                    <option>Postgrado</option>
+                    <option>Maestría</option>
+                    <option>Doctorado</option>
+                    <option>Técnico superior</option>
+                    <option>Técnico medio</option>
+                </select>
             </div>
             <div class="form-input-container">
                 <label for="degree-date" class="form-label">Fecha de titulación</label>
                 <input class="form-input" type="month" id="degree-date" v-model.trim="degreeDate">
             </div>
             <div class="form-input-container">
-                <label for="tittle-file" class="form-label">Título profecional (PDF)</label>
+                <label for="tittle-file" class="form-label">Título profesional (PDF)</label>
                 <input type="file" class="upload-input" id="tittle-file" ref="file" accept=".pdf">
             </div>
             <div class="form-input-container">
@@ -28,8 +36,8 @@
             </div>
         </div>
         <div class="add-button-container">
-            <button v-if="!editData" class="add-button" @click="addCVData">Agregar</button>
-            <button v-else class="add-button" @click="editCVData">Modificar</button>
+            <button v-if="!editData" class="add-button" @click="addCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Agregar</button>
+            <button v-else class="add-button" @click="editCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Modificar</button>
         </div>
 
         <table>
@@ -63,13 +71,13 @@
     </div>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref,computed } from 'vue';
 import { useCVStore } from '../../store/cv';
 const cvStore = useCVStore()
 const dataType = ref('ACADEMIC_TRAINING')
 const title = ref('')
 const institution = ref('')
-const degree = ref('')
+const degree = ref('Elija una opción...')
 const degreeDate = ref('')
 const professionalTitleFile = ref('Título.pdf')
 const professionalNTitleFile = ref('Título provición nacional.pdf.pdf')
@@ -118,11 +126,18 @@ const deleteCVData = (item) => {
 const resetValues = () => {
     title.value = ''
     institution.value = ''
-    degree.value = ''
+    degree.value = 'Elija una opción...'
     degreeDate.value = ''
     editData.value = false;
     editCVDataIndex.value = -1
 }
+const isDisabled = computed(()=>{
+    if(!title.value || title.value==='' || !institution.value || institution.value==='' || degree.value==='Elija una opción...' 
+    || !degreeDate.value || degree.value===''){
+            return true
+    }
+    return false
+})
 </script>
 <style lang="scss" scoped>
 @import "../../styles/labels.scss";

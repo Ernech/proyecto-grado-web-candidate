@@ -35,8 +35,8 @@
             </div>
         </div>
         <div class="add-button-container">
-            <button v-if="!editData" class="add-button" @click="addCVData">Agregar</button>
-            <button v-else class="add-button" @click="editCVData">Modificar</button>
+            <button v-if="!editData" class="add-button" @click="addCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Agregar</button>
+            <button v-else class="add-button" @click="editCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Modificar</button>
         </div>
 
         <table>
@@ -73,7 +73,7 @@
     </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useCVStore } from '../../store/cv';
 const cvStore = useCVStore()
 const dataType = ref('AWARDS')
@@ -130,7 +130,14 @@ const resetValues = ()=>{
     editData.value=false
     editCVDataIndex.value=-1
 }
-
+const isDisabled = computed(()=>{
+    if( distinctionClass.value === 'Elija una opción...' ||  dataClass.value === 'Elija una opción...'
+    || !institution.value || institution.value==='' || !location.value || location.value==='' || !dataDate.value
+    || dataDate.value===''){
+            return true
+    }
+    return false
+})
 </script>
 <style lang="scss">
 @import "../../styles/labels.scss";

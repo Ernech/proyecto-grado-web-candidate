@@ -28,8 +28,8 @@
       </div>
     </div>
     <div class="add-button-container">
-      <button v-if="!editData" class="add-button" @click="addCVData">Agregar</button>
-      <button v-else class="add-button" @click="editCVData">Modificar</button>
+      <button v-if="!editData" class="add-button" @click="addCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Agregar</button>
+      <button v-else class="add-button" @click="editCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Modificar</button>
     </div>
     <table>
       <thead>
@@ -67,7 +67,7 @@
   </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useCVStore } from '../../store/cv';
 const cvStore = useCVStore()
 const dataType = ref('JOB_REFERENCES')
@@ -132,6 +132,15 @@ const resetValues = ()=>{
   editData.value=false
   editCVDataIndex.value=-1
 }
+
+const isDisabled = computed(()=>{
+  if(!name.value || name.value==='' || !position.value || position.value==='' || !institution.value || institution.value===''
+  || ! employmentRelationship.value ||  employmentRelationship.value==='' || !phone.value || phone.value===''
+  || !email.value || email.value==='' ){
+    return true
+  }
+  return false
+})
 
 </script>
 <style lang="scss" scoped>
