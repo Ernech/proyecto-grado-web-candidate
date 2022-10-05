@@ -20,7 +20,7 @@
       </div>
       <div class="form-input-container">
         <label for="phone" class="form-label">Teléfono/celular</label>
-        <input class="form-input" type="text" id="phone" v-model.trim="phone">
+        <input class="form-input" type="text" id="phone" v-model.trim="phone" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"  maxlength="8">
       </div>
       <div class="form-input-container">
         <label for="mail" class="form-label">Correo electrónico</label>
@@ -134,9 +134,10 @@ const resetValues = ()=>{
 }
 
 const isDisabled = computed(()=>{
+  const pattern=  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   if(!name.value || name.value==='' || !position.value || position.value==='' || !institution.value || institution.value===''
   || ! employmentRelationship.value ||  employmentRelationship.value==='' || !phone.value || phone.value===''
-  || !email.value || email.value==='' ){
+  || !email.value || email.value==='' || !pattern.test(email.value)){
     return true
   }
   return false

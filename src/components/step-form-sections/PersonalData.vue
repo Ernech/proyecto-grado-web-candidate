@@ -20,17 +20,29 @@
             </div>
             <div class="form-input-container">
                 <label for="ci" class="form-label">Número de cédula de identidad</label>
-                <input class="form-input" type="text" id="ci"  v-model.trim="cvStore.personalData.personalIdNumber">
+                <input class="form-input" type="text" id="ci"  v-model.trim="cvStore.personalData.personalIdNumber"
+                maxlength="10">
             </div>
             <div class="form-input-container">
                 <label for="ci_city" class="form-label">Expedido en</label>
-                <input class="form-input" type="text" id="ci_city"  v-model.trim="cvStore.personalData.issued">
+                <select class="form-input" v-model.trim="cvStore.personalData.issued">
+                    <option disabled>Elija una opción...</option>
+                    <option>La Paz</option>
+                    <option>Oruro</option>
+                    <option>Potosí</option>
+                    <option>Chuquisaca</option>
+                    <option>Cochabamba</option>
+                    <option>Tarija</option>
+                    <option>Pando</option>
+                    <option>Beni</option>
+                    <option>Santa Cruz</option>
+                </select>
             </div>
         </div>
         <div class="radio-container">
             <div class="radio-container__options">
                 <span>Tipo de documento:</span>
-                <input type="radio" value="CI" id="ci_option"  v-model.trim="cvStore.personalData.idType">
+                <input type="radio" value="CI" id="ci_option" v-model.trim="cvStore.personalData.idType">
                 <label for="ci_option" class="radio-option" >CI</label>
                 <input type="radio" value="CI Extranjero" id="foreign_ci" v-model.trim="cvStore.personalData.idType">
                 <label for="foreign_ci" class="radio-option">CI Extranjero</label>
@@ -90,11 +102,15 @@
             </div>
             <div class="form-input-container">
                 <label for="home-phone" class="form-label">Teléfono domicilio</label>
-                <input class="form-input" type="text" id="home-phone" v-model.trim="cvStore.personalData.homePhone">
+                <input class="form-input" type="text" id="home-phone" v-model.trim="cvStore.personalData.homePhone"
+                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                maxlength="8">
             </div>
             <div class="form-input-container">
                 <label for="cellphone" class="form-label">Teléfono celular</label>
-                <input class="form-input" type="text" id="cellphone" v-model.trim="cvStore.personalData.cellPhone">
+                <input class="form-input" type="text" id="cellphone" v-model.trim="cvStore.personalData.cellPhone"
+                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                maxlength="9">
             </div>
             <div class="form-input-container">
                 <label for="email" class="form-label">Correo electrónico</label>

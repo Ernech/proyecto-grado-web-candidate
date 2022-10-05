@@ -3,7 +3,7 @@
         <h3 class="title">Experiencia laboral</h3>
         <div class="form-input-container-year">
             <label for="start-job-year" class="form-label">Año en el que empezó a trabajar de su profesión:</label>
-            <input class="form-input-year" type="number" min="1900" max="2099" step="1" id="start-job-year"
+            <input class="form-input-year" type="number" min="1950" :max="currentYear" step="1" id="start-job-year"
                 v-model="cvStore.personalData.professionalStartYear">
         </div>
         <span>Empiece por su último trabajo</span>
@@ -68,6 +68,8 @@ const position = ref('')
 const startDate = ref('')
 const finishDate = ref('')
 const editData = ref(false)
+const currentYear = ref(new Date().getFullYear())
+const currentMonth = new Date().getMonth()===12 ? 1: new Date().getMonth()+1
 const editCVDataIndex = ref(-1)
 const addCVData = () => {
     const newCVData = {
@@ -115,11 +117,32 @@ const deleteCVData = (item) => {
 }
 
 const isDisabled = computed(()=>{
+    const startDateArray = startDate.value.split('-')
+    const finishDateArray = finishDate.value.split('-')
     if(!position.value || position.value==='' || !institution.value || institution.value===''  
     || !startDate.value || startDate.value==='' || !finishDate.value || finishDate.value===''){
             return true
     }
-    return false
+    else{
+        if(parseInt(startDateArray[0])>currentYear.value || parseInt(finishDateArray[0])>currentYear.value ){
+            return true
+
+        }else{
+            if(parseInt(startDateArray[1])>currentMonth || parseInt(finishDateArray[1])>currentMonth ){
+                return true
+            }
+            else{
+                if(parseInt(startDateArray[0])>parseInt(finishDateArray[0])){
+                    return true
+                }else{
+                    if(parseInt(startDateArray[1])>parseInt(finishDateArray[1])){
+                        return true
+                    }
+                }
+                return false
+            }
+        }
+    }
 })
 </script>
 <style lang="scss" scoped>

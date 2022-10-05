@@ -9,7 +9,7 @@ export const useCVStore = defineStore('cv', {
             name: '',
             marriedLastName: '',
             personalIdNumber: '',
-            issued: '',
+            issued: 'Elija una opción...',
             idType: '',
             gender: '',
             civilStatus: '',

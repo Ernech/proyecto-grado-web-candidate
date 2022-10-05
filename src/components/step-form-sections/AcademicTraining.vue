@@ -83,6 +83,8 @@ const professionalTitleFile = ref('Título.pdf')
 const professionalNTitleFile = ref('Título provición nacional.pdf.pdf')
 const editCVDataIndex = ref(-1)
 const editData = ref(false)
+const currentYear = new Date().getFullYear()
+const currentMonth = new Date().getMonth()===12 ? 1: new Date().getMonth()+1
 
 const addCVData = () => {
     const newCVData = {
@@ -96,7 +98,6 @@ const addCVData = () => {
     }
 
     cvStore.cvDataArray.push(newCVData)
-
     resetValues()
 }
 const getCVData = (currentAcademicTraining) => {
@@ -132,11 +133,23 @@ const resetValues = () => {
     editCVDataIndex.value = -1
 }
 const isDisabled = computed(()=>{
+    const degreeDateArray = degreeDate.value.split('-')
     if(!title.value || title.value==='' || !institution.value || institution.value==='' || degree.value==='Elija una opción...' 
     || !degreeDate.value || degree.value===''){
-            return true
+      return true
     }
-    return false
+    else{
+        if(parseInt(degreeDateArray[0])>currentYear){
+            return true
+
+        }else{
+            if(parseInt(degreeDateArray[1])>currentMonth){
+                return true
+            }
+            return false
+        }
+    }
+   
 })
 </script>
 <style lang="scss" scoped>

@@ -23,13 +23,15 @@
         <div class="grid-container-2">
             <div class="form-input-container">
                 <label for="date" class="form-label">Año de ingreso a la ucb</label>
-                <input class="form-input-year" type="number" min="1900" max="2099" step="1" :value="teachingUCBStartYear"
-                    id="start-job-year" >
+                <input class="form-input-year" type="number" min="1956" max="2099" step="1"
+                    v-model="teachingUCBStartYear" id="start-job-year">
             </div>
         </div>
         <div class="add-button-container">
-            <button v-if="!editData" class="add-button" @click="addCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Agregar</button>
-            <button v-else class="add-button" @click="editCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Modificar</button>
+            <button v-if="!editData" class="add-button" @click="addCVData" :disabled="isDisabled"
+                :class="{disabled:isDisabled}">Agregar</button>
+            <button v-else class="add-button" @click="editCVData" :disabled="isDisabled"
+                :class="{disabled:isDisabled}">Modificar</button>
         </div>
         <table>
             <thead>
@@ -46,8 +48,8 @@
                     <td>{{item.position}}</td>
                     <td>{{item.teachingUCBStartYear}}</td>
                     <td class="actions-cell">
-                        <fa class="edit-icon" icon="fa-solid fa-pen" @click="getCVData(item)"/>
-                        <fa class="delete-icon" icon="fa-solid fa-trash" @click="deleteCVData(item)"/>
+                        <fa class="edit-icon" icon="fa-solid fa-pen" @click="getCVData(item)" />
+                        <fa class="delete-icon" icon="fa-solid fa-trash" @click="deleteCVData(item)" />
                     </td>
                 </tr>
             </tbody>
@@ -55,26 +57,27 @@
     </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useCVStore } from '../../store/cv';
 const cvStore = useCVStore()
-const dataType=ref('FAMILY_REFERENCES')
-const hasFamily=ref('')
-const currentYear = ref(new Date().getFullYear())
+const dataType = ref('FAMILY_REFERENCES')
+const hasFamily = ref('')
+const currentYear = new Date().getFullYear()
 const name = ref('')
 const position = ref('')
 const teachingUCBStartYear = ref(currentYear)
 const editData = ref(false)
 const editCVDataIndex = ref(-1)
 const addCVData = () => {
-  const newCVData = {
-    dataType: dataType.value,
-    name: name.value,
-    position: position.value,
-    teachingUCBStartYear:teachingUCBStartYear.value
-  }
-  cvStore.cvDataArray.push(newCVData)
-  resetValues()
+    const newCVData = {
+        dataType: dataType.value,
+        name: name.value,
+        position: position.value,
+        teachingUCBStartYear: teachingUCBStartYear.value
+    }
+    console.log(currentYear.value);
+    cvStore.cvDataArray.push(newCVData)
+    resetValues()
 }
 const getCVData = (currentFamilyReference) => {
     editCVDataIndex.value = cvStore.cvDataArray.indexOf(currentFamilyReference)
@@ -98,16 +101,17 @@ const deleteCVData = (item) => {
     resetValues()
 
 }
-const resetValues = ()=>{
+const resetValues = () => {
     name.value = ''
-  position.value = ''
- teachingUCBStartYear.value=currentYear
- editData.value=false
- editCVDataIndex.value=-1
+    position.value = ''
+    teachingUCBStartYear.value = currentYear
+    editData.value = false
+    editCVDataIndex.value = -1
 }
 
-const isDisabled = computed(()=>{
-    if(!name.value || name.value==='' || !position.value || position.value==='' || teachingUCBStartYear.value>new Date().getFullYear()){
+const isDisabled = computed(() => {
+    if (!name.value || name.value === '' || !position.value || position.value === '' 
+    || teachingUCBStartYear.value > currentYear) {
         return true
     }
     return false
