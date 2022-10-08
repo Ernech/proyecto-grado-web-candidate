@@ -119,11 +119,17 @@ const resetValues = ()=>{
 }
 
 const isDisabled = computed(()=>{
+    const currentDate = new Date()
     if(!title.value || title.value==='' || !dataClass.value || dataClass.value==='Elija una opción...'  
     || !location.value || location.value==='' || !dataDate.value || dataDate.value===''){
             return true
     }
-    return false
+    else {
+        if (currentDate < new Date(dataDate.value)) {
+            return true
+        }
+        return false
+    }
 })
 </script>
 <style lang="scss" scoped>

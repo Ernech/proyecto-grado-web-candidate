@@ -1,85 +1,103 @@
 <template>
     <div class="main">
+
         <div class="job-call-container">
             <div class="job-call-container__title">
-                <h3>{{jobCallStore.selectedJobCall.jobCallName}}</h3>
+                <h3>{{code}} {{name}}</h3>
             </div>
+
             <div class="job-call-container__card">
                 <div class="job-call-container__card-header">
-                    <h3>Objetivo del cargo</h3>
+                    <h3>Formación</h3>
                 </div>
                 <div class="job-call-container__card-body">
-                    <p>{{jobCallStore.selectedJobCall.jobCallObj}}</p>
-                </div>
-            </div>
-            <div class="job-call-container__card">
-                <div class="job-call-container__card-header">
-                    <h3>Principales funciones</h3>
-                </div>
-                <div class="job-call-container__card-body">
-                    <ul v-for="item in jobCallStore.selectedJobCall.jobFunctions">
-                        <li>{{item.jobFunction}}</li>
-
-                    </ul>
-                </div>
-
-            </div>
-            <div class="job-call-container__card">
-                <div class="job-call-container__card-header">
-                    <h3>Requisitos del perfil</h3>
-                </div>
-                <div class="job-call-container__card-body">
-                    <b>Formación</b>
-                    <ul v-for="item in jobCallStore.selectedJobCall.academicTrainings">
-                        <li>{{item.training}}</li>
-                    </ul>
-                    <b>Experiencia laboral</b>
-                    <ul v-for="item in jobCallStore.selectedJobCall.experiences">
-                        <li>{{item.description}} de al menos {{item.yearsOfExperience}} años.</li>
-
-                    </ul>
-                    <b>Se valorarán</b>
-                    <ul v-for="item in jobCallStore.selectedJobCall.requiredKnowledge">
+                    <ul v-for="item in getAcademicTraining">
                         <li>{{item.description}}</li>
                     </ul>
-                    <b>Competencias de Gestión y Personales:</b>
-                    <ul v-for="item in jobCallStore.selectedJobCall.aptitudes">
-                        <li>{{item.aptitude}}</li>
+
+                </div>
+
+            </div>
+            <div class="job-call-container__card">
+                <div class="job-call-container__card-header">
+                    <h3>Conocimientos Específicos</h3>
+
+                </div>
+                <div class="job-call-container__card-body">
+                    <b>Se valorarán conocimientos en:</b>
+                    <ul v-for="item in getRequiredKnowledge">
+                        <li>{{item.description}}</li>
+
+                    </ul>
+                </div>
+
+            </div>
+            <div class="job-call-container__card">
+                <div class="job-call-container__card-header">
+                    <h3>Experiencia laboral</h3>
+                </div>
+                <div class="job-call-container__card-body">
+                    <ul v-for="item in getProfessionalExperience">
+                        <li>{{item.description}} de al menos {{item.yearsOfExperience}} años.</li>
+
                     </ul>
                 </div>
 
             </div>
         </div>
         <div v-if="userStore.accessToken" class="job-call-info">
-            <h3>Convocatoria N° {{jobCallStore.selectedJobCall.jobCallNumber}}</h3>
+            <h3>Convocatoria N° {{selectedJobCall.jobCallCode}}</h3>
             <div class="job-call-info-date">
                 <b>Fecha límite de presentación:</b>
                 <span>6 de abril de 2022</span>
             </div>
-            <button @click="applyJobCall($route.params.id)" class="apply-button">Postularme ahora</button>
+            <button class="apply-button" @click="applyJobCall($route.params.id)">Postularme ahora</button>
         </div>
         <div v-else class="job-call-info">
-            <h3>Convocatoria N° {{jobCallStore.selectedJobCall.jobCallNumber}}</h3>
+            <h3>Convocatoria N° {{selectedJobCall.jobCallCode}}</h3>
             <div class="job-call-info-date">
                 <b>Fecha límite de presentación:</b>
                 <span>6 de abril de 2022</span>
             </div>
-           <span>Debe iniciar sesión para postularse.</span>
+            <span>Debe iniciar sesión para postularse.</span>
         </div>
 
-        
+
     </div>
 </template>
 <script setup>
 import { useJobCallStore } from '../store/job-call';
 import { useUserStore } from '../store/user';
-const jobCallStore =useJobCallStore()
+import { onBeforeMount, computed, ref } from 'vue'
+import {useRoute} from "vue-router";
+const router = useRoute()
+const jobCallStore = useJobCallStore()
 const userStore = useUserStore()
+const selectedJobCall = ref({})
+const code = ref('')
+const name = ref('')
+const requirements = ref([])
+onBeforeMount(async () => {
+    await jobCallStore.getTeacherJobCallInfo(router.params.id)
+    selectedJobCall.value = jobCallStore.selectedTeacherJobCall
+    name.value = selectedJobCall.value.collegeClass.name
+    code.value = selectedJobCall.value.collegeClass.code
+    requirements.value = selectedJobCall.value.requirements
+})
 const applyJobCall = async (jobCallId)=>{
-     const resp =await jobCallStore.applyToJobCall(jobCallId)
-     console.log(resp);
-
+     await jobCallStore.applyToTeacherJobCall(jobCallId)
 }
+const getAcademicTraining = computed(() => {
+    return requirements.value.filter(obj => obj.requirementType === 'ACADEMIC_TRAINING')
+})
+
+const getRequiredKnowledge = computed(() => {
+    return requirements.value.filter(obj => obj.requirementType === 'REQUIRED_KNOWLEDGE')
+})
+
+const getProfessionalExperience = computed(() => {
+    return requirements.value.filter(obj => obj.requirementType === 'PROFESSIONAL_EXPERIENCE')
+})
 </script>
 <style scoped lang="scss">
 .main {
@@ -92,7 +110,7 @@ const applyJobCall = async (jobCallId)=>{
     width: 90%;
     height: auto;
     margin: 0;
-   margin-bottom: 50px;
+    margin-bottom: 50px;
 
 
 }
@@ -114,7 +132,8 @@ p {
     line-height: 17px;
     margin: 15px;
 }
-ul{
+
+ul {
     width: 100%;
 }
 

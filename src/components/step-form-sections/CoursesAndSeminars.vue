@@ -24,8 +24,10 @@
 
         </div>
         <div class="add-button-container">
-            <button v-if="!editData" class="add-button" @click="addCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Agregar</button>
-            <button v-else class="add-button" @click="editCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Modificar</button>
+            <button v-if="!editData" class="add-button" @click="addCVData" :disabled="isDisabled"
+                :class="{disabled:isDisabled}">Agregar</button>
+            <button v-else class="add-button" @click="editCVData" :disabled="isDisabled"
+                :class="{disabled:isDisabled}">Modificar</button>
         </div>
 
         <table>
@@ -54,7 +56,7 @@
     </div>
 </template>
 <script setup>
-import { ref,computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useCVStore } from '../../store/cv';
 const cvStore = useCVStore()
 const dataType = ref('COURSES_AND_SEMINARS')
@@ -108,12 +110,18 @@ const resetValues = () => {
     editData.value = false
 }
 
-const isDisabled = computed(()=>{
-    if(!title.value || title.value==='' || !institution.value || institution.value===''  
-    || !location.value || location.value==='' || !dataDate.value || dataDate.value===''){
-            return true
+const isDisabled = computed(() => {
+    const currentDate = new Date()
+    if (!title.value || title.value === '' || !institution.value || institution.value === ''
+        || !location.value || location.value === '' || !dataDate.value || dataDate.value === '') {
+        return true
     }
-    return false
+    else {
+        if (currentDate < new Date(dataDate.value)) {
+            return true
+        }
+        return false
+    }
 })
 </script>
 <style lang="scss" scoped>

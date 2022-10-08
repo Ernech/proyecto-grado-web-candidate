@@ -131,12 +131,18 @@ const resetValues = ()=>{
     editCVDataIndex.value=-1
 }
 const isDisabled = computed(()=>{
+    const currentDate = new Date()
     if( distinctionClass.value === 'Elija una opción...' ||  dataClass.value === 'Elija una opción...'
     || !institution.value || institution.value==='' || !location.value || location.value==='' || !dataDate.value
     || dataDate.value===''){
             return true
     }
-    return false
+    else {
+        if (currentDate < new Date(dataDate.value)) {
+            return true
+        }
+        return false
+    }
 })
 </script>
 <style lang="scss">

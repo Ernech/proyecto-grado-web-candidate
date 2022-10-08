@@ -20,8 +20,10 @@
 
         </div>
         <div class="add-button-container">
-            <button v-if="!editData" class="add-button" @click="addCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Agregar</button>
-            <button v-else class="add-button" @click="editCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Modificar</button>
+            <button v-if="!editData" class="add-button" @click="addCVData" :disabled="isDisabled"
+                :class="{disabled:isDisabled}">Agregar</button>
+            <button v-else class="add-button" @click="editCVData" :disabled="isDisabled"
+                :class="{disabled:isDisabled}">Modificar</button>
 
         </div>
 
@@ -41,7 +43,7 @@
                     <td>{{item.dataDate}}</td>
                     <td class="actions-cell">
                         <fa class="edit-icon" icon="fa-solid fa-pen" @click="getCVData(item)" />
-                        <fa class="delete-icon" icon="fa-solid fa-trash" @click="deleteCVData(item)"/>
+                        <fa class="delete-icon" icon="fa-solid fa-trash" @click="deleteCVData(item)" />
                     </td>
                 </tr>
             </tbody>
@@ -90,21 +92,27 @@ const deleteCVData = (item) => {
     resetValues()
 
 }
-const resetValues = ()=>{
+const resetValues = () => {
     institution.value = ''
     position.value = ''
     dataDate.value = ''
-    editData.value=false
-    editCVDataIndex.value=-1
+    editData.value = false
+    editCVDataIndex.value = -1
 }
 
 
-const isDisabled = computed(()=>{
-    if(!institution.value || institution.value==='' || !position.value || position.value==='' || !dataDate.value
-    || dataDate.value===''){
-            return true
+const isDisabled = computed(() => {
+    const currentDate = new Date()
+    if (!institution.value || institution.value === '' || !position.value || position.value === '' || !dataDate.value
+        || dataDate.value === '') {
+        return true
     }
-    return false
+    else {
+        if (currentDate < new Date(dataDate.value)) {
+            return true
+        }
+        return false
+    }
 })
 </script>
 <style lang="scss" scoped>

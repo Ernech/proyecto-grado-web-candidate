@@ -6,30 +6,31 @@ export const useUserStore = defineStore('user', {
         isLoading: false,
         accessToken: localStorage.getItem('token')
     }),
-    getters:{
-        getAccessToken(state){
+    getters: {
+        getAccessToken(state) {
             return state.accessToken
         }
     },
     actions: {
-        async loginUser(email,password){
-            this.isLoading=true;
-            this.loginData={email,password}
+        async loginUser(email, password) {
+            this.isLoading = true;
+            this.loginData = { email, password }
             try {
-                const resp = await fetch('http://localhost:3000/user/candidate/token',{
-                    method:'POST',
-                    headers: { "Content-Type": "application/json"},
+                const resp = await fetch('http://localhost:3000/user/candidate/token', {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(this.loginData)
                 })
-                const {token} =await resp.json()
-this.accessToken=token
-                localStorage.setItem('token',`bearer ${token}`)  
-               router.push('/opened-job-calls')
+                const { token } = await resp.json()
+                this.accessToken = token
+                localStorage.setItem('token', `bearer ${token}`)
+                return resp.status
+
             } catch (error) {
-               console.log(error);
-            }finally{
-                this.loginData=null;
-                this.isLoading=false;
+                console.log(error);
+            } finally {
+                this.loginData = null;
+                this.isLoading = false;
             }
         },
         async registerUser(name, lastName, email, password) {
@@ -42,7 +43,7 @@ this.accessToken=token
                     body: JSON.stringify(this.registerUserData)
                 })
                 const { token } = await resp.json()
-                this.accessToken=token
+                this.accessToken = token
                 localStorage.setItem('token', `bearer ${token}`)
                 router.push('/opened-job-calls')
             } catch (error) {
@@ -51,9 +52,9 @@ this.accessToken=token
                 this.registerUserData = null;
                 this.isLoading = false;
             }
-        }, logoutUser(){
+        }, logoutUser() {
             try {
-                this.accessToken=null
+                this.accessToken = null
                 localStorage.removeItem('token')
                 router.push('/opened-job-calls')
             } catch (error) {

@@ -13,18 +13,18 @@
         <div class="grid-container-1">
             <div class="form-input-container">
                 <label for="title" class="form-label">Nombre del pariente</label>
-                <input class="form-input" type="text" id="title" v-model.trim="name">
+                <input class="form-input" type="text" id="title" v-model.trim="name" :disabled="isInputDisabled">
             </div>
             <div class="form-input-container">
                 <label for="institution" class="form-label">Cargo administrativo o académico</label>
-                <input class="form-input" type="text" id="institution" v-model.trim="position">
+                <input class="form-input" type="text" id="institution" v-model.trim="position" :disabled="isInputDisabled">
             </div>
         </div>
         <div class="grid-container-2">
             <div class="form-input-container">
                 <label for="date" class="form-label">Año de ingreso a la ucb</label>
-                <input class="form-input-year" type="number" min="1956" max="2099" step="1"
-                    v-model="teachingUCBStartYear" id="start-job-year">
+                <input class="form-input-year" type="number" min="1956" :max="currentYear" step="1"
+                    v-model="teachingUCBStartYear" id="start-job-year" :disabled="isInputDisabled">
             </div>
         </div>
         <div class="add-button-container">
@@ -61,11 +61,11 @@ import { ref, computed } from 'vue'
 import { useCVStore } from '../../store/cv';
 const cvStore = useCVStore()
 const dataType = ref('FAMILY_REFERENCES')
-const hasFamily = ref('')
 const currentYear = new Date().getFullYear()
 const name = ref('')
 const position = ref('')
 const teachingUCBStartYear = ref(currentYear)
+const hasFamily = ref('No')
 const editData = ref(false)
 const editCVDataIndex = ref(-1)
 const addCVData = () => {
@@ -112,6 +112,13 @@ const resetValues = () => {
 const isDisabled = computed(() => {
     if (!name.value || name.value === '' || !position.value || position.value === '' 
     || teachingUCBStartYear.value > currentYear) {
+        return true
+    }
+    return false
+})
+
+const isInputDisabled = computed(()=>{
+    if(!hasFamily.value || hasFamily.value ==='' || hasFamily.value==='No'){
         return true
     }
     return false

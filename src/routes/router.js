@@ -3,6 +3,7 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Home from '../views/Home.vue'
 import JobCallInfo from '../views/JobCallInfo.vue';
+import TeacherJobCallInfo from '../views/TeacherJobCallInfo.vue';
 import OpenedJobCalls from '../views/OpenedJobCalls.vue';
 import CV from '../views/CV.vue'
 import { useUserStore } from "../store/user";
@@ -36,7 +37,8 @@ const routes = [
   {
    path:'/', component: Home,children: [
       { path: '/opened-job-calls', component: OpenedJobCalls },
-      { path: '/job-call-info/:id', component: JobCallInfo, name: 'job-call-info' }
+      { path: '/job-call-info/:id', component: JobCallInfo, name: 'job-call-info' },
+      { path: '/teacher-job-call-info/:id', component: TeacherJobCallInfo, name: 'teacher-job-call-info' }
     ]
   },
   { path: '/cv', component: CV }

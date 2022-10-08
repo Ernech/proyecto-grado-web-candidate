@@ -10,6 +10,9 @@
         <div class="grid-item-2">
             <div class="card-container">
                 <h3 class="card-container__text">Bienvenido</h3>
+                <div v-if="loginError" class="login-error" >
+                    <span>Usuario o contraseña incorrectos</span>
+                </div>
                 <div class="form">
                     <form @submit.prevent="handleSubmit">
                         <div class="form-input-container">
@@ -39,12 +42,19 @@
 <script setup>
 import { ref,computed } from 'vue'
 import { useUserStore } from '../store/user'
+import router from '../routes/router'
 const userStore = useUserStore();
 const email = ref('')
 const password = ref('')
+const loginError=ref(false)
 
 const handleSubmit = async () => {
-    await userStore.loginUser(email.value, password.value)
+    const resp =await userStore.loginUser(email.value, password.value)
+    if(resp===201){
+        router.push('/opened-job-calls')
+        return
+    }
+   loginError.value=true
 }
 
 const isDisabled = computed(()=>{
@@ -112,7 +122,7 @@ const isDisabled = computed(()=>{
     display: flex;
     flex-direction: column;
     width: 485px;
-    height: 390px;
+    height: 430px;
     background: #FFFFFF;
     box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
@@ -134,12 +144,13 @@ const isDisabled = computed(()=>{
     font-style: normal;
     font-weight: 150;
     font-size: 15px;
+    margin-top: 15px;
 }
 
 
 .form {
     width: 85%;
-    height: 60%;
+    height: 50%;
    
 
 }
@@ -191,5 +202,23 @@ const isDisabled = computed(()=>{
     font-size: 30px;
     order: 10;
     font-family: 'Oswald', sans-serif;
+}
+.login-error{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+  
+    padding: 5px 10px;
+    width: 80%;
+    margin-bottom: 0px;
+}
+
+.login-error span{
+
+    color: #FF5962;
+    font-family: sans-serif;
+    font-size: 15px;
+  
 }
 </style>
