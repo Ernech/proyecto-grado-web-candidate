@@ -61,31 +61,42 @@
             </div>
             <span>Debe iniciar sesión para postularse.</span>
         </div>
-
-
     </div>
+    <FeetbackModal v-show="showModal" @close-modal="showModal=false" :title="'Currículum vacío'" :message="'Debe completar su currículum vitae'" />
 </template>
 <script setup>
 import { useJobCallStore } from '../store/job-call';
 import { useUserStore } from '../store/user';
+import {useCVStore} from '../store/cv'
 import { onBeforeMount, computed, ref } from 'vue'
 import {useRoute} from "vue-router";
+import FeetbackModal from '../components/modals/FeetbackModal.vue'
 const router = useRoute()
 const jobCallStore = useJobCallStore()
 const userStore = useUserStore()
+const cvStore = useCVStore()
 const selectedJobCall = ref({})
 const code = ref('')
 const name = ref('')
 const requirements = ref([])
+const showModal = ref(false)
 onBeforeMount(async () => {
     await jobCallStore.getTeacherJobCallInfo(router.params.id)
     selectedJobCall.value = jobCallStore.selectedTeacherJobCall
     name.value = selectedJobCall.value.collegeClass.name
     code.value = selectedJobCall.value.collegeClass.code
     requirements.value = selectedJobCall.value.requirements
+    if(userStore.accessToken){
+        await cvStore.getCandidateCV()
+    }
 })
 const applyJobCall = async (jobCallId)=>{
-     await jobCallStore.applyToTeacherJobCall(jobCallId)
+    if(!cvStore.personalData || cvStore.cvDataArray.length<1){
+        showModal.value=true
+        return
+    }
+
+    await jobCallStore.applyToTeacherJobCall(jobCallId)
 }
 const getAcademicTraining = computed(() => {
     return requirements.value.filter(obj => obj.requirementType === 'ACADEMIC_TRAINING')

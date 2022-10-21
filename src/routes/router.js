@@ -8,7 +8,8 @@ import OpenedJobCalls from '../views/OpenedJobCalls.vue';
 import CV from '../views/CV.vue'
 import { useUserStore } from "../store/user";
 const requireAuth = (to, from, next) => {
-
+  const userStore = useUserStore()
+  const authToken = userStore.accessToken
   if (authToken) {
     next()
   } else {
@@ -35,13 +36,13 @@ const routes = [
   { path: '/login', component: Login ,beforeEnter:notRequireAuth},
   { path: '/register', component: Register,beforeEnter:notRequireAuth },
   {
-   path:'/', component: Home,children: [
+   path:'/', component: Home,redirect: '/opened-job-calls',children: [
       { path: '/opened-job-calls', component: OpenedJobCalls },
       { path: '/job-call-info/:id', component: JobCallInfo, name: 'job-call-info' },
       { path: '/teacher-job-call-info/:id', component: TeacherJobCallInfo, name: 'teacher-job-call-info' }
     ]
   },
-  { path: '/cv', component: CV }
+  { path: '/cv', component: CV,beforeEnter:requireAuth }
 ];
 
 const history = createWebHistory();

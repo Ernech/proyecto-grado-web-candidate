@@ -41,6 +41,7 @@ export const useCVStore = defineStore('cv', {
 
         },
         cvDataArray: [],
+        cvExists:false
     }),
     getters: {
         getAcademicTrainings(state) {
@@ -101,5 +102,21 @@ export const useCVStore = defineStore('cv', {
             }
 
         },
+        async getCandidateCV(){
+            try {
+                const candidateId = getUserId()
+                const resp = await fetch(`http://localhost:3000/cv/candidate/${candidateId}`, {
+                    method: 'GET',
+                    headers: { "Content-Type": "application/json",
+                    'Authorization': localStorage.getItem('token') 
+                }
+                });
+                const dataDB = await resp.json()
+                this.personalData=dataDB.personalData
+                this.cvDataArray = dataDB.cvData
+            } catch (error) {
+                console.log(error);
+            }
+        }
     }
 })

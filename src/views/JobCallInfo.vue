@@ -2,14 +2,14 @@
     <div class="main">
         <div class="job-call-container">
             <div class="job-call-container__title">
-                <h3>{{jobCallStore.selectedJobCall.jobCallName}}</h3>
+                <h3>{{selectedJobCall.jobCallName}}</h3>
             </div>
             <div class="job-call-container__card">
                 <div class="job-call-container__card-header">
                     <h3>Objetivo del cargo</h3>
                 </div>
                 <div class="job-call-container__card-body">
-                    <p>{{jobCallStore.selectedJobCall.jobCallObj}}</p>
+                    <p>{{selectedJobCall.jobCallObj}}</p>
                 </div>
             </div>
             <div class="job-call-container__card">
@@ -17,7 +17,7 @@
                     <h3>Principales funciones</h3>
                 </div>
                 <div class="job-call-container__card-body">
-                    <ul v-for="item in jobCallStore.selectedJobCall.jobFunctions">
+                    <ul v-for="item in selectedJobCall.jobFunctions">
                         <li>{{item.jobFunction}}</li>
 
                     </ul>
@@ -30,20 +30,20 @@
                 </div>
                 <div class="job-call-container__card-body">
                     <b>Formación</b>
-                    <ul v-for="item in jobCallStore.selectedJobCall.academicTrainings">
+                    <ul v-for="item in selectedJobCall.academicTrainings">
                         <li>{{item.training}}</li>
                     </ul>
                     <b>Experiencia laboral</b>
-                    <ul v-for="item in jobCallStore.selectedJobCall.experiences">
+                    <ul v-for="item in selectedJobCall.experiences">
                         <li>{{item.description}} de al menos {{item.yearsOfExperience}} años.</li>
 
                     </ul>
                     <b>Se valorarán</b>
-                    <ul v-for="item in jobCallStore.selectedJobCall.requiredKnowledge">
+                    <ul v-for="item in selectedJobCall.requiredKnowledge">
                         <li>{{item.description}}</li>
                     </ul>
                     <b>Competencias de Gestión y Personales:</b>
-                    <ul v-for="item in jobCallStore.selectedJobCall.aptitudes">
+                    <ul v-for="item in selectedJobCall.aptitudes">
                         <li>{{item.aptitude}}</li>
                     </ul>
                 </div>
@@ -51,7 +51,7 @@
             </div>
         </div>
         <div v-if="userStore.accessToken" class="job-call-info">
-            <h3>Convocatoria N° {{jobCallStore.selectedJobCall.jobCallNumber}}</h3>
+            <h3>Convocatoria N° {{selectedJobCall.jobCallNumber}}</h3>
             <div class="job-call-info-date">
                 <b>Fecha límite de presentación:</b>
                 <span>6 de abril de 2022</span>
@@ -59,27 +59,46 @@
             <button @click="applyJobCall($route.params.id)" class="apply-button">Postularme ahora</button>
         </div>
         <div v-else class="job-call-info">
-            <h3>Convocatoria N° {{jobCallStore.selectedJobCall.jobCallNumber}}</h3>
+            <h3>Convocatoria N° {{selectedJobCall.jobCallNumber}}</h3>
             <div class="job-call-info-date">
                 <b>Fecha límite de presentación:</b>
                 <span>6 de abril de 2022</span>
             </div>
            <span>Debe iniciar sesión para postularse.</span>
         </div>
-
-        
     </div>
+    <FeetbackModal v-show="showModal" @close-modal="showModal=false" :title="'Currículum vacío'" :message="'Debe completar su currículum vitae'" />
 </template>
 <script setup>
 import { useJobCallStore } from '../store/job-call';
 import { useUserStore } from '../store/user';
+import {useCVStore} from '../store/cv'
+import { ref, onBeforeMount } from 'vue'
+import {useRoute} from 'vue-router';
 const jobCallStore =useJobCallStore()
 const userStore = useUserStore()
+const router = useRoute()
+const cvStore = useCVStore()
+const selectedJobCall = ref({})
+const showModal = ref(false)
+onBeforeMount(async() => {
+    await jobCallStore.getJobCallInfo(router.params.id)
+    selectedJobCall.value=jobCallStore.selectedJobCall
+    if(userStore.accessToken){
+        await cvStore.getCandidateCV()
+    }
+})
+
 const applyJobCall = async (jobCallId)=>{
-     const resp =await jobCallStore.applyToJobCall(jobCallId)
-     console.log(resp);
+    if(!cvStore.personalData || cvStore.cvDataArray.length<1){
+        showModal.value=true
+        return
+    }
+    const resp =await jobCallStore.applyToJobCall(jobCallId)
+    
 
 }
+
 </script>
 <style scoped lang="scss">
 .main {

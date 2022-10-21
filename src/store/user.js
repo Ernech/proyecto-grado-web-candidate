@@ -22,8 +22,10 @@ export const useUserStore = defineStore('user', {
                     body: JSON.stringify(this.loginData)
                 })
                 const { token } = await resp.json()
-                this.accessToken = token
-                localStorage.setItem('token', `bearer ${token}`)
+                if(token){
+                    this.accessToken = token
+                    localStorage.setItem('token', `bearer ${token}`)    
+                }
                 return resp.status
 
             } catch (error) {

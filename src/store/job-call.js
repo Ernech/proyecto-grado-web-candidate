@@ -38,6 +38,20 @@ export const useJobCallStore = defineStore('job-call', {
                 console.log(error);
             }
         },
+        async getJobCallInfo(id) {
+            try {
+                const resp = await fetch(`http://localhost:3000/job-call/opened/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                const dataDb = await resp.json()
+                this.selectedJobCall = dataDb
+            } catch (error) {
+                console.log(error);
+            }
+        },
         async getTeacherJobCallInfo(id) {
             try {
                 const resp = await fetch(`http://localhost:3000/job-call/teacher/${id}`, {
