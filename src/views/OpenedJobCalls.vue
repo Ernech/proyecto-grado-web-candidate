@@ -15,21 +15,32 @@
             </div>
         </div>
     </div>
-    <div v-if="jobCallType=== 'Administrativo'" class="job-calls-container">
-        <JobCallCard v-for="item in jobCalls" :key="item.id" :jobCallName="item.jobCallName"
-            :openingDate="item.closingDate" :jobCallNumber="item.jobCallNumber" @click="toJobCallInfo(item)" />
-    </div>
-    <div v-else class="job-calls-container">
-        <div v-for="item in teacherJobCalls" :key="item.id" class="job_call_section">
-            <JobCallCard v-for="teacherJobCall in item.teacherJobCalls" :key="teacherJobCall.id" 
-            :jobCallName="` ${teacherJobCall.collegeClass.code} ${teacherJobCall.collegeClass.name}`"
-            :openingDate="item.closingDate" :jobCallNumber="teacherJobCall.jobCallCode" @click="toTeacherJobCallInfo(teacherJobCall.id)" />
+    <div v-if="jobCallType=== 'Administrativo'" :style="'width:100%'">
+        <div class="job-calls-container" v-if="jobCalls.length>0">
+            <JobCallCard v-for="item in jobCalls" :key="item.id" :jobCallName="item.jobCallName"
+                :openingDate="item.closingDate" :jobCallNumber="item.jobCallNumber" @click="toJobCallInfo(item)" />
         </div>
-       
+        <div v-else class="job-calls-container">
+            <p>No existen convocatorias abiertas</p>
+        </div>
+    </div>
+    <div v-else :style="'width:100%'">
+        <div class="job-calls-container" v-if="teacherJobCalls.length>0">
+            <div v-for="item in teacherJobCalls" :key="item.id" class="job_call_section">
+                <JobCallCard v-for="teacherJobCall in item.teacherJobCalls" :key="teacherJobCall.id"
+                    :jobCallName="` ${teacherJobCall.collegeClass.code} ${teacherJobCall.collegeClass.name}`"
+                    :openingDate="item.closingDate" :jobCallNumber="teacherJobCall.jobCallCode"
+                    @click="toTeacherJobCallInfo(teacherJobCall.id)" />
+            </div>
+        </div>
+        <div class="job-calls-container" v-else>
+            <p>No existen convocatorias abiertas</p>
+        </div>
+
     </div>
 </template>
 <script>
-import JobCallCard from '../components/job-call/jobCallCard.vue';
+import JobCallCard from '../components/job-call/JobCallCard.vue';
 import router from '../routes/router'
 import { useJobCallStore } from '../store/job-call';
 import { ref, onBeforeMount } from 'vue'
@@ -53,7 +64,7 @@ export default {
         const toTeacherJobCallInfo = (id) => {
             router.push({ name: 'teacher-job-call-info', params: { id } })
         }
-        return { toJobCallInfo,toTeacherJobCallInfo , jobCalls, teacherJobCalls, jobCallType }
+        return { toJobCallInfo, toTeacherJobCallInfo, jobCalls, teacherJobCalls, jobCallType }
     }
 }
 </script>
@@ -68,13 +79,15 @@ export default {
     align-items: center;
     gap: 15px;
 }
-.job_call_section{
+
+.job_call_section {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 15px;
 }
+
 .title-container {
     padding: 15px 50px;
     align-self: flex-start;
@@ -83,11 +96,19 @@ export default {
     flex-direction: column;
     gap: 15px;
 }
-.grid-input-container{
+
+.grid-input-container {
     display: grid;
     width: 100%;
     grid-template-rows: 1fr;
-    grid-template-columns: repeat(2,80%);
+    grid-template-columns: repeat(2, 80%);
     column-gap: 25px;
+}
+.job-calls-container p {
+    font-size: 25px;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    color: #000;
 }
 </style>

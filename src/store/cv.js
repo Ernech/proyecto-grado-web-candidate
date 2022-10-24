@@ -24,6 +24,8 @@ export const useCVStore = defineStore('cv', {
             cellPhone: '',
             email: '',
             personalIdFile: 'CI.pdf',
+            techingStartYear: new Date().getFullYear(),
+            teachingUCBStartYear: new Date().getFullYear(),
             professionalStartYear: new Date().getFullYear(),
         },
         currentProfessionalInfo: {
@@ -34,12 +36,7 @@ export const useCVStore = defineStore('cv', {
             address: '',
             dataDate: '',
         },
-        teachingYears: {
-            dataType: 'TEACHING_YEARS',
-            techingStartYear: new Date().getFullYear(),
-            teachingUCBStartYear: new Date().getFullYear(),
-
-        },
+        
         cvDataArray: [],
         cvExists:false
     }),
@@ -82,7 +79,6 @@ export const useCVStore = defineStore('cv', {
         async createCV() {
           
             this.cvDataArray.push(this.currentProfessionalInfo)
-            this.cvDataArray.push(this.teachingYears)
             const createCVBody = {
                 personalData: this.personalData,
                 cvData: this.cvDataArray

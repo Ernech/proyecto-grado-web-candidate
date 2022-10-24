@@ -1,24 +1,31 @@
 <template>
     <div class="card-container">
+        <div class="jc-name-container">
             <h3 class="card-container__job-call-name">{{jobCallName}}</h3>
+        </div>
         <div class="card-container__opening-date">
             <fa icon="fa-solid fa-calendar-days" class="opening-date__icon" />
             <span class="opening-date__text">
-                Fecha de apertura: {{openingDate}} </span>
+                Fecha de cierre: {{formatDate}} </span>
         </div>
         <span class="card-container__job-call-number">Convocatoria N°{{jobCallNumber}}</span>
-       
+
     </div>
 </template>
 <script>
+import { computed } from 'vue'
 export default {
-    props:{
-        jobCallName:{type:String,required:true},
-        jobCallNumber:{type:String,required:true},
-        openingDate:{type:String,required:true}
+    props: {
+        jobCallName: { type: String, required: true },
+        jobCallNumber: { type: String, required: true },
+        openingDate: { type: String, required: true }
     },
-    setup(props){
-       
+    setup(props) {
+        const formatDate = computed(() => {
+            const date = new Date(props.openingDate);
+            return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+        })
+        return {formatDate}
     }
 }
 </script>
@@ -34,7 +41,10 @@ export default {
     padding: 15px;
     background: #fff;
 }
-
+.jc-name-container{
+    width: 30%;
+    text-overflow: ellipsis;
+}
 .card-container__job-call-name {
     font-family: 'Inter';
     font-style: normal;
@@ -69,7 +79,8 @@ export default {
     font-weight: 400;
     font-size: 12px;
 }
-.card-container:hover{
+
+.card-container:hover {
     width: 93%;
     height: 52px;
     transition: 0.3s;

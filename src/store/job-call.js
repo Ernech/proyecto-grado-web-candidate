@@ -26,7 +26,7 @@ export const useJobCallStore = defineStore('job-call', {
         },
         async getOpenedTeacherJobCalls() {
             try {
-                const resp = await fetch('http://localhost:3000/job-call/opened/teacher', {
+                const resp = await fetch('http://localhost:3000/job-call/opened/teacher/jc', {
                     method: 'GET',
                     headers: {
                         "Content-Type": "application/json",
