@@ -148,7 +148,7 @@ const isDisabled = computed(()=>{
     display: grid;
     grid-template-columns: repeat(2, 40%);
     grid-template-rows: repeat(2, 1fr);
-    width: 85%;
+    width: 100%;
     column-gap: 30px;
     row-gap: 20px;
     align-items: center;
