@@ -2,14 +2,14 @@
     <div class="main">
         <div class="job-call-container">
             <div class="job-call-container__title">
-                <h3>{{selectedJobCall.jobCallName}}</h3>
+                <h3>{{ selectedJobCall.jobCallName }}</h3>
             </div>
             <div class="job-call-container__card">
                 <div class="job-call-container__card-header">
                     <h3>Objetivo del cargo</h3>
                 </div>
                 <div class="job-call-container__card-body">
-                    <p>{{selectedJobCall.jobCallObj}}</p>
+                    <p>{{ selectedJobCall.jobCallObj }}</p>
                 </div>
             </div>
             <div class="job-call-container__card">
@@ -18,7 +18,7 @@
                 </div>
                 <div class="job-call-container__card-body">
                     <ul v-for="item in selectedJobCall.jobFunctions">
-                        <li>{{item.jobFunction}}</li>
+                        <li>{{ item.jobFunction }}</li>
 
                     </ul>
                 </div>
@@ -31,73 +31,92 @@
                 <div class="job-call-container__card-body">
                     <b>Formación</b>
                     <ul v-for="item in selectedJobCall.academicTrainings">
-                        <li>{{item.training}}</li>
+                        <li>{{ item.training }}</li>
                     </ul>
                     <b>Experiencia laboral</b>
                     <ul v-for="item in selectedJobCall.experiences">
-                        <li>{{item.description}} de al menos {{item.yearsOfExperience}} años.</li>
+                        <li>{{ item.description }} de al menos {{ item.yearsOfExperience }} años.</li>
 
                     </ul>
                     <b>Se valorarán</b>
                     <ul v-for="item in selectedJobCall.requiredKnowledge">
-                        <li>{{item.description}}</li>
+                        <li>{{ item.description }}</li>
                     </ul>
                     <b>Competencias de Gestión y Personales:</b>
                     <ul v-for="item in selectedJobCall.aptitudes">
-                        <li>{{item.aptitude}}</li>
+                        <li>{{ item.aptitude }}</li>
                     </ul>
                 </div>
 
             </div>
         </div>
         <div v-if="userStore.accessToken" class="job-call-info">
-            <h3>Convocatoria N° {{selectedJobCall.jobCallNumber}}</h3>
+            <h3>Convocatoria N° {{ selectedJobCall.jobCallNumber }}</h3>
             <div class="job-call-info-date">
                 <b>Fecha límite de presentación:</b>
-                <span>6 de abril de 2022</span>
+                <span>{{ formatDate }}</span>
             </div>
             <button @click="applyJobCall($route.params.id)" class="apply-button">Postularme ahora</button>
         </div>
         <div v-else class="job-call-info">
-            <h3>Convocatoria N° {{selectedJobCall.jobCallNumber}}</h3>
+            <h3>Convocatoria N° {{ selectedJobCall.jobCallNumber }}</h3>
             <div class="job-call-info-date">
                 <b>Fecha límite de presentación:</b>
-                <span>6 de abril de 2022</span>
+                <span>{{ formatDate }}</span>
             </div>
-           <span>Debe iniciar sesión para postularse.</span>
+            <span>Debe iniciar sesión para postularse.</span>
         </div>
     </div>
-    <FeetbackModal v-show="showModal" @close-modal="showModal=false" :title="'Currículum vacío'" :message="'Debe completar su currículum vitae'" />
+    <FeetbackModal v-show="showModal" @close-modal="showModal = false" :title="'Currículum vacío'"
+        :message="'Debe completar su currículum vitae'" />
+    <FeetbackModal v-show="showSuccessModal"
+        @close-modal="showSuccessModal = false; candidateRouter.push('/opened-job-calls')" :title="'Postulación exitosa'"
+        :message="'Se ha regitrado su postulación'" />
+    <FeetbackModal v-show="showErrorModal" @close-modal="showErrorModal=false" :title="'Error'"
+        :message="'Ocurrió un error al registrar su postulación'" />
 </template>
 <script setup>
+import FeetbackModal from '../components/modals/FeetbackModal.vue'
 import { useJobCallStore } from '../store/job-call';
 import { useUserStore } from '../store/user';
-import {useCVStore} from '../store/cv'
-import { ref, onBeforeMount } from 'vue'
-import {useRoute} from 'vue-router';
-const jobCallStore =useJobCallStore()
+import { useCVStore } from '../store/cv'
+import { ref, onBeforeMount, computed } from 'vue'
+import { useRoute } from 'vue-router';
+import candidateRouter from '../routes/router'
+const jobCallStore = useJobCallStore()
 const userStore = useUserStore()
 const router = useRoute()
 const cvStore = useCVStore()
 const selectedJobCall = ref({})
 const showModal = ref(false)
-onBeforeMount(async() => {
+const showSuccessModal = ref(false)
+const showErrorModal = ref(false)
+onBeforeMount(async () => {
     await jobCallStore.getJobCallInfo(router.params.id)
-    selectedJobCall.value=jobCallStore.selectedJobCall
-    if(userStore.accessToken){
+    selectedJobCall.value = jobCallStore.selectedJobCall
+    if (userStore.accessToken) {
         await cvStore.getCandidateCV()
     }
 })
 
-const applyJobCall = async (jobCallId)=>{
-    if(!cvStore.personalData || cvStore.cvDataArray.length<1){
-        showModal.value=true
+const applyJobCall = async (jobCallId) => {
+    if (!cvStore.personalData || cvStore.cvDataArray.length < 1) {
+        showModal.value = true
         return
     }
-    const resp =await jobCallStore.applyToJobCall(jobCallId)
-    
+    const resp = await jobCallStore.applyToJobCall(jobCallId)
+    if (resp === 201) {
+        showSuccessModal.value = true;
+        return
+    }
+    showErrorModal.value = true;
+
 
 }
+const formatDate = computed(() => {
+    const date = new Date(selectedJobCall.value.closingDate);
+    return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+})
 
 </script>
 <style scoped lang="scss">
@@ -111,7 +130,7 @@ const applyJobCall = async (jobCallId)=>{
     width: 90%;
     height: auto;
     margin: 0;
-   margin-bottom: 50px;
+    margin-bottom: 50px;
 
 
 }
@@ -133,7 +152,8 @@ p {
     line-height: 17px;
     margin: 15px;
 }
-ul{
+
+ul {
     width: 100%;
 }
 

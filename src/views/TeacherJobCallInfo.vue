@@ -49,7 +49,7 @@
             <h3>Convocatoria N° {{selectedJobCall.jobCallCode}}</h3>
             <div class="job-call-info-date">
                 <b>Fecha límite de presentación:</b>
-                <span>6 de abril de 2022</span>
+                <span>10-10-2022 19:30</span>
             </div>
             <button class="apply-button" @click="applyJobCall($route.params.id)">Postularme ahora</button>
         </div>
@@ -57,12 +57,14 @@
             <h3>Convocatoria N° {{selectedJobCall.jobCallCode}}</h3>
             <div class="job-call-info-date">
                 <b>Fecha límite de presentación:</b>
-                <span>6 de abril de 2022</span>
+                <span>10-10-2022 19:30</span>
             </div>
             <span>Debe iniciar sesión para postularse.</span>
         </div>
     </div>
     <FeetbackModal v-show="showModal" @close-modal="showModal=false" :title="'Currículum vacío'" :message="'Debe completar su currículum vitae'" />
+    <FeetbackModal v-show="showSuccessModal" @close-modal="showSuccessModal=false; candidateRouter.push('/opened-job-calls')" :title="'Postulación exitosa'" :message="'Se ha regitrado su postulación'" />
+    <FeetbackModal v-show="showErrorModal" @close-modal="showErrorModal=false" :title="'Error'" :message="'Ocurrió un error al registrar su postulación'" />
 </template>
 <script setup>
 import { useJobCallStore } from '../store/job-call';
@@ -71,6 +73,7 @@ import {useCVStore} from '../store/cv'
 import { onBeforeMount, computed, ref } from 'vue'
 import {useRoute} from "vue-router";
 import FeetbackModal from '../components/modals/FeetbackModal.vue'
+import candidateRouter from '../routes/router'
 const router = useRoute()
 const jobCallStore = useJobCallStore()
 const userStore = useUserStore()
@@ -80,6 +83,9 @@ const code = ref('')
 const name = ref('')
 const requirements = ref([])
 const showModal = ref(false)
+const showSuccessModal = ref(false)
+const showErrorModal = ref(false)
+
 onBeforeMount(async () => {
     await jobCallStore.getTeacherJobCallInfo(router.params.id)
     selectedJobCall.value = jobCallStore.selectedTeacherJobCall
@@ -96,7 +102,13 @@ const applyJobCall = async (jobCallId)=>{
         return
     }
 
-    await jobCallStore.applyToTeacherJobCall(jobCallId)
+    const resp = await jobCallStore.applyToTeacherJobCall(jobCallId)
+    console.log('Respuesta '+resp);
+    if(resp===201){
+        showSuccessModal.value=true;
+        return
+    }
+    showErrorModal.value=true;
 }
 const getAcademicTraining = computed(() => {
     return requirements.value.filter(obj => obj.requirementType === 'ACADEMIC_TRAINING')
@@ -109,6 +121,7 @@ const getRequiredKnowledge = computed(() => {
 const getProfessionalExperience = computed(() => {
     return requirements.value.filter(obj => obj.requirementType === 'PROFESSIONAL_EXPERIENCE')
 })
+
 </script>
 <style scoped lang="scss">
 .main {

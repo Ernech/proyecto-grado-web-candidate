@@ -62,5 +62,6 @@ export default{
     color: #064D90;
     margin: 0px;
     justify-self: center;
+    align-self: center;
 }
 </style>

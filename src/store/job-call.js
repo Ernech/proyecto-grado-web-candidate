@@ -97,8 +97,9 @@ export const useJobCallStore = defineStore('job-call', {
                     },
                     body:JSON.stringify(applyBody)
                 })
-                console.log(resp.status);
-                router.push('/opened-job-calls')
+               // console.log(resp.status);
+                //router.push('/opened-job-calls')
+                return resp.status 
             } catch (error) {
                 console.log(error);
             }

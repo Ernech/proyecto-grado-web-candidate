@@ -2,7 +2,7 @@
     <header>
         <div class="header-info">
             <img src="../assets/cropped-logo-UCB.png">
-            <h3>Convocatorias</h3>
+            <h3 @click="toOpenedJobCalls">Convocatorias</h3>
         </div>
         
         <div v-if="!userStore.accessToken" class="buttons-container">
@@ -23,6 +23,9 @@ import router from '../routes/router';
 const userStore = useUserStore()
 const toCV=()=>{
     router.push('/cv')
+}
+const toOpenedJobCalls=()=>{
+    router.push('/opened-job-calls')
 }
 
 const logout=()=>{
