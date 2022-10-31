@@ -32,14 +32,12 @@
                 <FamilyReferences v-if="step===13" />
             </div>
             <div v-if="step<13" class="controls">
-                <button class="back-button" @click="decrement" :disabled="step===1"
-                    :class="{'disabled':step===1}">Anterior</button>
+                <button class="back-button" @click="decrement">Anterior</button>
                 <button class="next-button" @click="increment" :disabled="step>=13"
                     :class="{'disabled':step>13}">Siguiente</button>
             </div>
             <div v-else class="controls">
-                <button class="back-button" @click="decrement" :disabled="step===1"
-                    :class="{'disabled':step===1}">Anterior</button>
+                <button class="back-button" @click="decrement">Anterior</button>
                 <button class="next-button" @click="saveCV" 
                     :class="{'disabled':step>13}">Guardar</button>
             </div>
@@ -63,12 +61,17 @@ import Awards from '../components/step-form-sections/Awards.vue'
 import Affiliations from '../components/step-form-sections/Affiliations.vue'
 import FamilyReferences from '../components/step-form-sections/FamilyReferences.vue'
 import JobReferences from '../components/step-form-sections/JobReferences.vue'
+import router from '../routes/router';
 const step = ref(1)
 const cvStore = useCVStore()
 onBeforeMount(async()=>{
     await cvStore.getCandidateCV()
 })
 const decrement = () => {
+    if(step.value===1){
+        router.push('/opened-job-calls')
+        return
+    }
     step.value--
 }
 const increment = () => {
