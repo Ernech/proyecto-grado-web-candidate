@@ -103,7 +103,6 @@ const applyJobCall = async (jobCallId)=>{
     }
 
     const resp = await jobCallStore.applyToTeacherJobCall(jobCallId)
-    console.log('Respuesta '+resp);
     if(resp===201){
         showSuccessModal.value=true;
         return

@@ -28,11 +28,11 @@
             </div>
             <div class="form-input-container">
                 <label for="tittle-file" class="form-label">Título profesional (PDF)</label>
-                <input type="file" class="upload-input" id="tittle-file" ref="file" accept=".pdf">
+                <input type="file" class="upload-input" id="tittle-file" ref="file1" accept=".pdf" @change="selectFile1">
             </div>
             <div class="form-input-container">
                 <label for="national-title-file" class="form-label">Título provición nacional (PDF)</label>
-                <input type="file" class="upload-input" id="national-title-file" ref="file" accept=".pdf">
+                <input type="file" class="upload-input" id="national-title-file" ref="file2" accept=".pdf" @change="selectFile2">
             </div>
         </div>
         <div class="add-button-container">
@@ -46,6 +46,8 @@
                     <th>Título</th>
                     <th>Universidad/centro/instituto</th>
                     <th>Grado</th>
+                    <th :style="'display:none'">Titulo 1</th>
+                    <th :style="'display:none'">Titulo 2</th>
                     <th class="data_date">Fecha de titulación</th>
 
                     <th class="actions-column">Acciones</th>
@@ -58,6 +60,8 @@
                     <td>{{item.title}}</td>
                     <td>{{item.institution}}</td>
                     <td>{{item.degree}}</td>
+                    <td :style="'display:none'">{{item.professionalTitleFile}}</td>
+                    <td :style="'display:none'">{{item.professionalNTitleFile}}</td>
                     <td>{{item.degreeDate}}</td>
                     <td class="actions-cell">
                         <fa class="edit-icon" icon="fa-solid fa-pen" @click="getCVData(item)" />
@@ -79,13 +83,14 @@ const title = ref('')
 const institution = ref('')
 const degree = ref('Elija una opción...')
 const degreeDate = ref('')
-const professionalTitleFile = ref('Título.pdf')
-const professionalNTitleFile = ref('Título provición nacional.pdf.pdf')
+const professionalTitleFile = ref(null)
+const professionalNTitleFile = ref(null)
 const editCVDataIndex = ref(-1)
 const editData = ref(false)
 const currentYear = new Date().getFullYear()
 const currentMonth = new Date().getMonth()===12 ? 1: new Date().getMonth()+1
-
+const file1=ref(null)
+const file2=ref(null)
 const addCVData = () => {
     const newCVData = {
         dataType: dataType.value,
@@ -106,6 +111,10 @@ const getCVData = (currentAcademicTraining) => {
     institution.value = currentAcademicTraining.institution
     degree.value = currentAcademicTraining.degree
     degreeDate.value = currentAcademicTraining.degreeDate
+    professionalTitleFile.value=currentAcademicTraining.professionalTitleFile
+    professionalNTitleFile.value=currentAcademicTraining.professionalNTitleFile
+    file1.value.files=currentAcademicTraining.professionalTitleFile
+    file2.value.files=currentAcademicTraining.professionalNTitleFile
     editData.value = true
 }
 
@@ -115,9 +124,17 @@ const editCVData = () => {
         cvStore.cvDataArray[editCVDataIndex.value].institution = institution.value
         cvStore.cvDataArray[editCVDataIndex.value].degree = degree.value
         cvStore.cvDataArray[editCVDataIndex.value].degreeDate = degreeDate.value
+        cvStore.cvDataArray[editCVDataIndex.value].professionalTitleFile = professionalTitleFile.value
+        cvStore.cvDataArray[editCVDataIndex.value].professionalNTitleFile = professionalNTitleFile.value
         editData.value = false;
         resetValues()
     }
+}
+const selectFile1 = () => {
+    professionalTitleFile.value = file1.value.files[0];
+}
+const selectFile2 = () => {
+    professionalNTitleFile.value = file2.value.files[0];
 }
 const deleteCVData = (item) => {
     cvStore.cvDataArray = cvStore.cvDataArray.filter(obj => obj !== item)
@@ -129,13 +146,18 @@ const resetValues = () => {
     institution.value = ''
     degree.value = 'Elija una opción...'
     degreeDate.value = ''
+    professionalTitleFile.value = null
+    professionalNTitleFile.value = null
+    file1.value=null
+    file2.value=null
     editData.value = false;
     editCVDataIndex.value = -1
+   
 }
 const isDisabled = computed(()=>{
     const degreeDateArray = degreeDate.value.split('-')
     if(!title.value || title.value==='' || !institution.value || institution.value==='' || degree.value==='Elija una opción...' 
-    || !degreeDate.value || degree.value===''){
+    || !degreeDate.value || degree.value==='' || !professionalTitleFile.value || !professionalNTitleFile.value){
       return true
     }
     else{

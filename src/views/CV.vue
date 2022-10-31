@@ -48,7 +48,7 @@
     </div>
 </template>
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed,onBeforeMount } from 'vue'
 import { useCVStore } from '../store/cv'
 import PersonalData from '../components/step-form-sections/PersonalData.vue'
 import AcademicTraining from '../components/step-form-sections/AcademicTraining.vue'
@@ -65,6 +65,9 @@ import FamilyReferences from '../components/step-form-sections/FamilyReferences.
 import JobReferences from '../components/step-form-sections/JobReferences.vue'
 const step = ref(1)
 const cvStore = useCVStore()
+onBeforeMount(async()=>{
+    await cvStore.getCandidateCV()
+})
 const decrement = () => {
     step.value--
 }
@@ -72,8 +75,13 @@ const increment = () => {
     step.value++
 }
 const saveCV = () => {
-    console.log('savecv');
-    cvStore.createCV()
+    if(!cvStore.personalData || cvStore.cvDataArray.length<1){
+        console.log('savecv');
+        cvStore.createCV()
+    }
+    else{
+        console.log('Edit cv');
+    }
 }
 
 

@@ -23,8 +23,8 @@ export const useCVStore = defineStore('cv', {
             homePhone: '',
             cellPhone: '',
             email: '',
-            personalIdFile: 'CI.pdf',
-            techingStartYear: new Date().getFullYear(),
+            personalIdFile: null,
+            teachingStartYear: new Date().getFullYear(),
             teachingUCBStartYear: new Date().getFullYear(),
             professionalStartYear: new Date().getFullYear(),
         },
@@ -46,6 +46,9 @@ export const useCVStore = defineStore('cv', {
         },
         getLanguages(state) {
             return state.cvDataArray.filter(obj => obj.dataType === 'LANGUAGE');
+        },
+        getCurrentProfessionalInfo(state) {
+            return state.cvDataArray.filter(obj => obj.dataType === 'CURRENT_PROFESSIONAL_INFO');
         },
         getJobExperiences(state) {
             return state.cvDataArray.filter(obj => obj.dataType === 'PROFESSIONAL_EXPERIENCE');
@@ -108,8 +111,11 @@ export const useCVStore = defineStore('cv', {
                 }
                 });
                 const dataDB = await resp.json()
-                this.personalData=dataDB.personalData
-                this.cvDataArray = dataDB.cvData
+                if(resp.status===200 && dataDB.personalData && dataDB.cvData.length>0){
+                    this.personalData=dataDB.personalData
+                    this.cvDataArray = dataDB.cvData
+                    this.currentProfessionalInfo = dataDB.cvData.filter(obj => obj.dataType === 'CURRENT_PROFESSIONAL_INFO')[0]
+                }
             } catch (error) {
                 console.log(error);
             }

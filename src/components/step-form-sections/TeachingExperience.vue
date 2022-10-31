@@ -3,7 +3,7 @@
         <h3 class="title">Experiencia docente</h3>
         <div class="form-input-container-year">
             <label for="start-teaching-year" class="form-label">Año en el que empezó a dar clases(en general):</label>
-            <input class="form-input-year" type="number" min="1900" :max="currentYear" step="1" v-model="cvStore.personalData.techingStartYear"
+            <input class="form-input-year" type="number" min="1900" :max="currentYear" step="1" v-model="cvStore.personalData.teachingStartYear"
                 id="start-teaching-year">
         </div>
         <div class="form-input-container-year">
