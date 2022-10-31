@@ -101,6 +101,28 @@ export const useCVStore = defineStore('cv', {
             }
 
         },
+        async editCV() {
+          
+            this.cvDataArray.push(this.currentProfessionalInfo)
+            const createCVBody = {
+                personalData: this.personalData,
+                cvData: this.cvDataArray
+            }
+            try {
+                const candidateId = getUserId()
+                const resp = await fetch(`http://localhost:3000/cv/${candidateId}/candidate`, {
+                    method: 'PUT',
+                    headers: { "Content-Type": "application/json",
+                    'Authorization': localStorage.getItem('token') },
+                    body: JSON.stringify(createCVBody)
+                });
+                console.log(resp.status);
+                router.push('/opened-job-calls')
+            } catch (error) {
+                console.log(error);
+            }
+
+        },
         async getCandidateCV(){
             try {
                 const candidateId = getUserId()
