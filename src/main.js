@@ -8,8 +8,10 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import router from './routes/router'
 import VueGoodWizard from 'vue-good-wizard';
+import VueAwesomePaginate from "vue-awesome-paginate";
+import "vue-awesome-paginate/dist/style.css";
 
 library.add(fas,fab)
 
 
-createApp(App).use(createPinia()).use(router).use(VueGoodWizard).component('fa',FontAwesomeIcon).mount('#app')
+createApp(App).use(createPinia()).use(router).use(VueGoodWizard).use(VueAwesomePaginate).component('fa',FontAwesomeIcon).mount('#app')

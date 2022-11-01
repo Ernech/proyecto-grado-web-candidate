@@ -103,8 +103,8 @@ export const useCVStore = defineStore('cv', {
         },
         async editCV() {
           
-            this.cvDataArray.push(this.currentProfessionalInfo)
-            const createCVBody = {
+            
+            const editCVBody = {
                 personalData: this.personalData,
                 cvData: this.cvDataArray
             }
@@ -114,7 +114,7 @@ export const useCVStore = defineStore('cv', {
                     method: 'PUT',
                     headers: { "Content-Type": "application/json",
                     'Authorization': localStorage.getItem('token') },
-                    body: JSON.stringify(createCVBody)
+                    body: JSON.stringify(editCVBody)
                 });
                 console.log(resp.status);
                 router.push('/opened-job-calls')
@@ -136,7 +136,9 @@ export const useCVStore = defineStore('cv', {
                 if(resp.status===200 && dataDB.personalData && dataDB.cvData.length>0){
                     this.personalData=dataDB.personalData
                     this.cvDataArray = dataDB.cvData
-                    this.currentProfessionalInfo = dataDB.cvData.filter(obj => obj.dataType === 'CURRENT_PROFESSIONAL_INFO')[0]
+                    if(dataDB.cvData.filter(obj => obj.dataType === 'CURRENT_PROFESSIONAL_INFO').length>0){
+                        this.currentProfessionalInfo = dataDB.cvData.filter(obj => obj.dataType === 'CURRENT_PROFESSIONAL_INFO')[0]
+                    }
                 }
             } catch (error) {
                 console.log(error);

@@ -77,13 +77,14 @@ const decrement = () => {
 const increment = () => {
     step.value++
 }
-const saveCV = () => {
+const saveCV = async() => {
     if(!cvStore.personalData || cvStore.cvDataArray.length<1){
         console.log('savecv');
-        cvStore.createCV()
+       await cvStore.createCV()
     }
     else{
         console.log('Edit cv');
+        await cvStore.editCV()
     }
 }
 
