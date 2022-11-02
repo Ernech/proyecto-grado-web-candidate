@@ -4,7 +4,7 @@
         <div class="grid-input-container">
             <div class="form-input-container">
                 <label for="job-call-name" class="form-label">Buscar convocatoria</label>
-                <input class="form-input" type="text" id="job-call-name" maxlength="100">
+                <input class="form-input" type="text" id="job-call-name" maxlength="100" @input="filterJobCalls" v-model="searchJobCall">
             </div>
             <div class="form-input-container">
                 <label class="form-label">Cargo</label>
@@ -15,28 +15,34 @@
             </div>
         </div>
     </div>
-    <div v-if="jobCallType=== 'Administrativo'" :style="'width:100%'">
-        <div class="job-calls-container" v-if="jobCalls.length>0">
-            <JobCallCard v-for="item in jobCalls" :key="item.id" :jobCallName="item.jobCallName"
+    <div v-if="jobCallType === 'Administrativo'" :style="'width:100%'">
+
+        <div class="job-calls-container" v-if="jobCalls.length > 0">
+            <JobCallCard v-for="item in pagedData" :key="item.id" :jobCallName="item.jobCallName"
                 :openingDate="item.closingDate" :jobCallNumber="item.jobCallNumber" @click="toJobCallInfo(item)" />
+
+            <vue-awesome-paginate v-if="jobCallStore.jobCalls.length > 0" :total-items="jobCallStore.jobCalls.length"
+                :items-per-page="4" :max-pages-shown="10" v-model="currentPage" :on-click="onClickHandler" />
         </div>
         <div v-else class="job-calls-container">
             <p>No existen convocatorias abiertas</p>
         </div>
     </div>
     <div v-else :style="'width:100%'">
-        <div class="job-calls-container" v-if="teacherJobCalls.length>0">
-            <div v-for="item in teacherJobCalls" :key="item.id" class="job_call_section">
+        <div class="job-calls-container" v-if="teacherJobCalls.length > 0">
+            <div v-for="item in teacherPagedData" :key="item.id" class="job_call_section">
                 <JobCallCard v-for="teacherJobCall in item.teacherJobCalls" :key="teacherJobCall.id"
                     :jobCallName="` ${teacherJobCall.collegeClass.code} ${teacherJobCall.collegeClass.name}`"
                     :openingDate="item.closingDate" :jobCallNumber="teacherJobCall.jobCallCode"
                     @click="toTeacherJobCallInfo(teacherJobCall.id)" />
             </div>
+            <vue-awesome-paginate v-if="jobCallStore.teacherJobCalls.length > 0"
+                :total-items="jobCallStore.teacherJobCalls.length" :items-per-page="4" :max-pages-shown="10"
+                v-model="currentPage" :on-click="onClickHandlerTeacher" />
         </div>
         <div class="job-calls-container" v-else>
             <p>No existen convocatorias abiertas</p>
         </div>
-
     </div>
 </template>
 <script>
@@ -51,12 +57,24 @@ export default {
         const jobCalls = ref([])
         const teacherJobCalls = ref([])
         const jobCallType = ref('Administrativo')
+        const currentPage = ref(1)
+        const searchJobCall = ref('')
         onBeforeMount(async () => {
             await jobCallStore.getOpenedJobCalls();
             jobCalls.value = jobCallStore.jobCalls;
             await jobCallStore.getOpenedTeacherJobCalls();
             teacherJobCalls.value = jobCallStore.teacherJobCalls
+            onClickHandler(1)
+            onClickHandlerTeacher(2)
         })
+        const filterJobCalls = () => {
+            jobCallStore.jobCalls = jobCalls.value
+            if (searchJobCall.value !== null && searchJobCall.value !== '') {
+                jobCallStore.jobCalls = jobCalls.value.filter(obj => obj.jobCallName.search(searchJobCall.value.toUpperCase()) > -1)
+
+            }
+            onClickHandler(1)
+        }
         const toJobCallInfo = (item) => {
             router.push({ name: 'job-call-info', params: { id: item.id } })
             jobCallStore.selectedJobCall = item
@@ -64,11 +82,24 @@ export default {
         const toTeacherJobCallInfo = (id) => {
             router.push({ name: 'teacher-job-call-info', params: { id } })
         }
-        return { toJobCallInfo, toTeacherJobCallInfo, jobCalls, teacherJobCalls, jobCallType }
+        const pageItems = ref(4)
+        const pagedData = ref([]);
+        const teacherPagedData = ref([])
+        const onClickHandler = (page) => {
+            pagedData.value = jobCallStore.getPagedList(page, pageItems.value)
+
+        }
+        const onClickHandlerTeacher = (page) => {
+            teacherPagedData.value = jobCallStore.getTeacherPagedList(page, pageItems.value)
+        }
+        return {
+            toJobCallInfo, toTeacherJobCallInfo, jobCalls, teacherJobCalls, jobCallType, jobCallStore,
+            onClickHandler, onClickHandlerTeacher, currentPage, pagedData, teacherPagedData,filterJobCalls,searchJobCall
+        }
     }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../styles/labels.scss';
 @import '../styles/inputs.scss';
 
@@ -103,12 +134,43 @@ export default {
     grid-template-rows: 1fr;
     grid-template-columns: repeat(2, 80%);
     column-gap: 25px;
+    align-self: flex-start;
 }
+
 .job-calls-container p {
     font-size: 25px;
     justify-content: center;
     align-items: center;
     font-family: 'Inter', sans-serif;
     color: #000;
+}
+
+.pagination-container {
+    display: flex;
+    column-gap: 10px;
+}
+
+.paginate-buttons {
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: rgb(242, 242, 242);
+    border: 1px solid rgb(217, 217, 217);
+    color: black;
+}
+
+.paginate-buttons:hover {
+    background-color: #d8d8d8;
+}
+
+.active-page {
+    background-color: #3498db;
+    border: 1px solid #3498db;
+    color: white;
+}
+
+.active-page:hover {
+    background-color: #2988c8;
 }
 </style>
