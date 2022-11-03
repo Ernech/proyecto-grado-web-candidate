@@ -4,7 +4,10 @@
         <div class="grid-input-container">
             <div class="form-input-container">
                 <label for="job-call-name" class="form-label">Buscar convocatoria</label>
-                <input class="form-input" type="text" id="job-call-name" maxlength="100" @input="filterJobCalls" v-model="searchJobCall">
+                <input v-if="jobCallType === 'Administrativo'" class="form-input" type="text" id="job-call-name"
+                    maxlength="100" @input="filterJobCalls" v-model.trim="searchJobCall">
+                <input v-else class="form-input" type="text" id="job-call-name" maxlength="100"
+                    @input="filterTeacherJobCalls" v-model.trim="searchTeacherJobCall">
             </div>
             <div class="form-input-container">
                 <label class="form-label">Cargo</label>
@@ -30,8 +33,8 @@
     </div>
     <div v-else :style="'width:100%'">
         <div class="job-calls-container" v-if="teacherJobCalls.length > 0">
-            <div v-for="item in teacherPagedData" :key="item.id" class="job_call_section">
-                <JobCallCard v-for="teacherJobCall in item.teacherJobCalls" :key="teacherJobCall.id"
+            <div v-for="item in teacherJobCalls" :key="item.id" class="job_call_section">
+                <JobCallCard v-for="teacherJobCall in teacherPagedData" :key="teacherJobCall.id"
                     :jobCallName="` ${teacherJobCall.collegeClass.code} ${teacherJobCall.collegeClass.name}`"
                     :openingDate="item.closingDate" :jobCallNumber="teacherJobCall.jobCallCode"
                     @click="toTeacherJobCallInfo(teacherJobCall.id)" />
@@ -59,13 +62,14 @@ export default {
         const jobCallType = ref('Administrativo')
         const currentPage = ref(1)
         const searchJobCall = ref('')
+        const searchTeacherJobCall = ref('')
         onBeforeMount(async () => {
             await jobCallStore.getOpenedJobCalls();
             jobCalls.value = jobCallStore.jobCalls;
             await jobCallStore.getOpenedTeacherJobCalls();
             teacherJobCalls.value = jobCallStore.teacherJobCalls
             onClickHandler(1)
-            onClickHandlerTeacher(2)
+            onClickHandlerTeacher(1)
         })
         const filterJobCalls = () => {
             jobCallStore.jobCalls = jobCalls.value
@@ -74,6 +78,14 @@ export default {
 
             }
             onClickHandler(1)
+        }
+        const filterTeacherJobCalls = () => {
+            jobCallStore.teacherJobCalls = teacherJobCalls.value
+            if (searchTeacherJobCall.value !== null && searchTeacherJobCall.value !== '') {
+                const jobCalls = teacherJobCalls.value[0].teacherJobCalls
+                jobCallStore.teacherJobCalls[0].teacherJobCalls = jobCalls.filter(obj => obj.collegeClass.name.search(searchTeacherJobCall.value.toUpperCase()) > -1)
+            }
+            onClickHandlerTeacher(1)
         }
         const toJobCallInfo = (item) => {
             router.push({ name: 'job-call-info', params: { id: item.id } })
@@ -90,11 +102,12 @@ export default {
 
         }
         const onClickHandlerTeacher = (page) => {
-            teacherPagedData.value = jobCallStore.getTeacherPagedList(page, pageItems.value)
+            teacherPagedData.value = jobCallStore.getTeacherPagedList(page, pageItems.value)[0]
         }
         return {
             toJobCallInfo, toTeacherJobCallInfo, jobCalls, teacherJobCalls, jobCallType, jobCallStore,
-            onClickHandler, onClickHandlerTeacher, currentPage, pagedData, teacherPagedData,filterJobCalls,searchJobCall
+            onClickHandler, onClickHandlerTeacher, currentPage, pagedData, teacherPagedData,
+            filterJobCalls, searchJobCall, filterTeacherJobCalls, searchTeacherJobCall
         }
     }
 }

@@ -120,11 +120,12 @@ export const useJobCallStore = defineStore('job-call', {
         },
         getTeacherPagedList(page, pageItems) {
             const pageData = [];
+            const jobCalls = this.teacherJobCalls.map(obj=>obj.teacherJobCalls)
             let init = (page * pageItems) - pageItems
             let end = (page * pageItems)
             for (let i = init; i < end; i++) {
-                if (this.teacherJobCalls[i]) {
-                    pageData.push(this.teacherJobCalls[i])
+                if (jobCalls[i]) {
+                    pageData.push(jobCalls[i])
                 } else {
                     break
                 }
