@@ -56,7 +56,8 @@
                 <b>Fecha límite de presentación:</b>
                 <span>{{ formatDate }}</span>
             </div>
-            <button @click="applyJobCall($route.params.id)" class="apply-button">Postularme ahora</button>
+            <button v-if="!jobCallApllied" @click="applyJobCall($route.params.id)" class="apply-button">Postularme ahora</button>
+            <span v-else>Ya se postuló a esta convocatoria.</span>
         </div>
         <div v-else class="job-call-info">
             <h3>Convocatoria N° {{ selectedJobCall.jobCallNumber }}</h3>
@@ -91,11 +92,16 @@ const selectedJobCall = ref({})
 const showModal = ref(false)
 const showSuccessModal = ref(false)
 const showErrorModal = ref(false)
+const jobCallApllied = ref(false)
 onBeforeMount(async () => {
     await jobCallStore.getJobCallInfo(router.params.id)
     selectedJobCall.value = jobCallStore.selectedJobCall
     if (userStore.accessToken) {
         await cvStore.getCandidateCV()
+        await jobCallStore.getAppliesToADMJobCalls()
+        if(jobCallStore.jobCallApplies.find(obj=>obj.id===router.params.id)){
+            jobCallApllied.value=true
+        }
     }
 })
 

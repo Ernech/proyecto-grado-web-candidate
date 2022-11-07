@@ -5,9 +5,11 @@ export const useJobCallStore = defineStore('job-call', {
 
     state: () => ({
         jobCalls: [],
-        teacherJobCalls:[],
-        selectedJobCall:{},
-        selectedTeacherJobCall:{}
+        teacherJobCalls: [],
+        selectedJobCall: {},
+        selectedTeacherJobCall: {},
+        jobCallApplies: [],
+        teacherJobCallApplies: [],
     }),
     actions: {
         async getOpenedJobCalls() {
@@ -70,36 +72,68 @@ export const useJobCallStore = defineStore('job-call', {
         async applyToJobCall(jobCallId) {
             try {
                 const candidateId = getUserId()
-                const applyBody={candidateId,jobCallId}
+                const applyBody = { candidateId, jobCallId }
                 const resp = await fetch('http://localhost:3000/job-apply', {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json",
                         'Authorization': localStorage.getItem('token')
                     },
-                    body:JSON.stringify(applyBody)
+                    body: JSON.stringify(applyBody)
                 })
                 //router.push('/opened-job-calls')
-                return resp.status 
+                return resp.status
             } catch (error) {
                 console.log(error);
             }
         },
-          async applyToTeacherJobCall(jobCallId) {
+        async applyToTeacherJobCall(jobCallId) {
             try {
                 const candidateId = getUserId()
-                const applyBody={candidateId,jobCallId}
+                const applyBody = { candidateId, jobCallId }
                 const resp = await fetch('http://localhost:3000/job-apply/teacher', {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json",
                         'Authorization': localStorage.getItem('token')
                     },
-                    body:JSON.stringify(applyBody)
+                    body: JSON.stringify(applyBody)
                 })
-               // console.log(resp.status);
+                // console.log(resp.status);
                 //router.push('/opened-job-calls')
-                return resp.status 
+                return resp.status
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async getAppliesToADMJobCalls() {
+            try {
+                const candidateId = getUserId()
+                const resp = await fetch(`http://localhost:3000/job-apply/candidate/${candidateId}`, {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': localStorage.getItem('token')
+                    },
+                })
+                const dataDB = await resp.json()
+                this.jobCallApplies = dataDB
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async getAppliesToTeahcerJobCalls() {
+            try {
+                const candidateId = getUserId()
+                const resp = await fetch(`http://localhost:3000/job-apply/teacher/candidate/${candidateId}`, {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': localStorage.getItem('token')
+                    },
+                })
+                const dataDB = await resp.json()
+                this.teacherJobCallApplies = dataDB
             } catch (error) {
                 console.log(error);
             }
@@ -120,7 +154,7 @@ export const useJobCallStore = defineStore('job-call', {
         },
         getTeacherPagedList(page, pageItems) {
             const pageData = [];
-            const jobCalls = this.teacherJobCalls.map(obj=>obj.teacherJobCalls)
+            const jobCalls = this.teacherJobCalls.map(obj => obj.teacherJobCalls)
             let init = (page * pageItems) - pageItems
             let end = (page * pageItems)
             for (let i = init; i < end; i++) {

@@ -115,6 +115,10 @@ $transition: all 500ms ease;
     background: #0185e3;
     border: 1px solid #0185e3;
 }
+.next-button.disabled {
+    background: #4dadf1;
+    border: 1px solid #4dadf1;
+}
 .add-button-container {
     display: grid;
     grid-template-columns: 10%;

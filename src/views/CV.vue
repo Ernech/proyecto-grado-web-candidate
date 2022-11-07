@@ -33,13 +33,13 @@
             </div>
             <div v-if="step<13" class="controls">
                 <button class="back-button" @click="decrement">Anterior</button>
-                <button class="next-button" @click="increment" :disabled="step>=13"
-                    :class="{'disabled':step>13}">Siguiente</button>
+                <button class="next-button" @click="increment" :disabled="nextButtonDisabled"
+                    :class="{'disabled':nextButtonDisabled}">Siguiente</button>
             </div>
             <div v-else class="controls">
                 <button class="back-button" @click="decrement">Anterior</button>
                 <button class="next-button" @click="saveCV" 
-                    :class="{'disabled':step>13}">Guardar</button>
+                    :class="{'disabled':nextButtonDisabled}">Guardar</button>
             </div>
 
         </div>
@@ -79,11 +79,9 @@ const increment = () => {
 }
 const saveCV = async() => {
     if(!cvStore.personalData || cvStore.cvDataArray.length<1){
-        console.log('savecv');
-       await cvStore.createCV()
+        await cvStore.createCV()
     }
     else{
-        console.log('Edit cv');
         await cvStore.editCV()
     }
 }
@@ -93,6 +91,32 @@ const stepperProgress = computed(() => {
     return (100 / 12) * (step.value - 1) + '%'
 })
 
+const nextButtonDisabled = computed(()=>{
+    switch(step.value){
+        case 2: return validateAcademicTraining()
+        case 5: return validateJobExperience()
+        case 6: return validateTeachingExperience()
+    }
+})
+
+const validateAcademicTraining =()=>{
+    if(cvStore.getAcademicTrainings.length<1){
+        return true
+    }
+    return false
+}
+const validateJobExperience =()=>{
+    if(cvStore.getJobExperiences.length<1){
+        return true
+    }
+    return false
+}
+const validateTeachingExperience =()=>{
+    if(cvStore.getTeachingExperiences.length<1){
+        return true
+    }
+    return false
+}
 const isCurrent = (item) => {
     return step.value === item
 }

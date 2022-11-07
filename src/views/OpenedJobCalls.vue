@@ -25,7 +25,9 @@
                 :openingDate="item.closingDate" :jobCallNumber="item.jobCallNumber" @click="toJobCallInfo(item)" />
 
             <vue-awesome-paginate v-if="jobCallStore.jobCalls.length > 0" :total-items="jobCallStore.jobCalls.length"
-                :items-per-page="4" :max-pages-shown="10" v-model="currentPage" :on-click="onClickHandler" />
+                :items-per-page="4" :max-pages-shown="10" v-model="currentPage" :on-click="onClickHandler"
+                back-button-class="back-btn"
+                next-button-class="next-btn" />
         </div>
         <div v-else class="job-calls-container">
             <p>No existen convocatorias abiertas</p>
@@ -41,7 +43,9 @@
             </div>
             <vue-awesome-paginate v-if="jobCallStore.teacherJobCalls.length > 0"
                 :total-items="jobCallStore.teacherJobCalls.length" :items-per-page="4" :max-pages-shown="10"
-                v-model="currentPage" :on-click="onClickHandlerTeacher" />
+                v-model="currentPage" :on-click="onClickHandlerTeacher"
+                back-button-class="back-btn"
+                next-button-class="next-btn" />
         </div>
         <div class="job-calls-container" v-else>
             <p>No existen convocatorias abiertas</p>
@@ -166,7 +170,7 @@ export default {
 .paginate-buttons {
     height: 40px;
     width: 40px;
-    border-radius: 20px;
+    border-radius: 10px;
     cursor: pointer;
     background-color: rgb(242, 242, 242);
     border: 1px solid rgb(217, 217, 217);
@@ -185,5 +189,19 @@ export default {
 
 .active-page:hover {
     background-color: #2988c8;
+}
+.back-btn {
+    border: 1px solid #BABABA;
+    border-radius: 10px;
+    color: #000;
+    padding: 10px 20px;
+    background-color: #fff;
+}
+.next-btn {
+    border: 1px solid #BABABA;
+    border-radius: 10px;
+    color: #000;
+    padding: 10px 20px;
+    background-color: #fff;
 }
 </style>
