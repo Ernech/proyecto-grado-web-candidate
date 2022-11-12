@@ -85,6 +85,8 @@ const degree = ref('Elija una opción...')
 const degreeDate = ref('')
 const professionalTitleFile = ref(null)
 const professionalNTitleFile = ref(null)
+const professionalTitleFileName = ref('')
+const professionalNTitleFileName = ref('')
 const editCVDataIndex = ref(-1)
 const editData = ref(false)
 const currentYear = new Date().getFullYear()
@@ -99,7 +101,9 @@ const addCVData = () => {
         degree: degree.value,
         degreeDate: degreeDate.value,
         professionalTitleFile: professionalTitleFile.value,
-        professionalNTitleFile: professionalNTitleFile.value
+        professionalNTitleFile: professionalNTitleFile.value,
+        professionalTitleFileName: professionalTitleFileName.value,
+        professionalNTitleFileName: professionalNTitleFileName.value
     }
 
     cvStore.cvDataArray.push(newCVData)
@@ -132,9 +136,11 @@ const editCVData = () => {
 }
 const selectFile1 = () => {
     professionalTitleFile.value = file1.value.files[0];
+    professionalTitleFile.value=professionalTitleFile.value.name
 }
 const selectFile2 = () => {
     professionalNTitleFile.value = file2.value.files[0];
+    professionalNTitleFileName.value=professionalNTitleFile.value.name
 }
 const deleteCVData = (item) => {
     cvStore.cvDataArray = cvStore.cvDataArray.filter(obj => obj !== item)

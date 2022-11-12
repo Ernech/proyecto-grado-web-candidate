@@ -24,6 +24,7 @@ export const useCVStore = defineStore('cv', {
             cellPhone: '',
             email: '',
             personalIdFile: null,
+            personalIdFileName: '',
             teachingStartYear: new Date().getFullYear(),
             teachingUCBStartYear: new Date().getFullYear(),
             professionalStartYear: new Date().getFullYear(),
@@ -82,6 +83,9 @@ export const useCVStore = defineStore('cv', {
         async createCV() {
           
             this.cvDataArray.push(this.currentProfessionalInfo)
+            if(this.personalData.personalIdFile){
+                this.personalIdFileName=this.personalIdFile.name
+            }
             const createCVBody = {
                 personalData: this.personalData,
                 cvData: this.cvDataArray
@@ -102,8 +106,9 @@ export const useCVStore = defineStore('cv', {
 
         },
         async editCV() {
-          
-            
+            if(this.personalData.personalIdFile){
+                this.personalIdFileName=this.personalIdFile.name
+            }
             const editCVBody = {
                 personalData: this.personalData,
                 cvData: this.cvDataArray
