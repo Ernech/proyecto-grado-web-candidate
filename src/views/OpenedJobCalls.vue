@@ -79,18 +79,20 @@ export default {
             jobCallStore.jobCalls = jobCalls.value
             if (searchJobCall.value !== null && searchJobCall.value !== '') {
                 jobCallStore.jobCalls = jobCalls.value.filter(obj => obj.jobCallName.search(searchJobCall.value.toUpperCase()) > -1)
-
             }
             onClickHandler(1)
         }
-        const filterTeacherJobCalls = () => {
-            jobCallStore.teacherJobCalls = teacherJobCalls.value
+        const filterTeacherJobCalls = async() => {
+            await jobCallStore.getOpenedTeacherJobCalls()
             if (searchTeacherJobCall.value !== null && searchTeacherJobCall.value !== '') {
                 const jobCalls = teacherJobCalls.value[0].teacherJobCalls
                 jobCallStore.teacherJobCalls[0].teacherJobCalls = jobCalls.filter(obj => obj.collegeClass.name.search(searchTeacherJobCall.value.toUpperCase()) > -1)
             }
+            
             onClickHandlerTeacher(1)
         }
+
+        
         const toJobCallInfo = (item) => {
             router.push({ name: 'job-call-info', params: { id: item.id } })
             jobCallStore.selectedJobCall = item
@@ -203,5 +205,8 @@ export default {
     color: #000;
     padding: 10px 20px;
     background-color: #fff;
+}
+#job-call-name{
+    text-transform: uppercase;
 }
 </style>
