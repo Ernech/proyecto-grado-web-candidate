@@ -144,7 +144,7 @@ const file = ref(null)
 const cvStore = useCVStore()
 const selectFile = () => {
     cvStore.personalData.personalIdFile= file.value.files[0];
-    
+    cvStore.personalData.personalIdFileName=file.value.files[0].name
 }
 </script>
 <style lang="scss" scoped>

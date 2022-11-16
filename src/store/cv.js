@@ -106,13 +106,18 @@ export const useCVStore = defineStore('cv', {
 
         },
         async editCV() {
-            if(this.personalData.personalIdFile){
-                this.personalIdFileName=this.personalIdFile.name
+            const currentProfessionalInfoIndex = this.cvDataArray.indexOf(obj=>obj.dataType==='CURRENT_PROFESSIONAL_INFO')
+            if(currentProfessionalInfoIndex>=0){
+                this.cvDataArray[currentProfessionalInfoIndex] = this.currentProfessionalInfo
+            }
+            else{
+                this.cvDataArray.push(this.currentProfessionalInfo)
             }
             const editCVBody = {
                 personalData: this.personalData,
                 cvData: this.cvDataArray
             }
+            console.log(editCVBody);
             try {
                 const candidateId = getUserId()
                 const resp = await fetch(`http://localhost:3000/cv/${candidateId}/candidate`, {

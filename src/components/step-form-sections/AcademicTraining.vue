@@ -28,11 +28,11 @@
             </div>
             <div class="form-input-container">
                 <label for="tittle-file" class="form-label">Título profesional (PDF)</label>
-                <input type="file" class="upload-input" id="tittle-file" ref="file1" accept=".pdf" @change="selectFile1">
+                <input type="file" class="upload-input" id="tittle-file" ref="file1" accept=".pdf" @change="selectFile1" :key="file1Key">
             </div>
             <div class="form-input-container">
                 <label for="national-title-file" class="form-label">Título provición nacional (PDF)</label>
-                <input type="file" class="upload-input" id="national-title-file" ref="file2" accept=".pdf" @change="selectFile2">
+                <input type="file" class="upload-input" id="national-title-file" ref="file2" accept=".pdf" @change="selectFile2" :key="file2Key">
             </div>
         </div>
         <div class="add-button-container">
@@ -93,6 +93,8 @@ const currentYear = new Date().getFullYear()
 const currentMonth = new Date().getMonth()===12 ? 1: new Date().getMonth()+1
 const file1=ref(null)
 const file2=ref(null)
+const file1Key=ref(0)
+const file2Key=ref(0)
 const addCVData = () => {
     const newCVData = {
         dataType: dataType.value,
@@ -136,7 +138,7 @@ const editCVData = () => {
 }
 const selectFile1 = () => {
     professionalTitleFile.value = file1.value.files[0];
-    professionalTitleFile.value=professionalTitleFile.value.name
+    professionalTitleFileName.value=professionalTitleFile.value.name
 }
 const selectFile2 = () => {
     professionalNTitleFile.value = file2.value.files[0];
@@ -156,6 +158,8 @@ const resetValues = () => {
     professionalNTitleFile.value = null
     file1.value=null
     file2.value=null
+    file1Key.value++
+    file2Key.value++
     editData.value = false;
     editCVDataIndex.value = -1
    
