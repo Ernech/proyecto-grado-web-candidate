@@ -119,8 +119,6 @@ const getCVData = (currentAcademicTraining) => {
     degreeDate.value = currentAcademicTraining.degreeDate
     professionalTitleFile.value=currentAcademicTraining.professionalTitleFile
     professionalNTitleFile.value=currentAcademicTraining.professionalNTitleFile
-    file1.value.files=currentAcademicTraining.professionalTitleFile
-    file2.value.files=currentAcademicTraining.professionalNTitleFile
     editData.value = true
 }
 

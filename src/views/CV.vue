@@ -93,7 +93,7 @@ const stepperProgress = computed(() => {
 
 const nextButtonDisabled = computed(()=>{
     switch(step.value){
-   //     case 1: return validatePersonalData()
+        case 1: return validatePersonalData()
         case 2: return validateAcademicTraining()
         case 5: return validateJobExperience()
         case 6: return validateTeachingExperience()
@@ -101,19 +101,20 @@ const nextButtonDisabled = computed(()=>{
 })
 
 const validatePersonalData = ()=>{
-    if(cvStore.personalData.name && !cvStore.personalData.name==='' && 
-    cvStore.personalData.firstLastName && !cvStore.personalData.firstLastName==='' &&
-    cvStore.personalData.secondLastName && !cvStore.personalData.secondLastName==='' &&
-    cvStore.personalData.personalIdNumber && !cvStore.personalData.personalIdNumber==='' &&
-    cvStore.personalData.personalIdFile!==null && cvStore.personalData.gender!==''
-    && cvStore.personalData.idType!=='' && cvStore.personalData.issued!=='Elija una opción...'
-    && cvStore.personalData.civilStatus!=='' && cvStore.personalData.email!==''
-    && cvStore.personalData.homePhone!=='' && cvStore.personalData.cellPhone!==''
-    && cvStore.personalData.cuaNumber!=='' && cvStore.personalData.afp!==''
-    && cvStore.personalData.birthDate && cvStore.personalData.birthDate!==''
-    && cvStore.personalData.address && cvStore.personalData.address!==''
-    && cvStore.personalData.nationality && cvStore.personalData.nationality!==''
-    && cvStore.personalData.zone && cvStore.personalData.zone!==''){
+    if(cvStore.personalData.name && cvStore.personalData.name!=='' &&
+     cvStore.personalData.firstLastName && cvStore.personalData.firstLastName!=='' &&
+     cvStore.personalData.secondLastName && cvStore.personalData.secondLastName!=='' &&
+     cvStore.personalData.personalIdNumber && cvStore.personalData.personalIdNumber!=='' && 
+     cvStore.personalData.personalIdFile!==null && cvStore.personalData.gender!==''
+     && cvStore.personalData.idType!=='' && cvStore.personalData.issued!=='Elija una opción...'
+     && cvStore.personalData.civilStatus!=='' && cvStore.personalData.email!==''
+     && cvStore.personalData.homePhone!=='' && cvStore.personalData.cellPhone!==''
+     && cvStore.personalData.cuaNumber!=='' && cvStore.personalData.afp!==''
+     && cvStore.personalData.birthDate && cvStore.personalData.birthDate!==''
+     && cvStore.personalData.address && cvStore.personalData.address!==''
+     && cvStore.personalData.nationality && cvStore.personalData.nationality!==''
+     && cvStore.personalData.zone && cvStore.personalData.zone!==''
+    ){
         if(new Date(cvStore.personalData.birthDate)<new Date()){
             return false
         }
