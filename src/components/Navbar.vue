@@ -10,6 +10,7 @@
             <a href="/login">Iniciar sesión</a>
         </div>
         <div v-else class="icons-container">
+            <fa icon="fa-solid fa-rectangle-list" class="header-icon" @click="toAppliedList"/>
             <fa icon="fa-solid fa-user-large" class="header-icon" @click="toCV"/>
             <fa icon="fa-solid fa-arrow-right-from-bracket" class="header-icon" @click="logout"/>
         </div>
@@ -31,6 +32,10 @@ const toOpenedJobCalls=()=>{
 const logout=()=>{
     userStore.logoutUser()
 }
+const toAppliedList = ()=>{
+    router.push('/applied-job-calls')
+}
+
 </script>
 <style scoped>
 header {

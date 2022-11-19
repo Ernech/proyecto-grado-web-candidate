@@ -5,6 +5,7 @@ import Home from '../views/Home.vue'
 import JobCallInfo from '../views/JobCallInfo.vue';
 import TeacherJobCallInfo from '../views/TeacherJobCallInfo.vue';
 import OpenedJobCalls from '../views/OpenedJobCalls.vue';
+import CandidateAppliesList from '../views/CandidateAppliesList.vue'
 import CV from '../views/CV.vue'
 import { useUserStore } from "../store/user";
 const requireAuth = (to, from, next) => {
@@ -38,6 +39,7 @@ const routes = [
   {
    path:'/', component: Home,redirect: '/opened-job-calls',children: [
       { path: '/opened-job-calls', component: OpenedJobCalls },
+      { path: '/applied-job-calls', component: CandidateAppliesList },
       { path: '/job-call-info/:id', component: JobCallInfo, name: 'job-call-info' },
       { path: '/teacher-job-call-info/:id', component: TeacherJobCallInfo, name: 'teacher-job-call-info' }
     ]

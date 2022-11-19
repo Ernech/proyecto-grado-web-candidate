@@ -152,6 +152,20 @@ export const useJobCallStore = defineStore('job-call', {
             }
             return pageData;
         },
+        getAppliesPagedList(page, pageItems) {
+            const pageData = [];
+            let init = (page * pageItems) - pageItems
+            let end = (page * pageItems)
+            for (let i = init; i < end; i++) {
+                if (this.jobCallApplies[i]) {
+                    pageData.push(this.jobCallApplies[i])
+                } else {
+                    break
+                }
+
+            }
+            return pageData;
+        },
         getTeacherPagedList(page, pageItems) {
             const pageData = [];
             const jobCalls = this.teacherJobCalls.map(obj => obj.teacherJobCalls)
@@ -160,6 +174,20 @@ export const useJobCallStore = defineStore('job-call', {
             for (let i = init; i < end; i++) {
                 if (jobCalls[i]) {
                     pageData.push(jobCalls[i])
+                } else {
+                    break
+                }
+
+            }
+            return pageData;
+        },
+        getTeacherAppliesPAgedList(page, pageItems) {
+            const pageData = [];
+            let init = (page * pageItems) - pageItems
+            let end = (page * pageItems)
+            for (let i = init; i < end; i++) {
+                if (this.teacherJobCallApplies[i]) {
+                    pageData.push(this.teacherJobCallApplies[i])
                 } else {
                     break
                 }
