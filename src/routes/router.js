@@ -39,7 +39,7 @@ const routes = [
   {
    path:'/', component: Home,redirect: '/opened-job-calls',children: [
       { path: '/opened-job-calls', component: OpenedJobCalls },
-      { path: '/applied-job-calls', component: CandidateAppliesList },
+      { path: '/applied-job-calls', component: CandidateAppliesList,beforeEnter:requireAuth },
       { path: '/job-call-info/:id', component: JobCallInfo, name: 'job-call-info' },
       { path: '/teacher-job-call-info/:id', component: TeacherJobCallInfo, name: 'teacher-job-call-info' }
     ]

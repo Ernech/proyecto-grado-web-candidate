@@ -22,7 +22,9 @@
 
         <div class="job-calls-container" v-if="jobCalls.length > 0">
             <JobCallCard v-for="item in pagedData" :key="item.id" :jobCallName="item.jobCallName"
-                :openingDate="item.closingDate" :jobCallNumber="item.jobCallNumber" @click="toJobCallInfo(item)" />
+                :openingDate="item.closingDate" :jobCallNumber="item.jobCallNumber" 
+                :applyStatus="`${item.apply[0].applyStatus}`"
+                @click="toJobCallInfo(item)" />
 
             <vue-awesome-paginate v-if="jobCallStore.jobCalls.length > 0" :total-items="jobCallStore.jobCalls.length"
                 :items-per-page="4" :max-pages-shown="10" v-model="currentPage" :on-click="onClickHandler"
@@ -36,8 +38,9 @@
     <div v-else :style="'width:100%'">
         <div class="job-calls-container" v-if="teacherJobCalls.length > 0">
                 <JobCallCard v-for="teacherJobCall in teacherPagedData" :key="teacherJobCall.id"
-                    :jobCallName="` ${teacherJobCall.collegeClass.code} ${teacherJobCall.collegeClass.name}`"
-                    :openingDate="'2022-11-14T09:46:55.937Z'" :jobCallNumber="teacherJobCall.jobCallCode"
+                    :jobCallName="`${teacherJobCall.collegeClass.code} ${teacherJobCall.collegeClass.name}`"
+                    :openingDate="`${teacherJobCall.teacherApply[0].applyDate}`" :jobCallNumber="teacherJobCall.jobCallCode"
+                    :applyStatus="`${teacherJobCall.teacherApply[0].applyStatus}`"
                     @click="toTeacherJobCallInfo(teacherJobCall.id)" />
             <vue-awesome-paginate v-if="jobCallStore.teacherJobCalls.length > 0"
                 :total-items="jobCallStore.teacherJobCalls.length" :items-per-page="4" :max-pages-shown="10"
@@ -51,7 +54,7 @@
     </div>
 </template>
 <script>
-import JobCallCard from '../components/job-call/JobCallCard.vue';
+import JobCallCard from '../components/job-call/ApplyJobCallCard.vue';
 import router from '../routes/router'
 import { useJobCallStore } from '../store/job-call';
 import { ref, onBeforeMount } from 'vue'
