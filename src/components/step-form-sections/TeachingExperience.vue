@@ -1,16 +1,45 @@
 <template>
     <div class="main">
         <h3 class="title">Experiencia docente</h3>
-        <div class="form-input-container-year">
-            <label for="start-teaching-year" class="form-label">Año en el que empezó a dar clases(en general):</label>
-            <input class="form-input-year" type="number" min="1900" :max="currentYear" step="1" v-model="cvStore.personalData.teachingStartYear"
-                id="start-teaching-year">
+         <div class="form-input-container-year">
+                <label for="start-teaching-year" class="form-label">Año en el que empezó a dar clases(en
+                    general):</label>
+                <input class="form-input-year" type="number" min="1950" :max="currentYear" step="1"
+                    v-model="cvStore.personalData.teachingStartYear" id="start-teaching-year">
+            </div>
+            <div class="form-input-container-year">
+                <label for="start-ucb-year" class="form-label">Año en el que empezó a dar clases en la UCB:</label>
+                <input class="form-input-year" type="number" min="1950" :max="currentYear" step="1"
+                    v-model="cvStore.personalData.teachingUCBStartYear" id="start-ucb-year">
+            </div> 
+
+            <!-- <div class="grid-container">
+            <div class="form-input-container">
+                <label for="teaching-institution" class="form-label">Diplomado en educación superior
+                    (Universidad)</label>
+                <input class="form-input" type="text" id="teaching-institution">
+            </div>
+            <div class="form-input-container">
+                <label for="teaching-title-file" class="form-label">Fotocopia del diplomado en educación
+                    superior</label>
+                <input class="upload-input" type="file" id="teaching-title-file">
+            </div>
         </div>
-        <div class="form-input-container-year">
-            <label for="start-ucb-year" class="form-label">Año en el que empezó a dar clases en la UCB:</label>
-            <input class="form-input-year" type="number" min="1900" :max="currentYear" step="1" v-model="cvStore.personalData.teachingUCBStartYear"
-                id="start-ucb-year">
+        <div class="grid-container-years">
+            <div class="form-input-container-year">
+                <label for="start-teaching-year" class="form-label">Año en el que empezó a dar clases(en
+                    general):</label>
+                <input class="form-input-year" type="number" min="1950" :max="currentYear" step="1"
+                    v-model="cvStore.personalData.teachingStartYear" id="start-teaching-year">
+            </div>
+            <div class="form-input-container-year">
+                <label for="start-ucb-year" class="form-label">Año en el que empezó a dar clases en la UCB:</label>
+                <input class="form-input-year" type="number" min="1950" :max="currentYear" step="1"
+                    v-model="cvStore.personalData.teachingUCBStartYear" id="start-ucb-year">
+            </div>
         </div>
+             -->
+        
         <span>Llenar las materias dictadas en orden cronológico (Empezando por la última)</span>
         <div class="grid-container-1">
             <div class="form-input-container">
@@ -34,8 +63,10 @@
 
         </div>
         <div class="add-button-container">
-            <button v-if="!editData" class="add-button" @click="addCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Agregar</button>
-            <button v-else class="add-button" @click="editCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Modificar</button>
+            <button v-if="!editData" class="add-button" @click="addCVData" :disabled="isDisabled"
+                :class="{ disabled: isDisabled }">Agregar</button>
+            <button v-else class="add-button" @click="editCVData" :disabled="isDisabled"
+                :class="{ disabled: isDisabled }">Modificar</button>
         </div>
 
         <table>
@@ -50,10 +81,10 @@
             </thead>
             <tbody>
                 <tr v-for="(item, index) in cvStore.getTeachingExperiences" :key="index">
-                    <td>{{item.title}}</td>
-                    <td>{{item.institution}}</td>
-                    <td>{{item.startDate}}</td>
-                    <td>{{item.finishDate}}</td>
+                    <td>{{ item.title }}</td>
+                    <td>{{ item.institution }}</td>
+                    <td>{{ item.startDate }}</td>
+                    <td>{{ item.finishDate }}</td>
                     <td class="actions-cell">
                         <fa class="edit-icon" icon="fa-solid fa-pen" @click="getCVData(item)" />
                         <fa class="delete-icon" icon="fa-solid fa-trash" @click="deleteCVData(item)" />
@@ -118,10 +149,10 @@ const resetValues = () => {
     editData.value = false;
 }
 
-const isDisabled = computed(()=>{
-    if(!title.value || title.value==='' || !institution.value || institution.value===''  
-    || !startDate.value || startDate.value==='' || !finishDate.value || finishDate.value===''){
-            return true
+const isDisabled = computed(() => {
+    if (!title.value || title.value === '' || !institution.value || institution.value === ''
+        || !startDate.value || startDate.value === '' || !finishDate.value || finishDate.value === '') {
+        return true
     }
     return false
 })
@@ -153,6 +184,22 @@ const isDisabled = computed(()=>{
     align-self: flex-start;
 }
 
+.grid-container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 1fr;
+    width: 85%;
+    column-gap: 30px;
+    row-gap: 15px;
+    margin-bottom: 10px;
+}
+.grid-container-years {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 1fr;
+    width: 85%;
+    column-gap: 5px;
+}
 .grid-container-1 {
     display: grid;
     grid-template-columns: 40% 55%;

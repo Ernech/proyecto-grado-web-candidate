@@ -92,12 +92,12 @@ const stepperProgress = computed(() => {
 })
 
 const nextButtonDisabled = computed(()=>{
-    switch(step.value){
-        case 1: return validatePersonalData()
-        case 2: return validateAcademicTraining()
-        case 5: return validateJobExperience()
-        case 6: return validateTeachingExperience()
-    }
+    // switch(step.value){
+    //     case 1: return validatePersonalData()
+    //     case 2: return validateAcademicTraining()
+    //     case 5: return validateJobExperience()
+    //     case 6: return validateTeachingExperience()
+    // }
 })
 
 const validatePersonalData = ()=>{

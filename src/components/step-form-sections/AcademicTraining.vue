@@ -20,7 +20,6 @@
                     <option>Doctorado</option>
                     <option>Técnico superior</option>
                     <option>Técnico medio</option>
-                    <option>Diplomado en educación superior</option>
                 </select>
             </div>
             <div class="form-input-container">

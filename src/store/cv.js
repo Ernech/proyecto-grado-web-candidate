@@ -25,9 +25,9 @@ export const useCVStore = defineStore('cv', {
             email: '',
             personalIdFile: null,
             personalIdFileName: '',
-            teachingStartYear: 0,//new Date().getFullYear(),
-            teachingUCBStartYear: 0,//new Date().getFullYear(),
-            professionalStartYear: 0//new Date().getFullYear(),
+            teachingStartYear: null,//new Date().getFullYear(),
+            teachingUCBStartYear: null,//new Date().getFullYear(),
+            professionalStartYear: null//new Date().getFullYear(),
         },
         currentProfessionalInfo: {
             dataType: 'CURRENT_PROFESSIONAL_INFO',
