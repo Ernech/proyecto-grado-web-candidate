@@ -70,6 +70,7 @@
 <script setup>
  import { ref,computed } from 'vue';
 import { useCVStore } from '../../store/cv';
+import Languages from "../../assets/Languages.json"
 const cvStore = useCVStore()
 const dataType = ref('LANGUAGE')
 const language = ref('')
@@ -78,6 +79,7 @@ const reading = ref('Elija una opción...')
 const speacking = ref('Elija una opción...')
 const editCVDataIndex = ref(-1)
 const editData = ref(false)
+const LanguagesList = ref(Languages)
 const addCVData = () => {
     const newCVData = {
         dataType:dataType.value,
@@ -87,6 +89,7 @@ const addCVData = () => {
         speacking: speacking.value,
     }
     cvStore.cvDataArray.push(newCVData)
+    console.log(LanguagesList.value);
     resetValues()
   
 }
