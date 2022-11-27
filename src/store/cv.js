@@ -149,7 +149,10 @@ export const useCVStore = defineStore('cv', {
                     if(dataDB.cvData.filter(obj => obj.dataType === 'CURRENT_PROFESSIONAL_INFO').length>0){
                         this.currentProfessionalInfo = dataDB.cvData.filter(obj => obj.dataType === 'CURRENT_PROFESSIONAL_INFO')[0]
                     }
+                    this.cvExists=true
+                    return
                 }
+                this.cvExists=false
             } catch (error) {
                 console.log(error);
             }

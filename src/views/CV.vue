@@ -78,7 +78,7 @@ const increment = () => {
     step.value++
 }
 const saveCV = async() => {
-    if(!cvStore.personalData || cvStore.cvDataArray.length<1){
+    if(!cvStore.cvExists){
         await cvStore.createCV()
     }
     else{

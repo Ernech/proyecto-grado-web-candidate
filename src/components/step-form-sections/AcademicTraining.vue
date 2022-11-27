@@ -117,7 +117,7 @@ const getCVData = (currentAcademicTraining) => {
     institution.value = currentAcademicTraining.institution
     degree.value = currentAcademicTraining.degree
     degreeDate.value = currentAcademicTraining.degreeDate
-    professionalTitleFile.value=currentAcademicTraining.professionalTitleFile
+    professionalTitleFile.value= currentAcademicTraining.professionalTitleFile
     professionalNTitleFile.value=currentAcademicTraining.professionalNTitleFile
     editData.value = true
 }
@@ -135,7 +135,7 @@ const editCVData = () => {
     }
 }
 const selectFile1 = () => {
-    professionalTitleFile.value = file1.value.files[0];
+    professionalTitleFile.value = file1.value.files[0]; //bytea
     professionalTitleFileName.value=professionalTitleFile.value.name
 }
 const selectFile2 = () => {

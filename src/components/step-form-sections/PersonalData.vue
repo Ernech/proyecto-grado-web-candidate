@@ -143,9 +143,10 @@ import { useCVStore } from '../../store/cv'
 const file = ref(null)
 const cvStore = useCVStore()
 const selectFile = () => {
-    cvStore.personalData.personalIdFile= file.value.files[0];
-    cvStore.personalData.personalIdFileName=file.value.files[0].name
-}
+     cvStore.personalData.personalIdFile= file.value.files[0], 'base64';
+     cvStore.personalData.personalIdFileName=file.value.files[0].name
+
+    }
 </script>
 <style lang="scss" scoped>
 @import "../../styles/labels.scss";

@@ -135,7 +135,7 @@ const isDisabled = computed(()=>{
                 if(parseInt(startDateArray[0])>parseInt(finishDateArray[0])){
                     return true
                 }else{
-                    if(parseInt(startDateArray[1])>parseInt(finishDateArray[1])){
+                    if(new Date(startDate.value)>new Date(finishDate.value)){
                         return true
                     }
                 }
