@@ -56,7 +56,7 @@
                 <b>Fecha límite de presentación:</b>
                 <span>{{ formatDate }}</span>
             </div>
-            <button v-if="!jobCallApllied" @click="applyJobCall($route.params.id)" class="apply-button">Postularme ahora</button>
+            <button v-if="!jobCallApllied" @click="openCVValidationModal" class="apply-button">Postularme ahora</button>
             <span v-else>Ya se postuló a esta convocatoria.</span>
         </div>
         <div v-else class="job-call-info">
@@ -75,9 +75,12 @@
         :message="'Se ha regitrado su postulación'" />
     <FeetbackModal v-show="showErrorModal" @close-modal="showErrorModal=false" :title="'Error'"
         :message="'Ocurrió un error al registrar su postulación'" />
+    <CVValidationModalVue v-show="showCVValidationModal" @close-modal="showCVValidationModal=false" @apply="applyJobCall($route.params.id)" 
+    />
 </template>
 <script setup>
 import FeetbackModal from '../components/modals/FeetbackModal.vue'
+import CVValidationModalVue from '../components/modals/CVValidationModal.vue';
 import { useJobCallStore } from '../store/job-call';
 import { useUserStore } from '../store/user';
 import { useCVStore } from '../store/cv'
@@ -93,6 +96,7 @@ const showModal = ref(false)
 const showSuccessModal = ref(false)
 const showErrorModal = ref(false)
 const jobCallApllied = ref(false)
+const showCVValidationModal = ref(false)
 onBeforeMount(async () => {
     await jobCallStore.getJobCallInfo(router.params.id)
     selectedJobCall.value = jobCallStore.selectedJobCall
@@ -105,7 +109,12 @@ onBeforeMount(async () => {
     }
 })
 
+const openCVValidationModal=()=>{
+    showCVValidationModal.value=true
+}
+
 const applyJobCall = async (jobCallId) => {
+    showCVValidationModal.value=false
     if (!cvStore.personalData || cvStore.cvDataArray.length < 1) {
         showModal.value = true
         return
