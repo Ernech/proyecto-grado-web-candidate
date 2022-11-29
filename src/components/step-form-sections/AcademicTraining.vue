@@ -31,8 +31,8 @@
                 <input type="file" class="upload-input" id="tittle-file" ref="file1" accept=".pdf" @change="selectFile1" :key="file1Key">
             </div>
             <div class="form-input-container">
-                <label for="national-title-file" class="form-label">Título provición nacional (PDF)</label>
-                <input type="file" class="upload-input" id="national-title-file" ref="file2" accept=".pdf" @change="selectFile2" :key="file2Key">
+                <label for="national-title-file" class="form-label">Título provición nacional (licenciatura) (PDF)</label>
+                <input type="file" class="upload-input" id="national-title-file" ref="file2" accept=".pdf" @change="selectFile2" :key="file2Key" :disabled="degree!=='Licenciatura'">
             </div>
         </div>
         <div class="add-button-container">
@@ -68,8 +68,6 @@
                         <fa class="delete-icon" icon="fa-solid fa-trash" @click="deleteCVData(item)" />
                     </td>
                 </tr>
-
-
             </tbody>
         </table>
     </div>
@@ -165,7 +163,7 @@ const resetValues = () => {
 const isDisabled = computed(()=>{
     const degreeDateArray = degreeDate.value.split('-')
     if(!title.value || title.value==='' || !institution.value || institution.value==='' || degree.value==='Elija una opción...' 
-    || !degreeDate.value || degree.value==='' || !professionalTitleFile.value || !professionalNTitleFile.value){
+    || !degreeDate.value || degree.value==='' || !professionalTitleFile.value || (!professionalNTitleFile.value && degree.value==='Licenciatura' )){
       return true
     }
     else{
