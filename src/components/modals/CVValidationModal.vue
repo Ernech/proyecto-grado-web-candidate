@@ -5,7 +5,7 @@
                 <h3 class="title">Declaración jurada de incompatibilidades</h3>
                 <div class="radio-container">
                     <input type="checkbox"  true-value="yes" false-value="no" id="yes_option" v-model.trim="cvValidated">
-                    <label for="yes_option" class="radio-option"><p>Declaro que los datos registrados en este formulario son veraces.</p></label>
+                    <label for="yes_option" class="radio-option"><p>Declaro que los datos registrados en mi formulario de hoja de vida son veraces.</p></label>
                     
                 </div>
                 <div class="button-container">
