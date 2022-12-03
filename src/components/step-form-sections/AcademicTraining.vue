@@ -26,18 +26,30 @@
                 <label for="degree-date" class="form-label">Fecha de titulación</label>
                 <input class="form-input" type="month" id="degree-date" v-model.trim="degreeDate">
             </div>
-            <div class="form-input-container">
+            <AcademicTitleNameVue
+                v-if="(editData && professionalTitleFile && professionalTitleFileName && professionalTitleFileName!=='--') || editProfessionalTItle"
+                :dataType="'Título profesional'" :dataInfo="professionalTitleFileName" @edit="editProfessionalTItle=true" />
+            
+            <div v-else class="form-input-container">
                 <label for="tittle-file" class="form-label">Título profesional (PDF)</label>
-                <input type="file" class="upload-input" id="tittle-file" ref="file1" accept=".pdf" @change="selectFile1" :key="file1Key">
+                <input type="file" class="upload-input" id="tittle-file" ref="file1" accept=".pdf" @change="selectFile1"
+                    :key="file1Key">
             </div>
-            <div class="form-input-container">
-                <label for="national-title-file" class="form-label">Título provición nacional (licenciatura) (PDF)</label>
-                <input type="file" class="upload-input" id="national-title-file" ref="file2" accept=".pdf" @change="selectFile2" :key="file2Key" :disabled="degree!=='Licenciatura'">
+            <AcademicTitleNameVue
+                v-if="(editData && professionalNTitleFile && professionalNTitleFileName && professionalNTitleFileName!=='--') || editProfessionalNTItle"
+                :dataType="'Título provición nacional'" :dataInfo="professionalNTitleFileName" @edit="editProfessionalNTItle=true" />
+            <div v-else class="form-input-container">
+                <label for="national-title-file" class="form-label">Título provición nacional (licenciatura)
+                    (PDF)</label>
+                <input type="file" class="upload-input" id="national-title-file" ref="file2" accept=".pdf"
+                    @change="selectFile2" :key="file2Key" :disabled="degree !== 'Licenciatura'">
             </div>
         </div>
         <div class="add-button-container">
-            <button v-if="!editData" class="add-button" @click="addCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Agregar</button>
-            <button v-else class="add-button" @click="editCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Modificar</button>
+            <button v-if="!editData" class="add-button" @click="addCVData" :disabled="isDisabled"
+                :class="{ disabled: isDisabled }">Agregar</button>
+            <button v-else class="add-button" @click="editCVData" :disabled="isDisabled"
+                :class="{ disabled: isDisabled }">Modificar</button>
         </div>
 
         <table>
@@ -49,7 +61,6 @@
                     <th :style="'display:none'">Titulo 1</th>
                     <th :style="'display:none'">Titulo 2</th>
                     <th class="data_date">Fecha de titulación</th>
-
                     <th class="actions-column">Acciones</th>
                 </tr>
 
@@ -57,12 +68,12 @@
             <tbody>
                 <tr v-for="(item, index) in cvStore.getAcademicTrainings" :key="index">
 
-                    <td>{{item.title}}</td>
-                    <td>{{item.institution}}</td>
-                    <td>{{item.degree}}</td>
-                    <td :style="'display:none'">{{item.professionalTitleFile}}</td>
-                    <td :style="'display:none'">{{item.professionalNTitleFile}}</td>
-                    <td>{{item.degreeDate}}</td>
+                    <td>{{ item.title }}</td>
+                    <td>{{ item.institution }}</td>
+                    <td>{{ item.degree }}</td>
+                    <td :style="'display:none'">{{ item.professionalTitleFile }}</td>
+                    <td :style="'display:none'">{{ item.professionalNTitleFile }}</td>
+                    <td>{{ item.degreeDate }}</td>
                     <td class="actions-cell">
                         <fa class="edit-icon" icon="fa-solid fa-pen" @click="getCVData(item)" />
                         <fa class="delete-icon" icon="fa-solid fa-trash" @click="deleteCVData(item)" />
@@ -73,8 +84,9 @@
     </div>
 </template>
 <script setup>
-import { ref,computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useCVStore } from '../../store/cv';
+import AcademicTitleNameVue from './step-form-components/AcademicTitleName.vue';
 const cvStore = useCVStore()
 const dataType = ref('ACADEMIC_TRAINING')
 const title = ref('')
@@ -88,11 +100,13 @@ const professionalNTitleFileName = ref('')
 const editCVDataIndex = ref(-1)
 const editData = ref(false)
 const currentYear = new Date().getFullYear()
-const currentMonth = new Date().getMonth()===12 ? 1: new Date().getMonth()+1
-const file1=ref(null)
-const file2=ref(null)
-const file1Key=ref(0)
-const file2Key=ref(0)
+const currentMonth = new Date().getMonth() === 12 ? 1 : new Date().getMonth() + 1
+const file1 = ref(null)
+const file2 = ref(null)
+const file1Key = ref(0)
+const file2Key = ref(0)
+const editProfessionalTItle=ref(false)
+const editProfessionalNTItle=ref(false)
 const addCVData = () => {
     const newCVData = {
         dataType: dataType.value,
@@ -115,8 +129,10 @@ const getCVData = (currentAcademicTraining) => {
     institution.value = currentAcademicTraining.institution
     degree.value = currentAcademicTraining.degree
     degreeDate.value = currentAcademicTraining.degreeDate
-    professionalTitleFile.value= currentAcademicTraining.professionalTitleFile
-    professionalNTitleFile.value=currentAcademicTraining.professionalNTitleFile
+    professionalTitleFile.value = currentAcademicTraining.professionalTitleFile
+    professionalNTitleFile.value = currentAcademicTraining.professionalNTitleFile
+    professionalTitleFileName.value = currentAcademicTraining.professionalTitleFileName
+    professionalNTitleFileName.value = currentAcademicTraining.professionalNTitleFileName
     editData.value = true
 }
 
@@ -134,11 +150,11 @@ const editCVData = () => {
 }
 const selectFile1 = () => {
     professionalTitleFile.value = file1.value.files[0]; //bytea
-    professionalTitleFileName.value=professionalTitleFile.value.name
+    professionalTitleFileName.value = professionalTitleFile.value.name
 }
 const selectFile2 = () => {
     professionalNTitleFile.value = file2.value.files[0];
-    professionalNTitleFileName.value=professionalNTitleFile.value.name
+    professionalNTitleFileName.value = professionalNTitleFile.value.name
 }
 const deleteCVData = (item) => {
     cvStore.cvDataArray = cvStore.cvDataArray.filter(obj => obj !== item)
@@ -152,32 +168,34 @@ const resetValues = () => {
     degreeDate.value = ''
     professionalTitleFile.value = null
     professionalNTitleFile.value = null
-    file1.value=null
-    file2.value=null
+    file1.value = null
+    file2.value = null
     file1Key.value++
     file2Key.value++
     editData.value = false;
     editCVDataIndex.value = -1
-   
+    editProfessionalTItle.value=false
+    editProfessionalNTItle.value=false
+
 }
-const isDisabled = computed(()=>{
+const isDisabled = computed(() => {
     const degreeDateArray = degreeDate.value.split('-')
-    if(!title.value || title.value==='' || !institution.value || institution.value==='' || degree.value==='Elija una opción...' 
-    || !degreeDate.value || degree.value==='' || !professionalTitleFile.value || (!professionalNTitleFile.value && degree.value==='Licenciatura' )){
-      return true
+    if (!title.value || title.value === '' || !institution.value || institution.value === '' || degree.value === 'Elija una opción...'
+        || !degreeDate.value || degree.value === '' || !professionalTitleFile.value || (!professionalNTitleFile.value && degree.value === 'Licenciatura')) {
+        return true
     }
-    else{
-        if(parseInt(degreeDateArray[0])>currentYear){
+    else {
+        if (parseInt(degreeDateArray[0]) > currentYear) {
             return true
 
-        }else{
-            if(parseInt(degreeDateArray[1])>currentMonth){
+        } else {
+            if (parseInt(degreeDateArray[1]) > currentMonth) {
                 return true
             }
             return false
         }
     }
-   
+
 })
 </script>
 <style lang="scss" scoped>

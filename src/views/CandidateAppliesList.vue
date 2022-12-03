@@ -87,8 +87,7 @@ export default {
         const filterTeacherJobCalls = async() => {
             await jobCallStore.getAppliesToTeahcerJobCalls()
             if (searchTeacherJobCall.value !== null && searchTeacherJobCall.value !== '') {
-                const jobCalls = teacherJobCalls.value[0].teacherJobCalls
-                jobCallStore.teacherJobCalls[0].teacherJobCalls = jobCalls.filter(obj => obj.collegeClass.name.search(searchTeacherJobCall.value.toUpperCase()) > -1)
+                jobCallStore.teacherJobCallApplies = teacherJobCalls.value.filter(obj => obj.collegeClass.name.search(searchTeacherJobCall.value.toUpperCase()) > -1)
             }
             
             onClickHandlerTeacher(1)
@@ -111,7 +110,6 @@ export default {
         }
         const onClickHandlerTeacher = (page) => {
             teacherPagedData.value = jobCallStore.getTeacherAppliesPAgedList(page, pageItems.value)
-            console.log(teacherPagedData.value);
         }
         return {
             toJobCallInfo, toTeacherJobCallInfo, jobCalls, teacherJobCalls, jobCallType, jobCallStore,
