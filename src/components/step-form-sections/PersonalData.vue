@@ -113,8 +113,9 @@
                 <label for="cua" class="form-label">Número de registro CUA</label>
                 <input class="form-input" type="text" id="cua" v-model.trim="cvStore.personalData.cuaNumber">
             </div>
-
-            <div class="form-input-container">
+            <AcademicTitleNameVue
+                v-if="!editPersonalIdFile && cvStore.personalIdFile && cvStore.personalIdFileName !== '--'" @edit="editPersonalIdFile=true"/>
+            <div v-else class="form-input-container">
                 <label for="ci_file" class="form-label">Fotocopia cédula de identidad (PDF)</label>
                 <input type="file" class="upload-input" id="ci_file" ref="file" accept=".pdf" @change="selectFile">
             </div>
@@ -138,15 +139,17 @@
     </div>
 </template>
 <script setup>
-import {ref} from 'vue'
+import { ref } from 'vue'
 import { useCVStore } from '../../store/cv'
+import AcademicTitleNameVue from './step-form-components/AcademicTitleName.vue';
 const file = ref(null)
+const editPersonalIdFile = ref(false)
 const cvStore = useCVStore()
 const selectFile = () => {
-     cvStore.personalData.personalIdFile= file.value.files[0], 'base64';
-     cvStore.personalData.personalIdFileName=file.value.files[0].name
+    cvStore.personalData.personalIdFile = file.value.files[0], 'base64';
+    cvStore.personalData.personalIdFileName = file.value.files[0].name
 
-    }
+}
 </script>
 <style lang="scss" scoped>
 @import "../../styles/labels.scss";
