@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <h3 class="title">Experiencia docente</h3>
-         <div class="form-input-container-year">
+         <!-- <div class="form-input-container-year">
                 <label for="start-teaching-year" class="form-label">Año en el que empezó a dar clases(en
                     general):</label>
                 <input class="form-input-year" type="number" min="1950" :max="currentYear" step="1"
@@ -11,21 +11,22 @@
                 <label for="start-ucb-year" class="form-label">Año en el que empezó a dar clases en la UCB:</label>
                 <input class="form-input-year" type="number" min="1950" :max="currentYear" step="1"
                     v-model="cvStore.personalData.teachingUCBStartYear" id="start-ucb-year">
-            </div> 
+            </div>  -->
 
-            <!-- <div class="grid-container">
+         <div class="grid-container">
             <div class="form-input-container">
                 <label for="teaching-institution" class="form-label">Diplomado en educación superior
                     (Universidad)</label>
-                <input class="form-input" type="text" id="teaching-institution">
+                <input class="form-input" type="text" id="teaching-institution" v-model.trim="cvStore.personalData.teachingTitleFileInstitution">
             </div>
-            <div class="form-input-container">
+            <AcademicTitleNameVue
+                v-if="!editTeachingTitleFile && cvStore.personalData.teachingTitleFile && cvStore.personalData.teachingTitleFileName !== '--'" @edit="editTeachingTitleFile=true"
+                :dataType="'Fotocopia cédula de identidad'" :dataInfo="cvStore.personalData.teachingTitleFileName"/>
+            <div v-else class="form-input-container">
                 <label for="teaching-title-file" class="form-label">Fotocopia del diplomado en educación
                     superior</label>
-                <input class="upload-input" type="file" id="teaching-title-file">
+                <input class="upload-input" type="file" id="teaching-title-file" accept=".pdf" @change="selectFile" ref="file">
             </div>
-        </div>
-        <div class="grid-container-years">
             <div class="form-input-container-year">
                 <label for="start-teaching-year" class="form-label">Año en el que empezó a dar clases(en
                     general):</label>
@@ -38,9 +39,7 @@
                     v-model="cvStore.personalData.teachingUCBStartYear" id="start-ucb-year">
             </div>
         </div>
-             -->
-        
-        <span>Llenar las materias dictadas en orden cronológico (Empezando por la última)</span>
+       <span>Llenar las materias dictadas en orden cronológico (Empezando por la última)</span>
         <div class="grid-container-1">
             <div class="form-input-container">
                 <label for="currrent_job_institution" class="form-label">Materia</label>
@@ -97,6 +96,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useCVStore } from '../../store/cv';
+import AcademicTitleNameVue from './step-form-components/AcademicTitleName.vue';
 const currentYear = ref(new Date().getFullYear())
 const cvStore = useCVStore()
 const dataType = ref('TEACHING_EXPERIENCE')
@@ -105,7 +105,9 @@ const institution = ref('')
 const startDate = ref('')
 const finishDate = ref('')
 const editData = ref(false)
+const editTeachingTitleFile = ref(false)
 const editCVDataIndex = ref(-1)
+const file=ref(null)
 const addCVData = () => {
     const newCVData = {
         dataType: dataType.value,
@@ -148,7 +150,11 @@ const resetValues = () => {
     finishDate.value = ''
     editData.value = false;
 }
+const selectFile = () => {
+    cvStore.personalData.teachingTitleFile = file.value.files[0];
+    cvStore.personalData.teachingTitleFileName = file.value.files[0].name
 
+}
 const isDisabled = computed(() => {
     if (!title.value || title.value === '' || !institution.value || institution.value === ''
         || !startDate.value || startDate.value === '' || !finishDate.value || finishDate.value === '') {
@@ -187,11 +193,11 @@ const isDisabled = computed(() => {
 .grid-container {
     display: grid;
     grid-template-columns: 50% 50%;
-    grid-template-rows: 1fr;
-    width: 85%;
+    grid-template-rows: 2fr;
+    width: 80%;
     column-gap: 30px;
-    row-gap: 15px;
-    margin-bottom: 10px;
+    row-gap: 12px;
+    margin-bottom: 5px;
 }
 .grid-container-years {
     display: grid;

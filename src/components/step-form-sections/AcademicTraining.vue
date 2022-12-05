@@ -27,7 +27,7 @@
                 <input class="form-input" type="month" id="degree-date" v-model.trim="degreeDate">
             </div>
             <AcademicTitleNameVue
-                v-if="(editData && professionalTitleFile && professionalTitleFileName && professionalTitleFileName!=='--') || editProfessionalTItle"
+                v-if="editData && professionalTitleFile && professionalTitleFileName && professionalTitleFileName!=='--' && !editProfessionalTItle"
                 :dataType="'Título profesional'" :dataInfo="professionalTitleFileName" @edit="editProfessionalTItle=true" />
             
             <div v-else class="form-input-container">
@@ -36,7 +36,7 @@
                     :key="file1Key">
             </div>
             <AcademicTitleNameVue
-                v-if="(editData && professionalNTitleFile && professionalNTitleFileName && professionalNTitleFileName!=='--') || editProfessionalNTItle"
+                v-if="editData && professionalNTitleFile && professionalNTitleFileName && professionalNTitleFileName!=='--' && !editProfessionalNTItle"
                 :dataType="'Título provición nacional'" :dataInfo="professionalNTitleFileName" @edit="editProfessionalNTItle=true" />
             <div v-else class="form-input-container">
                 <label for="national-title-file" class="form-label">Título provición nacional (licenciatura)
@@ -144,12 +144,15 @@ const editCVData = () => {
         cvStore.cvDataArray[editCVDataIndex.value].degreeDate = degreeDate.value
         cvStore.cvDataArray[editCVDataIndex.value].professionalTitleFile = professionalTitleFile.value
         cvStore.cvDataArray[editCVDataIndex.value].professionalNTitleFile = professionalNTitleFile.value
+        cvStore.cvDataArray[editCVDataIndex.value].professionalTitleFileName = professionalTitleFileName.value
+        cvStore.cvDataArray[editCVDataIndex.value].professionalNTitleFileName = professionalNTitleFileName.value
+        
         editData.value = false;
         resetValues()
     }
 }
 const selectFile1 = () => {
-    professionalTitleFile.value = file1.value.files[0]; //bytea
+    professionalTitleFile.value = file1.value.files[0]; 
     professionalTitleFileName.value = professionalTitleFile.value.name
 }
 const selectFile2 = () => {

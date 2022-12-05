@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { getUserId } from '../helpers/get-token-info'
-import  router  from '../routes/router'
+import router from '../routes/router'
 export const useCVStore = defineStore('cv', {
     state: () => ({
         personalData: {
@@ -27,7 +27,10 @@ export const useCVStore = defineStore('cv', {
             personalIdFileName: '',
             teachingStartYear: null,//new Date().getFullYear(),
             teachingUCBStartYear: null,//new Date().getFullYear(),
-            professionalStartYear: null//new Date().getFullYear(),
+            professionalStartYear: null,//new Date().getFullYear(),
+            teachingTitleFile: null,
+            teachingTitleFileName: '',
+            teachingTitleFileInstitution: ''
         },
         currentProfessionalInfo: {
             dataType: 'CURRENT_PROFESSIONAL_INFO',
@@ -37,9 +40,9 @@ export const useCVStore = defineStore('cv', {
             address: '',
             dataDate: '',
         },
-        
+
         cvDataArray: [],
-        cvExists:false
+        cvExists: false
     }),
     getters: {
         getAcademicTrainings(state) {
@@ -81,10 +84,10 @@ export const useCVStore = defineStore('cv', {
     },
     actions: {
         async createCV() {
-          
+
             this.cvDataArray.push(this.currentProfessionalInfo)
-            if(this.personalData.personalIdFile){
-                this.personalIdFileName=this.personalIdFile.name
+            if (this.personalData.personalIdFile) {
+                this.personalIdFileName = this.personalIdFile.name
             }
             const createCVBody = {
                 personalData: this.personalData,
@@ -94,8 +97,10 @@ export const useCVStore = defineStore('cv', {
                 const candidateId = getUserId()
                 const resp = await fetch(`http://localhost:3000/cv/${candidateId}/candidate`, {
                     method: 'POST',
-                    headers: { "Content-Type": "application/json",
-                    'Authorization': localStorage.getItem('token') },
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': localStorage.getItem('token')
+                    },
                     body: JSON.stringify(createCVBody)
                 });
                 console.log(resp.status);
@@ -106,11 +111,11 @@ export const useCVStore = defineStore('cv', {
 
         },
         async editCV() {
-            const currentProfessionalInfoIndex = this.cvDataArray.indexOf(obj=>obj.dataType==='CURRENT_PROFESSIONAL_INFO')
-            if(currentProfessionalInfoIndex>=0){
+            const currentProfessionalInfoIndex = this.cvDataArray.indexOf(obj => obj.dataType === 'CURRENT_PROFESSIONAL_INFO')
+            if (currentProfessionalInfoIndex >= 0) {
                 this.cvDataArray[currentProfessionalInfoIndex] = this.currentProfessionalInfo
             }
-            else{
+            else {
                 this.cvDataArray.push(this.currentProfessionalInfo)
             }
             const editCVBody = {
@@ -122,8 +127,10 @@ export const useCVStore = defineStore('cv', {
                 const candidateId = getUserId()
                 const resp = await fetch(`http://localhost:3000/cv/${candidateId}/candidate`, {
                     method: 'PUT',
-                    headers: { "Content-Type": "application/json",
-                    'Authorization': localStorage.getItem('token') },
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': localStorage.getItem('token')
+                    },
                     body: JSON.stringify(editCVBody)
                 });
                 console.log(resp.status);
@@ -133,26 +140,27 @@ export const useCVStore = defineStore('cv', {
             }
 
         },
-        async getCandidateCV(){
+        async getCandidateCV() {
             try {
                 const candidateId = getUserId()
                 const resp = await fetch(`http://localhost:3000/cv/candidate/${candidateId}`, {
                     method: 'GET',
-                    headers: { "Content-Type": "application/json",
-                    'Authorization': localStorage.getItem('token') 
-                }
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': localStorage.getItem('token')
+                    }
                 });
                 const dataDB = await resp.json()
-                if(resp.status===200 && dataDB.personalData && dataDB.cvData.length>0){
-                    this.personalData=dataDB.personalData
+                if (resp.status === 200 && dataDB.personalData && dataDB.cvData.length > 0) {
+                    this.personalData = dataDB.personalData
                     this.cvDataArray = dataDB.cvData
-                    if(dataDB.cvData.filter(obj => obj.dataType === 'CURRENT_PROFESSIONAL_INFO').length>0){
+                    if (dataDB.cvData.filter(obj => obj.dataType === 'CURRENT_PROFESSIONAL_INFO').length > 0) {
                         this.currentProfessionalInfo = dataDB.cvData.filter(obj => obj.dataType === 'CURRENT_PROFESSIONAL_INFO')[0]
                     }
-                    this.cvExists=true
+                    this.cvExists = true
                     return
                 }
-                this.cvExists=false
+                this.cvExists = false
             } catch (error) {
                 console.log(error);
             }

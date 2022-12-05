@@ -114,8 +114,8 @@
                 <input class="form-input" type="text" id="cua" v-model.trim="cvStore.personalData.cuaNumber">
             </div>
             <AcademicTitleNameVue
-                v-if="!editPersonalIdFile && cvStore.personalIdFile && cvStore.personalIdFileName !== '--'" @edit="editPersonalIdFile=true"
-                :dataType="'Fotocopia cédula de identidad'" :dataInfo="cvStore.personalIdFileName"/>
+                v-if="!editPersonalIdFile && cvStore.personalData.personalIdFile && cvStore.personalData.personalIdFileName !== '--'" @edit="editPersonalIdFile=true"
+                :dataType="'Fotocopia cédula de identidad'" :dataInfo="cvStore.personalData.personalIdFileName"/>
             <div v-else class="form-input-container">
                 <label for="ci_file" class="form-label">Fotocopia cédula de identidad (PDF)</label>
                 <input type="file" class="upload-input" id="ci_file" ref="file" accept=".pdf" @change="selectFile">
@@ -147,7 +147,7 @@ const file = ref(null)
 const editPersonalIdFile = ref(false)
 const cvStore = useCVStore()
 const selectFile = () => {
-    cvStore.personalData.personalIdFile = file.value.files[0], 'base64';
+    cvStore.personalData.personalIdFile = file.value.files[0];
     cvStore.personalData.personalIdFileName = file.value.files[0].name
 
 }

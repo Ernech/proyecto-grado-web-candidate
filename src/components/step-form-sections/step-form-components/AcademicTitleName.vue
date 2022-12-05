@@ -18,8 +18,7 @@ props:{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 10px;
-    gap: 5px;
+    padding: 5px;
 }
 .edit-icon {
     color: #5686E1;

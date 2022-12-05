@@ -4,7 +4,16 @@
         <div class="grid-container">
             <div class="form-input-container">
                 <label for="first_last_name" class="form-label">Idioma</label>
-                <input class="form-input" type="text" id="first_last_name" v-model.trim="language">
+                <input class="form-input" type="text" id="first_last_name" v-model.trim="searchLanguage"
+                @input="filterLanguages"  @focus="suggestionList=true">
+                <div class="class-code-list" v-if="filterLanguages.length>0 && suggestionList">
+                <ul>
+                    <li v-for="item in filterLanguages" @click="setLanguage(item)">
+                        {{item.language}}
+                    </li>
+                </ul>
+            </div>
+
             </div>
             <div class="form-input-container">
                 <label class="form-label">Nivel de lectura</label>
@@ -73,13 +82,15 @@ import { useCVStore } from '../../store/cv';
 import Languages from "../../assets/Languages.json"
 const cvStore = useCVStore()
 const dataType = ref('LANGUAGE')
+const searchLanguage=ref('')
 const language = ref('')
 const writing = ref('Elija una opción...')
 const reading = ref('Elija una opción...')
 const speacking = ref('Elija una opción...')
 const editCVDataIndex = ref(-1)
 const editData = ref(false)
-const LanguagesList = ref(Languages)
+const suggestionList = ref(false)
+const languagesList = ref(Languages)
 const addCVData = () => {
     const newCVData = {
         dataType:dataType.value,
@@ -89,7 +100,6 @@ const addCVData = () => {
         speacking: speacking.value,
     }
     cvStore.cvDataArray.push(newCVData)
-    console.log(LanguagesList.value);
     resetValues()
   
 }
@@ -131,6 +141,20 @@ const isDisabled = computed(()=>{
     }
     return false
 })
+
+const setLanguage=(item)=>{
+    language.value=item.language
+    suggestionList.value=false
+}
+
+const filterLanguages = computed(() => {
+
+if (language.value === '') {
+    return languagesList.value
+}
+return languagesList.value.filter(obj => obj.language.toUpperCase().startsWith(searchLanguage.value.toUpperCase()))
+})
+
 </script>
 <style lang="scss" scoped>
 @import "../../styles/labels.scss";
@@ -156,5 +180,43 @@ const isDisabled = computed(()=>{
     row-gap: 20px;
     align-items: center;
     justify-content: center;
+}
+
+
+.class-code-list {
+    width: 105%;
+    z-index: 10;
+    margin: 0px;
+    
+}
+
+.class-code-list ul {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    list-style-type: none;
+    margin: 0px 5px;
+    gap: 3px;
+    z-index: 100;
+    background-color: #fff;
+    border: 0.5px solid #a7a7a7;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    padding-left: 5px;
+    width: 34.3%;
+    
+}
+
+.class-code-list ul li {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    width: 100%;
+}
+
+.class-code-list ul li:hover {
+    background: #ececec;
+
 }
 </style>
