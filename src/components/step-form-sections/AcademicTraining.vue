@@ -146,7 +146,7 @@ const editCVData = () => {
         cvStore.cvDataArray[editCVDataIndex.value].professionalNTitleFile = professionalNTitleFile.value
         cvStore.cvDataArray[editCVDataIndex.value].professionalTitleFileName = professionalTitleFileName.value
         cvStore.cvDataArray[editCVDataIndex.value].professionalNTitleFileName = professionalNTitleFileName.value
-        
+    
         editData.value = false;
         resetValues()
     }
@@ -154,10 +154,13 @@ const editCVData = () => {
 const selectFile1 = () => {
     professionalTitleFile.value = file1.value.files[0]; 
     professionalTitleFileName.value = professionalTitleFile.value.name
+    console.log(professionalTitleFileName.value);
 }
 const selectFile2 = () => {
     professionalNTitleFile.value = file2.value.files[0];
     professionalNTitleFileName.value = professionalNTitleFile.value.name
+    console.log(professionalNTitleFileName.value);
+
 }
 const deleteCVData = (item) => {
     cvStore.cvDataArray = cvStore.cvDataArray.filter(obj => obj !== item)

@@ -84,8 +84,11 @@ export const useCVStore = defineStore('cv', {
     },
     actions: {
         async createCV() {
-
-            this.cvDataArray.push(this.currentProfessionalInfo)
+            if(this.currentProfessionalInfo.institution!=='' && this.currentProfessionalInfo.address!=='' && 
+            this.currentProfessionalInfo.phone!=='' && this.currentProfessionalInfo.position!==''
+            && this.currentProfessionalInfo.dataDate!==''){
+                this.cvDataArray.push(this.currentProfessionalInfo)
+            }  
             if (this.personalData.personalIdFile) {
                 this.personalIdFileName = this.personalIdFile.name
             }
@@ -111,9 +114,9 @@ export const useCVStore = defineStore('cv', {
 
         },
         async editCV() {
-            const currentProfessionalInfoIndex = this.cvDataArray.indexOf(obj => obj.dataType === 'CURRENT_PROFESSIONAL_INFO')
+            const currentProfessionalInfoIndex = this.cvDataArray.findIndex(obj => obj.dataType === 'CURRENT_PROFESSIONAL_INFO')
             if (currentProfessionalInfoIndex >= 0) {
-                this.cvDataArray[currentProfessionalInfoIndex] = this.currentProfessionalInfo
+                this.cvDataArray[currentProfessionalInfoIndex] = this.currentProfessionalInfo;
             }
             else {
                 this.cvDataArray.push(this.currentProfessionalInfo)
