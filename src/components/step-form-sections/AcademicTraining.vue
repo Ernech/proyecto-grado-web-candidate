@@ -27,17 +27,19 @@
                 <input class="form-input" type="month" id="degree-date" v-model.trim="degreeDate">
             </div>
             <AcademicTitleNameVue
-                v-if="editData && professionalTitleFile && professionalTitleFileName && professionalTitleFileName!=='--' && !editProfessionalTItle"
-                :dataType="'Título profesional'" :dataInfo="professionalTitleFileName" @edit="editProfessionalTItle=true" />
-            
+                v-if="editData && professionalTitleFile && professionalTitleFileName && professionalTitleFileName !== '--' && !editProfessionalTItle"
+                :dataType="'Título profesional'" :dataInfo="professionalTitleFileName"
+                @edit="editProfessionalTItle = true" />
+
             <div v-else class="form-input-container">
                 <label for="tittle-file" class="form-label">Título profesional (PDF)</label>
                 <input type="file" class="upload-input" id="tittle-file" ref="file1" accept=".pdf" @change="selectFile1"
                     :key="file1Key">
             </div>
             <AcademicTitleNameVue
-                v-if="editData && professionalNTitleFile && professionalNTitleFileName && professionalNTitleFileName!=='--' && !editProfessionalNTItle"
-                :dataType="'Título provición nacional'" :dataInfo="professionalNTitleFileName" @edit="editProfessionalNTItle=true" />
+                v-if="editData && professionalNTitleFile && professionalNTitleFileName && professionalNTitleFileName !== '--' && !editProfessionalNTItle"
+                :dataType="'Título provición nacional'" :dataInfo="professionalNTitleFileName"
+                @edit="editProfessionalNTItle = true" />
             <div v-else class="form-input-container">
                 <label for="national-title-file" class="form-label">Título provición nacional (licenciatura)
                     (PDF)</label>
@@ -87,6 +89,7 @@
 import { ref, computed } from 'vue';
 import { useCVStore } from '../../store/cv';
 import AcademicTitleNameVue from './step-form-components/AcademicTitleName.vue';
+import { fileToByteArray } from '../../helpers/get-array-buffer'
 const cvStore = useCVStore()
 const dataType = ref('ACADEMIC_TRAINING')
 const title = ref('')
@@ -105,8 +108,9 @@ const file1 = ref(null)
 const file2 = ref(null)
 const file1Key = ref(0)
 const file2Key = ref(0)
-const editProfessionalTItle=ref(false)
-const editProfessionalNTItle=ref(false)
+const editProfessionalTItle = ref(false)
+const editProfessionalNTItle = ref(false)
+const reader = new FileReader();
 const addCVData = () => {
     const newCVData = {
         dataType: dataType.value,
@@ -146,21 +150,17 @@ const editCVData = () => {
         cvStore.cvDataArray[editCVDataIndex.value].professionalNTitleFile = professionalNTitleFile.value
         cvStore.cvDataArray[editCVDataIndex.value].professionalTitleFileName = professionalTitleFileName.value
         cvStore.cvDataArray[editCVDataIndex.value].professionalNTitleFileName = professionalNTitleFileName.value
-    
         editData.value = false;
         resetValues()
     }
 }
 const selectFile1 = () => {
-    professionalTitleFile.value = file1.value.files[0]; 
-    professionalTitleFileName.value = professionalTitleFile.value.name
-    console.log(professionalTitleFileName.value);
+    professionalTitleFile.value = file1.value.files[0]
+    professionalTitleFileName.value = file1.value.files[0].name 
 }
 const selectFile2 = () => {
-    professionalNTitleFile.value = file2.value.files[0];
-    professionalNTitleFileName.value = professionalNTitleFile.value.name
-    console.log(professionalNTitleFileName.value);
-
+    professionalNTitleFile.value = file2.value.files[0]
+    professionalNTitleFileName.value = file2.value.files[0].name
 }
 const deleteCVData = (item) => {
     cvStore.cvDataArray = cvStore.cvDataArray.filter(obj => obj !== item)
@@ -180,8 +180,8 @@ const resetValues = () => {
     file2Key.value++
     editData.value = false;
     editCVDataIndex.value = -1
-    editProfessionalTItle.value=false
-    editProfessionalNTItle.value=false
+    editProfessionalTItle.value = false
+    editProfessionalNTItle.value = false
 
 }
 const isDisabled = computed(() => {
@@ -203,6 +203,7 @@ const isDisabled = computed(() => {
     }
 
 })
+
 </script>
 <style lang="scss" scoped>
 @import "../../styles/labels.scss";

@@ -89,9 +89,7 @@ export const useCVStore = defineStore('cv', {
             && this.currentProfessionalInfo.dataDate!==''){
                 this.cvDataArray.push(this.currentProfessionalInfo)
             }  
-            if (this.personalData.personalIdFile) {
-                this.personalIdFileName = this.personalIdFile.name
-            }
+           
             const createCVBody = {
                 personalData: this.personalData,
                 cvData: this.cvDataArray

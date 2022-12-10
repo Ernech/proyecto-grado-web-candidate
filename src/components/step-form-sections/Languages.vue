@@ -4,15 +4,16 @@
         <div class="grid-container">
             <div class="form-input-container">
                 <label for="first_last_name" class="form-label">Idioma</label>
-                <input class="form-input" type="text" id="first_last_name" v-model.trim="searchLanguage"
-                @input="filterLanguages"  @focus="suggestionList=true">
-                <div class="class-code-list" v-if="filterLanguages.length>0 && suggestionList">
-                <ul>
-                    <li v-for="item in filterLanguages" @click="setLanguage(item)">
-                        {{item.language}}
-                    </li>
-                </ul>
-            </div>
+                <input class="form-input" type="text" id="first_last_name" v-model.trim="language">
+                <!-- <input class="form-input" type="text" id="first_last_name" v-model.trim="searchLanguage"
+                    @input="filterListOfLanguages" @focus="suggestionList = true">
+                <div class="class-code-list" v-if="filterListOfLanguages.length > 0 && suggestionList">
+                    <ul>
+                        <li v-for="item in filterListOfLanguages" @click="setLanguage(item)">
+                            {{ item.language }}
+                        </li>
+                    </ul>
+                </div> -->
 
             </div>
             <div class="form-input-container">
@@ -44,8 +45,10 @@
             </div>
         </div>
         <div class="add-button-container">
-            <button v-if="!editData" class="add-button" @click="addCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Agregar</button>
-            <button v-else class="add-button" @click="editCVData" :disabled="isDisabled" :class="{disabled:isDisabled}">Modificar</button>
+            <button v-if="!editData" class="add-button" @click="addCVData" :disabled="isDisabled"
+                :class="{ disabled: isDisabled }">Agregar</button>
+            <button v-else class="add-button" @click="editCVData" :disabled="isDisabled"
+                :class="{ disabled: isDisabled }">Modificar</button>
         </div>
         <table>
             <thead>
@@ -54,20 +57,20 @@
                     <th class="writing-column">Escritura</th>
                     <th class="reading-column">Lectura</th>
                     <th class="listening-column">Habla</th>
-                    
+
                     <th class="actions-column">Acciones</th>
                 </tr>
 
             </thead>
             <tbody>
                 <tr v-for="(item, index) in cvStore.getLanguages" :key="index">
-                    <td>{{item.language}}</td>
-                    <td>{{item.writing}}</td>
-                    <td>{{item.reading}}</td>
-                    <td>{{item.speacking}}</td>
+                    <td>{{ item.language }}</td>
+                    <td>{{ item.writing }}</td>
+                    <td>{{ item.reading }}</td>
+                    <td>{{ item.speacking }}</td>
                     <td class="actions-cell">
-                        <fa class="edit-icon" icon="fa-solid fa-pen" @click="getCVData(item)"/>
-                        <fa class="delete-icon" icon="fa-solid fa-trash" @click="deleteCVData(item)"/>
+                        <fa class="edit-icon" icon="fa-solid fa-pen" @click="getCVData(item)" />
+                        <fa class="delete-icon" icon="fa-solid fa-trash" @click="deleteCVData(item)" />
                     </td>
                 </tr>
 
@@ -77,12 +80,12 @@
     </div>
 </template>
 <script setup>
- import { ref,computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useCVStore } from '../../store/cv';
 import Languages from "../../assets/Languages.json"
 const cvStore = useCVStore()
 const dataType = ref('LANGUAGE')
-const searchLanguage=ref('')
+const searchLanguage = ref('')
 const language = ref('')
 const writing = ref('Elija una opción...')
 const reading = ref('Elija una opción...')
@@ -93,15 +96,15 @@ const suggestionList = ref(false)
 const languagesList = ref(Languages)
 const addCVData = () => {
     const newCVData = {
-        dataType:dataType.value,
+        dataType: dataType.value,
         language: language.value,
         writing: writing.value,
-        reading: reading.value, 
+        reading: reading.value,
         speacking: speacking.value,
     }
     cvStore.cvDataArray.push(newCVData)
     resetValues()
-  
+
 }
 const getCVData = (currentLanguage) => {
     editCVDataIndex.value = cvStore.cvDataArray.indexOf(currentLanguage)
@@ -134,25 +137,25 @@ const resetValues = () => {
     editData.value = false;
     editCVDataIndex.value = -1
 }
-const isDisabled = computed(()=>{
-    if(!language.value || language.value==='' || writing.value==='Elija una opción...' || reading.value==='Elija una opción...' 
-    ||  speacking.value==='Elija una opción...' ){
-            return true
+const isDisabled = computed(() => {
+    if (!language.value || language.value === '' || writing.value === 'Elija una opción...' || reading.value === 'Elija una opción...'
+        || speacking.value === 'Elija una opción...') {
+        return true
     }
     return false
 })
 
-const setLanguage=(item)=>{
-    language.value=item.language
-    suggestionList.value=false
+const setLanguage = (item) => {
+    language.value = item.language
+    suggestionList.value = false
 }
 
-const filterLanguages = computed(() => {
+const filterListOfLanguages = computed(() => {
 
-if (language.value === '') {
-    return languagesList.value
-}
-return languagesList.value.filter(obj => obj.language.toUpperCase().startsWith(searchLanguage.value.toUpperCase()))
+    if (language.value === '') {
+        return languagesList.value
+    }
+    return languagesList.value.filter(obj => obj.language.toUpperCase().startsWith(searchLanguage.value.toUpperCase()))
 })
 
 </script>
@@ -162,6 +165,7 @@ return languagesList.value.filter(obj => obj.language.toUpperCase().startsWith(s
 @import "../../styles/table.scss";
 @import "../../styles/icons.scss";
 @import "../../styles/stepper.scss";
+
 .main {
     padding: 10px 30px;
     display: flex;
@@ -171,6 +175,7 @@ return languagesList.value.filter(obj => obj.language.toUpperCase().startsWith(s
     gap: 10px;
 
 }
+
 .grid-container {
     display: grid;
     grid-template-columns: repeat(2, 40%);
@@ -187,7 +192,7 @@ return languagesList.value.filter(obj => obj.language.toUpperCase().startsWith(s
     width: 105%;
     z-index: 10;
     margin: 0px;
-    
+
 }
 
 .class-code-list ul {
@@ -206,7 +211,7 @@ return languagesList.value.filter(obj => obj.language.toUpperCase().startsWith(s
     border-radius: 5px;
     padding-left: 5px;
     width: 34.3%;
-    
+
 }
 
 .class-code-list ul li {
