@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <h3 class="title">Experiencia docente</h3>
-         <!-- <div class="form-input-container-year">
+        <!-- <div class="form-input-container-year">
                 <label for="start-teaching-year" class="form-label">Año en el que empezó a dar clases(en
                     general):</label>
                 <input class="form-input-year" type="number" min="1950" :max="currentYear" step="1"
@@ -13,20 +13,35 @@
                     v-model="cvStore.personalData.teachingUCBStartYear" id="start-ucb-year">
             </div>  -->
 
-         <div class="grid-container">
+        <div class="grid-container-teaching-title">
             <div class="form-input-container">
                 <label for="teaching-institution" class="form-label">Diplomado en educación superior
                     (Universidad)</label>
-                <input class="form-input" type="text" id="teaching-institution" v-model.trim="cvStore.personalData.teachingTitleFileInstitution">
+                <input class="form-input" type="text" id="teaching-institution"
+                    v-model.trim="cvStore.personalData.teachingTitleFileInstitution">
             </div>
             <AcademicTitleNameVue
-                v-if="!editTeachingTitleFile && cvStore.personalData.teachingTitleFile && cvStore.personalData.teachingTitleFileName !== '--'" @edit="editTeachingTitleFile=true"
-                :dataType="'Fotocopia cédula de identidad'" :dataInfo="cvStore.personalData.teachingTitleFileName"/>
+                v-if="!editTeachingTitleFile && cvStore.personalData.teachingTitleFile && cvStore.personalData.teachingTitleFileName !== '--'"
+                @edit="editTeachingTitleFile = true" :dataType="'Fotocopia del diplomado en educación superior'"
+                :dataInfo="cvStore.personalData.teachingTitleFileName" />
             <div v-else class="form-input-container">
                 <label for="teaching-title-file" class="form-label">Fotocopia del diplomado en educación
                     superior</label>
-                <input class="upload-input" type="file" id="teaching-title-file" accept=".pdf" @change="selectFile" ref="file">
+                <input class="upload-input" type="file" id="teaching-title-file" accept=".pdf" @change="selectFile"
+                    ref="file">
             </div>
+            <AcademicTitleNameVue
+                v-if="!editTeachingPlanFile && cvStore.personalData.teachingPlanFile && cvStore.personalData.teachingPlanFileName !== '--'"
+                @edit="editTeachingTitleFile = true"
+                :dataType="'Plande asignatura'"
+                :dataInfo="cvStore.personalData.teachingPlanFileName" />
+            <div v-else class="form-input-container">
+                <label for="teaching-plan-file" class="form-label">Plande asignatura</label>
+                <input class="upload-input" type="file" id="teaching-plan-file" accept=".pdf" @change="selectFile2"
+                    ref="file2">
+            </div>
+        </div>
+        <div class="grid-container-years">
             <div class="form-input-container-year">
                 <label for="start-teaching-year" class="form-label">Año en el que empezó a dar clases(en
                     general):</label>
@@ -39,7 +54,8 @@
                     v-model="cvStore.personalData.teachingUCBStartYear" id="start-ucb-year">
             </div>
         </div>
-       <span>Llenar las materias dictadas en orden cronológico (Empezando por la última)</span>
+
+        <span>Llenar las materias dictadas en orden cronológico (Empezando por la última)</span>
         <div class="grid-container-1">
             <div class="form-input-container">
                 <label for="currrent_job_institution" class="form-label">Materia</label>
@@ -106,8 +122,10 @@ const startDate = ref('')
 const finishDate = ref('')
 const editData = ref(false)
 const editTeachingTitleFile = ref(false)
+const editTeachingPlanFile = ref(false)
 const editCVDataIndex = ref(-1)
-const file=ref(null)
+const file = ref(null)
+const file2 = ref(null)
 const addCVData = () => {
     const newCVData = {
         dataType: dataType.value,
@@ -155,6 +173,10 @@ const selectFile = () => {
     cvStore.personalData.teachingTitleFileName = file.value.files[0].name
 
 }
+const selectFile2 = () => {
+    cvStore.personalData.teachingPlanFile = file2.value.files[0];
+    cvStore.personalData.teachingPlanFileName = file2.value.files[0].name
+}
 const isDisabled = computed(() => {
     if (!title.value || title.value === '' || !institution.value || institution.value === ''
         || !startDate.value || startDate.value === '' || !finishDate.value || finishDate.value === '') {
@@ -190,15 +212,16 @@ const isDisabled = computed(() => {
     align-self: flex-start;
 }
 
-.grid-container {
+.grid-container-teaching-title {
     display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 2fr;
-    width: 80%;
+    grid-template-columns: 33% 33% 33%;
+    grid-template-rows: 1fr;
+    width: 90%;
     column-gap: 30px;
     row-gap: 12px;
     margin-bottom: 5px;
 }
+
 .grid-container-years {
     display: grid;
     grid-template-columns: 50% 50%;
@@ -206,6 +229,7 @@ const isDisabled = computed(() => {
     width: 85%;
     column-gap: 5px;
 }
+
 .grid-container-1 {
     display: grid;
     grid-template-columns: 40% 55%;

@@ -3,7 +3,7 @@
 
         <div class="job-call-container">
             <div class="job-call-container__title">
-                <h3>{{code}} {{name}}</h3>
+                <h3>{{ code }} {{ name }}</h3>
             </div>
 
             <div class="job-call-container__card">
@@ -12,7 +12,7 @@
                 </div>
                 <div class="job-call-container__card-body">
                     <ul v-for="item in getAcademicTraining">
-                        <li>{{item.description}}</li>
+                        <li>{{ item.description }}</li>
                     </ul>
 
                 </div>
@@ -26,7 +26,7 @@
                 <div class="job-call-container__card-body">
                     <b>Se valorarán conocimientos en:</b>
                     <ul v-for="item in getRequiredKnowledge">
-                        <li>{{item.description}}</li>
+                        <li>{{ item.description }}</li>
 
                     </ul>
                 </div>
@@ -38,7 +38,7 @@
                 </div>
                 <div class="job-call-container__card-body">
                     <ul v-for="item in getProfessionalExperience">
-                        <li>{{item.description}} de al menos {{item.yearsOfExperience}} años.</li>
+                        <li>{{ item.description }} de al menos {{ item.yearsOfExperience }} años.</li>
 
                     </ul>
                 </div>
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div v-if="userStore.accessToken" class="job-call-info">
-            <h3>Convocatoria N° {{selectedJobCall.jobCallCode}}</h3>
+            <h3>Convocatoria N° {{ selectedJobCall.jobCallCode }}</h3>
             <div class="job-call-info-date">
                 <b>Fecha límite de presentación:</b>
                 <span>10-10-2022 19:30</span>
@@ -55,7 +55,7 @@
             <span v-else>Ya se postuló a esta convocatoria.</span>
         </div>
         <div v-else class="job-call-info">
-            <h3>Convocatoria N° {{selectedJobCall.jobCallCode}}</h3>
+            <h3>Convocatoria N° {{ selectedJobCall.jobCallCode }}</h3>
             <div class="job-call-info-date">
                 <b>Fecha límite de presentación:</b>
                 <span>10-10-2022 19:30</span>
@@ -63,19 +63,25 @@
             <span>Debe iniciar sesión para postularse.</span>
         </div>
     </div>
-    <FeetbackModal v-show="showModal" @close-modal="showModal=false" :title="'Currículum vacío'" :message="'Debe completar su currículum vitae'" />
-    <FeetbackModal v-show="showSuccessModal" @close-modal="showSuccessModal=false; candidateRouter.push('/opened-job-calls')" :title="'Postulación exitosa'" :message="'Se ha regitrado su postulación'" />
-    <FeetbackModal v-show="showErrorModal" @close-modal="showErrorModal=false" :title="'Error'" :message="'Ocurrió un error al registrar su postulación'" />
-    <CVValidationModalVue v-show="showCVValidationModal" @close-modal="showCVValidationModal=false" @apply="applyJobCall($route.params.id)" 
-    />
+    <FeetbackModal v-show="showModal" @close-modal="showModal = false" :title="'Currículum vacío'"
+        :message="'Debe completar su currículum vitae'" />
+    <FeetbackModal v-show="showSuccessModal"
+        @close-modal="showSuccessModal = false; candidateRouter.push('/opened-job-calls')" :title="'Postulación exitosa'"
+        :message="'Se ha regitrado su postulación'" />
+    <FeetbackModal v-show="showErrorModal" @close-modal="showErrorModal = false" :title="'Error'"
+        :message="'Ocurrió un error al registrar su postulación'" />
+    <CVValidationModalVue v-show="showCVValidationModal" @close-modal="showCVValidationModal = false"
+        @apply="applyJobCall($route.params.id)" />
+    <LoadingModal :title="'Registrando su postulación'" v-show="showLoadingModal" />
 </template>
 <script setup>
 import { useJobCallStore } from '../store/job-call';
 import { useUserStore } from '../store/user';
-import {useCVStore} from '../store/cv'
+import { useCVStore } from '../store/cv'
 import { onBeforeMount, computed, ref } from 'vue'
-import {useRoute} from "vue-router";
+import { useRoute } from "vue-router";
 import FeetbackModal from '../components/modals/FeetbackModal.vue'
+import LoadingModal from '../components/modals/LoadingModal.vue';
 import candidateRouter from '../routes/router'
 import CVValidationModalVue from '../components/modals/CVValidationModal.vue';
 const router = useRoute()
@@ -91,39 +97,41 @@ const showSuccessModal = ref(false)
 const showErrorModal = ref(false)
 const jobCallApllied = ref(false)
 const showCVValidationModal = ref(false)
+const showLoadingModal = ref(false)
 onBeforeMount(async () => {
     await jobCallStore.getTeacherJobCallInfo(router.params.id)
     selectedJobCall.value = jobCallStore.selectedTeacherJobCall
     name.value = selectedJobCall.value.collegeClass.name
     code.value = selectedJobCall.value.collegeClass.code
     requirements.value = selectedJobCall.value.requirements
-    if(userStore.accessToken){
+    if (userStore.accessToken) {
         await cvStore.getCandidateCV()
         await jobCallStore.getAppliesToTeahcerJobCalls()
-        if(jobCallStore.teacherJobCallApplies.find(obj=>obj.id===router.params.id)){
-            jobCallApllied.value=true
+        if (jobCallStore.teacherJobCallApplies.find(obj => obj.id === router.params.id)) {
+            jobCallApllied.value = true
         }
     }
 })
 
-const openCVValidationModal=()=>{
-    showCVValidationModal.value=true
+const openCVValidationModal = () => {
+    showCVValidationModal.value = true
 }
 
 
-const applyJobCall = async (jobCallId)=>{
-    showCVValidationModal.value=false
-    if(!cvStore.personalData || cvStore.cvDataArray.length<1){
-        showModal.value=true
+const applyJobCall = async (jobCallId) => {
+    showCVValidationModal.value = false
+    if (!cvStore.personalData || cvStore.cvDataArray.length < 1) {
+        showModal.value = true
         return
     }
-
+    showLoadingModal.value = true
     const resp = await jobCallStore.applyToTeacherJobCall(jobCallId)
-    if(resp===201){
-        showSuccessModal.value=true;
+    showLoadingModal.value = false
+    if (resp === 201) {
+        showSuccessModal.value = true;
         return
     }
-    showErrorModal.value=true;
+    showErrorModal.value = true;
 }
 const getAcademicTraining = computed(() => {
     return requirements.value.filter(obj => obj.requirementType === 'ACADEMIC_TRAINING')
