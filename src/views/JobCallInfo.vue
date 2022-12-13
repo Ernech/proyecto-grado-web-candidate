@@ -115,7 +115,7 @@ const openCVValidationModal=()=>{
 
 const applyJobCall = async (jobCallId) => {
     showCVValidationModal.value=false
-    if (!cvStore.personalData || cvStore.cvDataArray.length < 1) {
+    if (!cvStore.cvExists) {
         showModal.value = true
         return
     }

@@ -1,4 +1,5 @@
 <template>
+    <LoadingModal :title="'Cargando su hoja de vida'" v-show="showLoadingModal" />
     <div class="main-cv-container">
         <div class="stepper-container">
 
@@ -62,10 +63,14 @@ import Affiliations from '../components/step-form-sections/Affiliations.vue'
 import FamilyReferences from '../components/step-form-sections/FamilyReferences.vue'
 import JobReferences from '../components/step-form-sections/JobReferences.vue'
 import router from '../routes/router';
+import LoadingModal from '../components/modals/LoadingModal.vue'
 const step = ref(1)
 const cvStore = useCVStore()
+const showLoadingModal = ref(false)
 onBeforeMount(async()=>{
+    showLoadingModal.value=true
     await cvStore.getCandidateCV()
+    showLoadingModal.value=false
 })
 const decrement = () => {
     if(step.value===1){
