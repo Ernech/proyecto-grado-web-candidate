@@ -11,7 +11,7 @@
         <span class="card-container__job-call-number">Convocatoria N°{{jobCallNumber}}</span>
         <span v-if="applyStatus==='PENDING'" class="card-container__job-apply-status-pending">PENDIENTE</span>
         <span v-else-if="applyStatus==='ACEPTED'" class="card-container__job-apply-status-acepted">ACEPTADO</span>
-        <span v-else-if="applyStatus==='REJECTED'" class="card-container__job-apply-status-acepted">RECHAZADO</span>
+        <span v-else-if="applyStatus==='REJECTED'" class="card-container__job-apply-status-rejected">RECHAZADO</span>
     </div>
 </template>
 <script>

@@ -32,7 +32,7 @@
                 next-button-class="next-btn" />
         </div>
         <div v-else class="job-calls-container">
-            <p>No existen convocatorias abiertas</p>
+            <p>No tiene convocatorias postuladas</p>
         </div>
     </div>
     <div v-else :style="'width:100%'">
@@ -49,7 +49,7 @@
                 next-button-class="next-btn" />
         </div>
         <div class="job-calls-container" v-else>
-            <p>No existen convocatorias abiertas</p>
+            <p>No tiene convocatorias postuladas</p>
         </div>
     </div>
 </template>
