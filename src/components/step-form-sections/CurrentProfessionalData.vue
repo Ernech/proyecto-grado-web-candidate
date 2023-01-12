@@ -14,7 +14,8 @@
         <div class="grid-container-2">
             <div class="form-input-container">
                 <label for="phone-office" class="form-label">Teléfono oficina</label>
-                <input class="form-input" type="text" id="phone-office" v-model.trim="cvStore.currentProfessionalInfo.phone">
+                <input class="form-input" type="text" id="phone-office" v-model.trim="cvStore.currentProfessionalInfo.phone" 
+                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" maxlength="8">
             </div>
             <div class="form-input-container">
                 <label for="current-job-adress" class="form-label">Dirección de trabajo</label>

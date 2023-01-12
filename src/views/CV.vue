@@ -109,9 +109,9 @@ const validatePersonalData = ()=>{
     if(cvStore.personalData.name && cvStore.personalData.name!=='' &&
      cvStore.personalData.firstLastName && cvStore.personalData.firstLastName!=='' &&
      cvStore.personalData.secondLastName && cvStore.personalData.secondLastName!=='' &&
-     cvStore.personalData.personalIdNumber && cvStore.personalData.personalIdNumber!=='' && 
-     cvStore.personalData.personalIdFile!==null && cvStore.personalData.gender!==''
-     && cvStore.personalData.idType!=='' && cvStore.personalData.issued!=='Elija una opción...'
+     cvStore.personalData.personalIdNumber && cvStore.personalData.personalIdNumber!=='' 
+     && cvStore.personalData.gender!=='' && cvStore.personalData.idType!=='' 
+     && cvStore.personalData.issued!=='Elija una opción...'
      && cvStore.personalData.civilStatus!=='' && cvStore.personalData.email!==''
      && cvStore.personalData.homePhone!=='' && cvStore.personalData.cellPhone!==''
      && cvStore.personalData.cuaNumber!=='' && cvStore.personalData.afp!==''

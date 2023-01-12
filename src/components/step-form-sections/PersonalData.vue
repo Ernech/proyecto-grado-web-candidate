@@ -1,6 +1,7 @@
 <template>
     <div class="main">
-        <h3 class="title">Datos Personales</h3>
+        <!-- <h3 class="title">Datos Personales</h3> -->
+        <TitleForm :title="'Datos personales'"/>
         <div class="grid-container-1">
             <div class="form-input-container">
                 <label for="first_last_name" class="form-label">Apellido Paterno</label>
@@ -143,6 +144,7 @@
 import { ref } from 'vue'
 import { useCVStore } from '../../store/cv'
 import AcademicTitleNameVue from './step-form-components/AcademicTitleName.vue';
+import TitleForm from './step-form-components/TitleForm.vue';
 const file = ref(null)
 const editPersonalIdFile = ref(false)
 const cvStore = useCVStore()
