@@ -14,7 +14,7 @@
                 <label for="academic-degree" class="form-label">Grado</label>
                 <select class="form-input" v-model.trim="degree">
                     <option disabled>Elija una opción...</option>
-                    <option>Licenciatura</option>
+                    <option :disabled="isOptionDisabled">Licenciatura</option>
                     <option>Postgrado</option>
                     <option>Maestría</option>
                     <option>Doctorado</option>
@@ -123,7 +123,7 @@ const addCVData = () => {
         professionalTitleFileName: professionalTitleFileName.value,
         professionalNTitleFileName: professionalNTitleFileName.value
     }
-
+console.log(currentYear);
     cvStore.cvDataArray.push(newCVData)
     resetValues()
 }
@@ -187,21 +187,23 @@ const resetValues = () => {
 const isDisabled = computed(() => {
     const degreeDateArray = degreeDate.value.split('-')
     if (!title.value || title.value === '' || !institution.value || institution.value === '' || degree.value === 'Elija una opción...'
-        || !degreeDate.value || degree.value === '' || !professionalTitleFile.value || (!professionalNTitleFile.value && degree.value === 'Licenciatura')) {
+         || !degreeDate.value || degree.value === '' || !professionalTitleFile.value 
+         //|| (!professionalNTitleFile.value && degree.value === 'Licenciatura')
+        ) {
         return true
     }
     else {
-        if (parseInt(degreeDateArray[0]) > currentYear) {
+        if(new Date(degreeDate.value) > new Date())
             return true
-
-        } else {
-            if (parseInt(degreeDateArray[1]) > currentMonth) {
-                return true
-            }
-            return false
-        }
+          
+        } 
+        return false
+          
     }
-
+)
+const isOptionDisabled = computed(()=>{
+    const optionExists = cvStore.cvDataArray.filter(obj => obj.dataType === 'ACADEMIC_TRAINING' && obj.degree=== 'Licenciatura').length
+    return optionExists >0? true:false
 })
 
 </script>

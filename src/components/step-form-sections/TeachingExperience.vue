@@ -182,7 +182,17 @@ const isDisabled = computed(() => {
         || !startDate.value || startDate.value === '' || !finishDate.value || finishDate.value === '') {
         return true
     }
-    return false
+    else{
+        if(new Date(startDate.value) > new Date() || new Date(finishDate.value) > new Date()){
+            return true
+        }
+        else{
+            if(new Date(startDate.value) > new Date(finishDate.value)){
+                return true
+            }
+            return false
+        }
+    }
 })
 </script>
 <style lang="scss" scoped>

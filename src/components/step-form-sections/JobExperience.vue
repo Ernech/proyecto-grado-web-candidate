@@ -124,23 +124,14 @@ const isDisabled = computed(()=>{
             return true
     }
     else{
-        if(parseInt(startDateArray[0])>currentYear.value || parseInt(finishDateArray[0])>currentYear.value ){
+        if(new Date(startDate.value) > new Date() || new Date(finishDate.value) > new Date()){
             return true
-
-        }else{
-            if(parseInt(startDateArray[1])>currentMonth || parseInt(finishDateArray[1])>currentMonth ){
+        }
+        else{
+            if(new Date(startDate.value) > new Date(finishDate.value)){
                 return true
             }
-            else{
-                if(parseInt(startDateArray[0])>parseInt(finishDateArray[0])){
-                    return true
-                }else{
-                    if(new Date(startDate.value)>new Date(finishDate.value)){
-                        return true
-                    }
-                }
-                return false
-            }
+            return false
         }
     }
 })
