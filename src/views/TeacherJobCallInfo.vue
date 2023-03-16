@@ -49,7 +49,7 @@
             <h3>Convocatoria N° {{ selectedJobCall.jobCallCode }}</h3>
             <div class="job-call-info-date">
                 <b>Fecha límite de presentación:</b>
-                <span>10-10-2022 19:30</span>
+                <span>{{formatedDate}}</span>
             </div>
             <button v-if="!jobCallApllied" class="apply-button" @click="openCVValidationModal">Postularme ahora</button>
             <span v-else>Ya se postuló a esta convocatoria.</span>
@@ -58,7 +58,7 @@
             <h3>Convocatoria N° {{ selectedJobCall.jobCallCode }}</h3>
             <div class="job-call-info-date">
                 <b>Fecha límite de presentación:</b>
-                <span>10-10-2022 19:30</span>
+                <span>{{formatedDate}}</span>
             </div>
             <span>Debe iniciar sesión para postularse.</span>
         </div>
@@ -98,9 +98,11 @@ const showErrorModal = ref(false)
 const jobCallApllied = ref(false)
 const showCVValidationModal = ref(false)
 const showLoadingModal = ref(false)
+const teacherJobCallClosingDate = ref('')
 onBeforeMount(async () => {
     await jobCallStore.getTeacherJobCallInfo(router.params.id)
     selectedJobCall.value = jobCallStore.selectedTeacherJobCall
+    teacherJobCallClosingDate.value= selectedJobCall.value.jobCall.closingDate
     name.value = selectedJobCall.value.collegeClass.name
     code.value = selectedJobCall.value.collegeClass.code
     requirements.value = selectedJobCall.value.requirements
@@ -144,7 +146,10 @@ const getRequiredKnowledge = computed(() => {
 const getProfessionalExperience = computed(() => {
     return requirements.value.filter(obj => obj.requirementType === 'PROFESSIONAL_EXPERIENCE')
 })
-
+const formatedDate = computed(() => {
+    const date = new Date(teacherJobCallClosingDate.value);
+    return `${('0'+date.getDate()).slice(-2)}-${('0'+(date.getMonth() + 1)).slice(-2)}-${date.getFullYear()} ${('0'+date.getHours()).slice(-2)}:${('0'+date.getMinutes()).slice(-2)}`;
+})
 </script>
 <style scoped lang="scss">
 .main {
