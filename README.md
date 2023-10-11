@@ -16,6 +16,10 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 ```
 npm install
 ```
+3. Execute the project with.
 
+```
+npm run dev
+```
 [Vue Js App (Recruiter - Admin)](https://github.com/Ernech/proyecto-grado-web)
 
